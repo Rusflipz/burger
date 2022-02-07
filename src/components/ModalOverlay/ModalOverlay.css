@@ -1,0 +1,17 @@
+.ModalOverlay{
+  transition: visibility 1s, opacity 1s;
+  position: absolute;
+  margin: auto;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000000;
+  opacity: 0;
+  z-index: 1;
+  visibility: hidden;
+}
+
+.ModalOverlay-active{
+  transition: visibility 1s, opacity 1s;
+  visibility: visible;
+  opacity: 0.6;
+}

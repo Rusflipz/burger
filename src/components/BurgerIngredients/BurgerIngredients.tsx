@@ -2,7 +2,7 @@ import styles from './BurgerIngredients.module.css';
 import React from 'react';
 import {CurrencyIcon, ConstructorElement, Button} from '@ya.praktikum/react-developer-burger-ui-components'
 
-function BurgerIngredients(props: { state:  any; }) {
+function BurgerIngredients(props: any) {
     
     const [current, setCurrent] = React.useState('one');
 
@@ -84,7 +84,7 @@ return (<div className={`${styles.cards}`}>{buns}</div>)
       />
       <div className={`${styles.buttonConteiner} mt-10`}>
 <span className={`text text_type_digits-medium mr-10`}>500 <CurrencyIcon type="primary" /></span>
-<Button type="primary" size="large">
+<Button type="primary" size="large" onClick={props.openOrder}>
 Оформить заказ
 </Button>
 </div>
