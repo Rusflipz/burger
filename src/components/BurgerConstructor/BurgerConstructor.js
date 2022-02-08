@@ -1,38 +1,22 @@
-import styles from './BurgerConstructor.module.css';
-import React from 'react';
-import { CurrencyIcon, ConstructorElement, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import styles from "./BurgerConstructor.module.css";
+import {
+  CurrencyIcon,
+  ConstructorElement,
+  Button,
+  DragIcon,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 
-function BurgerConstructor(props: any) {
-
-  const [current, setCurrent] = React.useState('one');
-
-  function Construct(props: { element: any }) {
-    return (<></>)
-  }
-
-
-  function Buns() {
-    const array = props.state;
-    const buns = array.map((element: { type: string; }) => {
-      if (element.type === "bun") {
-        return (<>
-          <Construct element={element} />
-        </>)
-      }
-    });
-    return (<div className={`${styles.cards}`}>{buns}</div>)
-  }
-
+function BurgerConstructor(props) {
   return (
     <section className={`${styles.BurgerIngredients} mt-25`}>
       <div className={`${styles.box}`}>
-      <ConstructorElement
-        type="top"
-        isLocked={true}
-        text="Краторная булка N-200i (верх)"
-        price={200}
-        thumbnail={`https://code.s3.yandex.net/react/code/bun-02.png`}
-      />
+        <ConstructorElement
+          type="top"
+          isLocked={true}
+          text="Краторная булка N-200i (верх)"
+          price={200}
+          thumbnail={`https://code.s3.yandex.net/react/code/bun-02.png`}
+        />
       </div>
       <div className={`${styles.mainConteiner} mt-4 mb-4`}>
         <div className={`${styles.box}`}>
@@ -85,22 +69,24 @@ function BurgerConstructor(props: any) {
         </div>
       </div>
       <div className={`${styles.box}`}>
-      <ConstructorElement
-        type="bottom"
-        isLocked={true}
-        text="Краторная булка N-200i (низ)"
-        price={200}
-        thumbnail={`https://code.s3.yandex.net/react/code/bun-02.png`}
-      />
+        <ConstructorElement
+          type="bottom"
+          isLocked={true}
+          text="Краторная булка N-200i (низ)"
+          price={200}
+          thumbnail={`https://code.s3.yandex.net/react/code/bun-02.png`}
+        />
       </div>
       <div className={`${styles.buttonConteiner} mt-10`}>
-        <span className={`text text_type_digits-medium mr-10`}>500 <CurrencyIcon type="primary" /></span>
+        <span className={`text text_type_digits-medium mr-10`}>
+          500 <CurrencyIcon type="primary" />
+        </span>
         <Button type="primary" size="large" onClick={props.openOrder}>
           Оформить заказ
         </Button>
       </div>
     </section>
-  )
+  );
 }
 
 export default BurgerConstructor;

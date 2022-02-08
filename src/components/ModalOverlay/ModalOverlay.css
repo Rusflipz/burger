@@ -1,6 +1,6 @@
 .ModalOverlay {
   transition: visibility 1s, opacity 1s;
-  position: absolute;
+  position: fixed;
   margin: auto;
   width: 100vw;
   height: 100vh;
