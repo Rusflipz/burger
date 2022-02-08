@@ -3,10 +3,8 @@ import AppHeader from '../AppHeader/AppHeader';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 import Modal from '../Modal/Modal';
-import ModalOverlay from '../ModalOverlay/ModalOverlay';
 import React from 'react';
 import { Logo } from '@ya.praktikum/react-developer-burger-ui-components'
-
 
 
 function App() {
@@ -14,46 +12,40 @@ function App() {
     const [state, setState] = React.useState(null);
     const [isOpen, setIsOpen] = React.useState(false);
     const [typeOfModal, setTypeOfModal] = React.useState('order');
-    // const [isLoad, setIsLoad] = React.useState(false);
     React.useEffect(() => {
-const apiUrl = 'https://norma.nomoreparties.space/api/ingredients'
+        const apiUrl = 'https://norma.nomoreparties.space/api/ingredients'
         fetch(`${apiUrl}`)
-            .then(response => response.json())
+            .then(checkResponse)
             .then(data => setState(data.data))
             .catch(error => {
-                // this.setState({ errorMessage: error.toString() });
                 console.error('There was an error!', error);
             })
     }, [])
 
-    const setType = (value: any) => {
-if (value === 'ingredient'){
-    setTypeOfModal(value)
-}
-    else if(value === 'order') {
-        setTypeOfModal(value)
-    }
-}
 
-    const ecs = (e: any) => {
-        if (e.key === "Escape"){ 
-             closeModal()
+    function checkResponse(res: any) {
+        if (res.ok) {
+            return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`)
+
+    }
+
+    const setType = (value: any) => {
+        if (value === 'ingredient') {
+            setTypeOfModal(value)
+        }
+        else if (value === 'order') {
+            setTypeOfModal(value)
         }
     }
 
-    function closeModal(){
+    function closeModal() {
         setIsOpen(false);
-        document.removeEventListener('keydown', function (e) {
-            ecs(e)
-            //Слушатель не хочет сниматься
-     }, false)
     }
 
-    function openModal(){
+    function openModal() {
         setIsOpen(true);
-        document.addEventListener('keydown', function (e) {
-            ecs(e)
-     }, false)
     }
 
     const updateData = (value: any) => {
@@ -68,25 +60,24 @@ if (value === 'ingredient'){
     }
 
     if (state !== null) {
-    return  (
-        <>
-        <ModalOverlay isOpen={isOpen} closeModal={closeModal}/>
-        <div className = {styles.App} >
-        <Modal typeOfModal={typeOfModal} ecs={ecs} data={data} isOpen={isOpen} closeModal={closeModal} />
-        <AppHeader />
-        <main className = {styles.main}>
-        <BurgerConstructor setType={setType} updateData={updateData} state={state} />
-        <BurgerIngredients state={state} openOrder={openOrder}  />
-        </main>
-        </div>
-        </>
-    )
+        return (
+            <>
+                <div className={styles.App} >
+                    <Modal typeOfModal={typeOfModal} data={data} isOpen={isOpen} closeModal={closeModal} />
+                    <AppHeader />
+                    <main className={styles.main}>
+                        <BurgerIngredients updateData={updateData} state={state} />
+                        <BurgerConstructor state={state} openOrder={openOrder} />
+                    </main>
+                </div>
+            </>
+        )
     } else {
         return (<>
-        <div className = {`${styles.loading} pt-4`}>
-        <Logo />
-        <p className = {`text_type_main-large ${styles.loadingText}`}>Загрузка...</p>
-        </div>
+            <div className={`${styles.loading} pt-4`}>
+                <Logo />
+                <p className={`text_type_main-large ${styles.loadingText}`}>Загрузка...</p>
+            </div>
         </>)
     }
 }

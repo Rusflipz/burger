@@ -1,32 +1,44 @@
-.App{
+.App {
   display: block;
   position: relative;
   font-family: JetBrains Mono;
-    font-style: normal;
-    font-weight: normal;
+  font-style: normal;
+  font-weight: normal;
   background-color: #131316;
   height: 100vh;
   overflow: hidden;
 }
 
-.main{
+.main {
   display: block;
   position: relative;
   margin: 0 auto;
-  width: 1240px;
+  max-width: 1240px;
   display: grid;
-    grid-template-columns: repeat(2, 600px);
-    grid-gap: 40px;
-    height: 70vh;
-    box-sizing: border-box;
-    
+  grid-template-columns: repeat(2, 600px);
+  grid-gap: 40px;
+  height: 70vh;
+  box-sizing: border-box;
 }
 
-.loading{
+.loading {
   width: 300px;
   height: 90vh;
   margin: 0 auto;
-  align-self:center;
+  align-self: center;
   text-align: center;
   overflow: hidden;
 }
+
+/* @media (max-width: 1250px) {
+  .main {
+    max-width: 1240px;
+    display: grid;
+    grid-template-columns: repeat(1, 600px);
+    height: auto;
+  }
+  .App {
+    height: auto;
+    overflow: hidden;
+  }
+} */

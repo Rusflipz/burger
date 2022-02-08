@@ -1,91 +1,106 @@
 import styles from './BurgerConstructor.module.css';
 import React from 'react';
-import IngredientDetails from '../IngredientDetails/IngredientDetails';
-import PropTypes from 'prop-types';
-import { Tab,  CurrencyIcon, Counter} from '@ya.praktikum/react-developer-burger-ui-components'
-
+import { CurrencyIcon, ConstructorElement, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
 function BurgerConstructor(props: any) {
 
-    const [current, setCurrent] = React.useState('one');
-function Construct(props: { element: any }){
-    return(<>
-    <img src={`${props.element.image}`}></img>
-    <div className={`${styles.priceConteiner} mt-1 mb-1`}>
-        <span className={`text text_type_digits-default`}>{`${props.element.price} `}</span>
-        <CurrencyIcon type="primary" />
-    </div>
-        <p className={`text text_type_main-default`}>{`${props.element.name}`}</p>
-        </>
-)
-}
-    function Main (){
-        const array = props.state;
-        const Main = array.map((element: any) => {
-            if (element.type === "main"){
-                return (<div onClick={() => props.updateData(element)} className={`${styles.card}`}  key={`${element._id}`}>
-                <Construct element={element}/>
-                </div>)
-            }
-        });
-    return (<div className={`${styles.cards}`}>{Main}</div>)
-    }
+  const [current, setCurrent] = React.useState('one');
 
-    function Sauces (){
-        const array = props.state;
-        const Sauces = array.map((element: {_id: any; type: any}) => {
-            if (element.type === "sauce"){
-                return (<div onClick={() => props.updateData(element)} className={`${styles.card}`}  key={`${element._id}`}>
-                    <Construct element={element}/>
-                    </div>)
-            }
-        });
-    return (<div className={`${styles.cards}`}>{Sauces}</div>)
-    }
+  function Construct(props: { element: any }) {
+    return (<></>)
+  }
 
-function Buns (){
+
+  function Buns() {
     const array = props.state;
-    const buns = array.map((element: {_id: any; type: any}) => {
-        if (element.type === "bun"){
-            return (<div onClick={() => props.updateData(element)} className={`${styles.card}`}  key={`${element._id}`}>
-                <Construct element={element}/>
-                </div>)
-        }
+    const buns = array.map((element: { type: string; }) => {
+      if (element.type === "bun") {
+        return (<>
+          <Construct element={element} />
+        </>)
+      }
     });
-return (<div className={`${styles.cards}`}>{buns}</div>)
-}
+    return (<div className={`${styles.cards}`}>{buns}</div>)
+  }
 
-    return (
-        <section className= {`${styles.BurgerConstructor}`}>
-            <p  className= {`${styles.title} mb-5 mt-10 text text_type_main-large`}>Соберите бургер</p>
-            <div style={{ display: 'flex' }}>
-                <Tab value="one" active={current === 'one'} onClick={setCurrent}>
-                Булки
-                </Tab>
-                <Tab value="two" active={current === 'two'} onClick={setCurrent}>
-                Соусы
-                </Tab>
-                <Tab value="three" active={current === 'three'} onClick={setCurrent}>
-                Начинки
-                </Tab>
-            </div>
-            <div className={`${styles.mainConteiner}  mt-10`}>
-            <div className = {`${styles.conteiner}`}>
-                <p className = {`${styles.conteinerTitle} text text_type_main-medium mb-6`}>Булки</p>
-                <Buns />
-            </div>
-            <div className = {`${styles.conteiner} mt-10`}>
-                <p className = {`${styles.conteinerTitle} text text_type_main-medium mb-6`}>Соусы</p>
-                <Sauces />
-            </div>
-            <div className = {`${styles.conteiner} mt-10`}>
-                <p className = {`${styles.conteinerTitle} text text_type_main-medium mb-6`}>Ингридиенты</p>
-                <Main />
-            </div>
-            </div>
-        </section>
-    )
+  return (
+    <section className={`${styles.BurgerIngredients} mt-25`}>
+      <div className={`${styles.box}`}>
+      <ConstructorElement
+        type="top"
+        isLocked={true}
+        text="Краторная булка N-200i (верх)"
+        price={200}
+        thumbnail={`https://code.s3.yandex.net/react/code/bun-02.png`}
+      />
+      </div>
+      <div className={`${styles.mainConteiner} mt-4 mb-4`}>
+        <div className={`${styles.box}`}>
+          <DragIcon type="primary" />
+          <ConstructorElement
+            text="Соус Spicy-X"
+            price={90}
+            thumbnail={`https://code.s3.yandex.net/react/code/sauce-02.png`}
+          />
+        </div>
+        <div className={`${styles.box}`}>
+          <DragIcon type="primary" />
+          <ConstructorElement
+            text="Филе Люминесцентного тетраодонтимформа"
+            price={988}
+            thumbnail={`https://code.s3.yandex.net/react/code/meat-03.png`}
+          />
+        </div>
+        <div className={`${styles.box}`}>
+          <DragIcon type="primary" />
+          <ConstructorElement
+            text="Хрустящие минеральные кольца"
+            price={300}
+            thumbnail={`https://code.s3.yandex.net/react/code/mineral_rings.png`}
+          />
+        </div>
+        <div className={`${styles.box}`}>
+          <DragIcon type="primary" />
+          <ConstructorElement
+            text="Мини-салат Экзо-Плантаго"
+            price={4400}
+            thumbnail={`https://code.s3.yandex.net/react/code/salad.png`}
+          />
+        </div>
+        <div className={`${styles.box}`}>
+          <DragIcon type="primary" />
+          <ConstructorElement
+            text="Хрустящие минеральные кольца"
+            price={300}
+            thumbnail={`https://code.s3.yandex.net/react/code/mineral_rings.png`}
+          />
+        </div>
+        <div className={`${styles.box}`}>
+          <DragIcon type="primary" />
+          <ConstructorElement
+            text="Соус фирменный Space Sauce"
+            price={80}
+            thumbnail={`https://code.s3.yandex.net/react/code/sauce-04.png`}
+          />
+        </div>
+      </div>
+      <div className={`${styles.box}`}>
+      <ConstructorElement
+        type="bottom"
+        isLocked={true}
+        text="Краторная булка N-200i (низ)"
+        price={200}
+        thumbnail={`https://code.s3.yandex.net/react/code/bun-02.png`}
+      />
+      </div>
+      <div className={`${styles.buttonConteiner} mt-10`}>
+        <span className={`text text_type_digits-medium mr-10`}>500 <CurrencyIcon type="primary" /></span>
+        <Button type="primary" size="large" onClick={props.openOrder}>
+          Оформить заказ
+        </Button>
+      </div>
+    </section>
+  )
 }
-
 
 export default BurgerConstructor;

@@ -1,4 +1,4 @@
-.Modal{
+.Modal {
   transition: visibility 1s, opacity 1s;
   position: absolute;
   margin-top: 30vh;
@@ -11,27 +11,26 @@
   border-radius: 40px;
   visibility: hidden;
   opacity: 0;
-  
+
   top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    margin: auto;
-    z-index: 1;
-    text-align: center;
-    align-items: center;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  z-index: 1;
+  text-align: center;
+  align-items: center;
 }
 
-.Modal-active{
+.Modal-active {
   transition: visibility 1s, opacity 1s;
   visibility: visible;
   opacity: 1;
-  
+
 }
 
-.Modal-close-icon{
-position: absolute;
-right: 40px;
-top: 50px
-
+.Modal-close-icon {
+  position: absolute;
+  right: 40px;
+  top: 50px
 }

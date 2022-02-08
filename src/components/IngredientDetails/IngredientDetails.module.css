@@ -1,8 +1,8 @@
-.title{
+.title {
   margin: 0 auto;
 }
 
-.conteiner{
+.conteiner {
   display: flex;
   flex-direction: row;
   align-items: center;

@@ -1,4 +1,4 @@
-.ModalOverlay{
+.ModalOverlay {
   transition: visibility 1s, opacity 1s;
   position: absolute;
   margin: auto;
@@ -10,7 +10,7 @@
   visibility: hidden;
 }
 
-.ModalOverlay-active{
+.ModalOverlay-active {
   transition: visibility 1s, opacity 1s;
   visibility: visible;
   opacity: 0.6;
