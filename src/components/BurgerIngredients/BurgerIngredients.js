@@ -4,6 +4,7 @@ import {
   Tab,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import PropTypes from 'prop-types';
 
 function BurgerIngredients(props) {
   const [current, setCurrent] = React.useState("one");
@@ -121,4 +122,14 @@ function BurgerIngredients(props) {
   );
 }
 
+BurgerIngredients.propTypes = {
+  image: PropTypes.string,
+  name: PropTypes.string,
+  price: PropTypes.string,
+  _id: PropTypes.string,
+  type: PropTypes.string,
+  updateData: PropTypes.func.isRequired,
+  state: PropTypes.array.isRequired,
+};
+//В тренажере показан только такой способ типизации, нет примера, где выносилось бы в отдельный файл и импортировалолсь от туда, поэтому сделал так
 export default BurgerIngredients;

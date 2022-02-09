@@ -1,4 +1,5 @@
 import './ModalOverlay.css';
+import PropTypes from 'prop-types';
 
 function ModalOverlay(props) {
     let className = 'ModalOverlay'
@@ -19,5 +20,11 @@ function ModalOverlay(props) {
         )
     }
 }
+
+ModalOverlay.propTypes = {
+    isOpene: PropTypes.bool,
+    closeModal: PropTypes.func,
+    props: PropTypes.array
+};
 
 export default ModalOverlay;

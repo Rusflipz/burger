@@ -5,6 +5,7 @@ import {
   Button,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import PropTypes from 'prop-types';
 
 function BurgerConstructor(props) {
   return (
@@ -88,5 +89,9 @@ function BurgerConstructor(props) {
     </section>
   );
 }
+
+BurgerConstructor.propTypes = {
+  openOrder: PropTypes.func,
+};
 
 export default BurgerConstructor;

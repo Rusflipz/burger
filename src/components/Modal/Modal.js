@@ -3,6 +3,7 @@ import React from 'react';
 import ModalOverlay from '../ModalOverlay/ModalOverlay';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 
 function Modal(props) {
     let className = 'Modal';
@@ -35,5 +36,13 @@ function Modal(props) {
         </>
         , modalRoot)
 }
+
+Modal.propTypes = {
+    isOpene: PropTypes.bool,
+    closeModal: PropTypes.func,
+    children: PropTypes.element,
+    props: PropTypes.array,
+};
+//если значению props добавить isRequired, ругается что props = undefind
 
 export default Modal;
