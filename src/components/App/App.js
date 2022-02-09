@@ -39,7 +39,7 @@ function App() {
   }
 
   const updateData = (value) => {
-    setChildren(IngredientDetails(value));
+    setChildren(IngredientDetails(value={value}));
     openModal();
   };
 
@@ -55,7 +55,7 @@ function App() {
         <AppHeader />
         <main className={styles.main}>
           <BurgerIngredients state={state} updateData={updateData} />
-          <BurgerConstructor state={state} openOrder={openOrder} />
+          <BurgerConstructor openOrder={openOrder} />
         </main>
       </div>
     );

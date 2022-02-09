@@ -123,11 +123,6 @@ function BurgerIngredients(props) {
 }
 
 BurgerIngredients.propTypes = {
-  image: PropTypes.string,
-  name: PropTypes.string,
-  price: PropTypes.string,
-  _id: PropTypes.string,
-  type: PropTypes.string,
   updateData: PropTypes.func.isRequired,
   state: PropTypes.array.isRequired,
 };

@@ -91,7 +91,7 @@ function BurgerConstructor(props) {
 }
 
 BurgerConstructor.propTypes = {
-  openOrder: PropTypes.func,
+  openOrder: PropTypes.func.isRequired,
 };
 
 export default BurgerConstructor;

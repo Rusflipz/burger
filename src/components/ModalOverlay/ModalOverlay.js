@@ -22,9 +22,8 @@ function ModalOverlay(props) {
 }
 
 ModalOverlay.propTypes = {
-    isOpene: PropTypes.bool,
-    closeModal: PropTypes.func,
-    props: PropTypes.array
+    isOpen: PropTypes.bool.isRequired,
+    closeModal: PropTypes.func.isRequired,
 };
 
 export default ModalOverlay;

@@ -38,11 +38,9 @@ function Modal(props) {
 }
 
 Modal.propTypes = {
-    isOpene: PropTypes.bool,
-    closeModal: PropTypes.func,
-    children: PropTypes.element,
-    props: PropTypes.array,
+    isOpen: PropTypes.bool.isRequired,
+    closeModal: PropTypes.func.isRequired,
+    children: PropTypes.element.isRequired,
 };
-//если значению props добавить isRequired, ругается что props = undefind
 
 export default Modal;
