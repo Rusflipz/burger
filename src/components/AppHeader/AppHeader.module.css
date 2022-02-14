@@ -1,0 +1,42 @@
+.header {
+    color: #F2F2F3;
+    background-color: #1C1C21;
+}
+
+.contentBox {
+    max-width: 1240px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-content: center;
+    align-items: center;
+}
+
+.logo {
+    margin: auto;
+}
+
+.navigation {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+}
+
+.navigationItem {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: auto;
+    height: 55px;
+    align-self: center;
+    text-align: center;
+    text-decoration: none;
+    background: #1C1C21;
+    box-sizing: border-box;
+    border-radius: 40px;
+}
+
+.navigationItemProf{
+    margin-left: auto;
+}
