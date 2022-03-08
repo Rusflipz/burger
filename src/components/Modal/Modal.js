@@ -1,49 +1,32 @@
-import './Modal.css';
+import styles from './Modal.module.css';
 import { useEffect } from 'react';
 import ModalOverlay from '../ModalOverlay/ModalOverlay';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import ReactDOM from 'react-dom';
-import { ingredientsSelector, removeIngredientСomponents, closeOrderСomponentsModal } from "../../services/slice/ingredients";
-import { useSelector, useDispatch } from "react-redux";
-import { IngredientDetails } from "../IngredientDetails/IngredientDetails";
-import { OrderDetails } from "../OrderDetails/OrderDetails"
+import PropTypes from 'prop-types';
 
-function Modal() {
-    const { ingredientСomponents, isModalOpen, ModalType, orderNumber, orderName } = useSelector(ingredientsSelector);
-    const dispatch = useDispatch();
-    let className = 'Modal';
-
-    function closeModal() {
-        dispatch(removeIngredientСomponents())
-        dispatch(closeOrderСomponentsModal())
-    }
+function Modal(props) {
 
     useEffect(() => {
         const closeByEscape = (e) => {
             if (e.key === 'Escape') {
-                closeModal()
+                props.onClose()
             }
         }
         document.addEventListener('keydown', closeByEscape)
         return () => document.removeEventListener('keydown', closeByEscape)
     }, [])
 
-    if (isModalOpen === true) {
-        className += ' Modal-active'
-    } else {
-        className = 'Modal'
-    }
     const modalRoot = document.getElementById('modals')
     try {
         return ReactDOM.createPortal(
             <>
-                <ModalOverlay onClick={closeModal} />
-                <section className={`${className} pl-10 pr-10 pt-10`}>
-                    <div className={`Modal-close-icon`}>
-                        <CloseIcon type="primary" onClick={closeModal} />
+                <ModalOverlay onClick={props.onClose} />
+                <section className={`${styles.Modal} pl-10 pr-10 pt-10`}>
+                    <div className={`${styles.ModalCloseIcon}`}>
+                        <CloseIcon type="primary" onClick={props.onClose} />
                     </div>
-                    {ModalType === 'Ing' && (<IngredientDetails value={ingredientСomponents} />)}
-                    {ModalType === 'Order' && (<OrderDetails orderNumber={orderNumber} orderName={orderName} />)}
+                    {props.children}
                 </section>
             </>
             , modalRoot)
@@ -53,3 +36,8 @@ function Modal() {
 }
 
 export default Modal;
+
+Modal.propTypes = {
+    children: PropTypes.object.isRequired,
+    onClose: PropTypes.func.isRequired
+};

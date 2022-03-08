@@ -1,2 +1,0 @@
-export const GET_INGREDIENTS = 'GET_INGREDIENTS'
-

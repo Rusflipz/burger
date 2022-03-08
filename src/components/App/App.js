@@ -2,7 +2,6 @@ import styles from "./App.module.css";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
-import Modal from "../Modal/Modal";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { ingredientsSelector } from '../../services/slice/ingredients';
@@ -33,7 +32,6 @@ function App() {
 
   return (
     <div className={styles.App}>
-      <Modal />
       <AppHeader />
       <main className={styles.main}>
         {content()}

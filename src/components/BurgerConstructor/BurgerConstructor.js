@@ -1,16 +1,18 @@
 import styles from "./BurgerConstructor.module.css";
-import './BurgerConstructor.css';
 import { CurrencyIcon, ConstructorElement, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ConstructorIngredient } from '../ConsructorIngredient/ConsructorIngredient'
 import { useSelector, useDispatch } from "react-redux";
 import { fetchOrderDetails } from '../../services/api';
 import { useDrop } from 'react-dnd';
 import { useMemo } from "react";
-import { ingredientsSelector, addIngredientInConstructorItem, deleteIngredientFromConstructorItem } from '../../services/slice/ingredients';
+import { ingredientsSelector, addIngredientInConstructorItem, deleteIngredientFromConstructorItem, closeOrderСomponentsModal } from '../../services/slice/ingredients';
+import Modal from '../Modal/Modal';
+import { OrderDetails } from '../OrderDetails/OrderDetails';
+
 
 function BurgerConstructor() {
 
-  const { constructor } = useSelector(ingredientsSelector);
+  const { constructor, orderModalOpen, orderNumber, orderName } = useSelector(ingredientsSelector);
   const dispatch = useDispatch();
 
   const [{ canDrop, isOver }, dropTarget] = useDrop({
@@ -45,16 +47,8 @@ function BurgerConstructor() {
     }
   }, [constructorItems])
 
-  let className = 'mainConteiner';
-
-  if (isActiveForDnD) {
-    className = 'mainConteiner mainConteinerActive'
-  } else {
-    className = 'mainConteiner'
-  }
-
   return (
-    <section ref={dropTarget} className={`${className} mt-25`}>
+    <section ref={dropTarget} className={`mt-25`}>
       <div className={`${styles.box}`}>
         {constructor.burger.length === 0 && <p className={`${styles.text} mb-5 mt-10 text text_type_main-large`}>
           Добавьте булки и ингредиенты сюда, чтобы сделать заказ!
@@ -108,6 +102,11 @@ function BurgerConstructor() {
           </Button>
         </>) : (<></>)}
       </div>
+      {orderModalOpen && <>
+        <Modal onClose={() => dispatch(closeOrderСomponentsModal())}>
+          <OrderDetails orderNumber={orderNumber} orderName={orderName} />
+        </Modal>
+      </>}
     </section>
   );
 }

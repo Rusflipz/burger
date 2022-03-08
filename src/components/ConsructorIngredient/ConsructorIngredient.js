@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { useDispatch } from 'react-redux';
 import { deleteIngredientFromConstructorItem, dragItems } from '../../services/slice/ingredients';
+import PropTypes from 'prop-types';
 
 export const ConstructorIngredient = ({ item, index }) => {
     const dispatch = useDispatch();
@@ -65,3 +66,8 @@ export const ConstructorIngredient = ({ item, index }) => {
         </div>
     )
 }
+
+ConstructorIngredient.propTypes = {
+    item: PropTypes.object.isRequired,
+    index: PropTypes.number.isRequired,
+};

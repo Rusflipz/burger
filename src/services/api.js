@@ -19,18 +19,14 @@ export const fetchIngredients = () => {
 
 export const fetchOrderDetails = (ingredients) => {
     return async dispatch => {
-        console.log('тут')
         dispatch(getOrder())
         try {
-            console.log('зашел')
             const response = await fetch(`${url}orders`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ ingredients: ingredients.map(i => i._id) })
             })
             const data = await checkResponse(response)
-            console.log(data)
-
             dispatch(getOrderSuccess(data))
         } catch (err) {
             dispatch(getOrderFailed())

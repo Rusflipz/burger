@@ -1,28 +1,10 @@
-import './ModalOverlay.css';
+import styles from './ModalOverlay.module.css';
 import PropTypes from 'prop-types';
-import { ingredientsSelector } from "../../services/slice/ingredients";
-import { useSelector } from "react-redux";
 
 function ModalOverlay(props) {
-    const { isModalOpen } = useSelector(ingredientsSelector);
-
-    let className = 'ModalOverlay'
-
-    if (isModalOpen === true) {
-        className += ' ModalOverlay-active'
-    } else {
-        className = 'ModalOverlay'
-    }
-
-    if (isModalOpen === true) {
-        return (
-            <section onClick={props.onClick} id='overlay' className={`${className}`}></section>
-        )
-    } else {
-        return (
-            <></>
-        )
-    }
+    return (
+        <section onClick={props.onClick} id='overlay' className={`${styles.ModalOverlay}`}></section>
+    )
 }
 
 ModalOverlay.propTypes = {

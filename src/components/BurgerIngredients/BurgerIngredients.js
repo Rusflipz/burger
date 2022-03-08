@@ -2,13 +2,15 @@ import styles from "./BurgerIngredients.module.css";
 import { useMemo, useState, useRef } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector, useDispatch } from "react-redux";
-import { ingredientsSelector } from "../../services/slice/ingredients";
+import { ingredientsSelector, removeIngredientСomponents } from "../../services/slice/ingredients";
 import { BurgerIngredient } from '../BurgerIngredient/BurgerIngredient';
+import Modal from '../Modal/Modal';
+import { IngredientDetails } from '../IngredientDetails/IngredientDetails';
 
 function BurgerIngredients() {
 
   const [current, setCurrent] = useState('bun');
-  const { ingredients } = useSelector(ingredientsSelector);
+  const { ingredients, ingredientСomponents, ingredientModalOpen } = useSelector(ingredientsSelector);
   const dispatch = useDispatch();
 
   const buns = useMemo(() => ingredients.filter((prod) => prod.type === "bun"), [ingredients])
@@ -104,6 +106,11 @@ function BurgerIngredients() {
           </div>
         </div>
       </div>
+      {ingredientModalOpen && <>
+        <Modal onClose={() => dispatch(removeIngredientСomponents())}>
+          <IngredientDetails value={ingredientСomponents} />
+        </Modal>
+      </>}
     </section>
   );
 }

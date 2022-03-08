@@ -6,11 +6,11 @@ export const initialState = {
     error: false,
     ingredients: [],
     ingredientСomponents: [],
-    isModalOpen: false,
-    ModalType: '',
+    ingredientModalOpen: false,
     constructor: {
         burger: [],
     },
+    orderModalOpen: false,
     orderNumber: 0,
     orderName: '',
 }
@@ -33,13 +33,11 @@ export const ingredientsSlice = createSlice({
         },
         showIngredientСomponents: (state, { payload }) => {
             state.ingredientСomponents = payload
-            state.isModalOpen = true
-            state.ModalType = 'Ing'
+            state.ingredientModalOpen = true
         },
         removeIngredientСomponents: state => {
             state.ingredientСomponents = []
-            state.isModalOpen = false
-            state.ModalType = ''
+            state.ingredientModalOpen = false
         },
         addIngredientInConstructorItem: {
             reducer: (state, { payload }) => {
@@ -70,8 +68,7 @@ export const ingredientsSlice = createSlice({
             state.loading = false
             state.orderNumber = payload.order.number
             state.orderName = payload.name
-            state.isModalOpen = true
-            state.ModalType = 'Order'
+            state.orderModalOpen = true
         },
         getOrderFailed: state => {
             state.orderNumber = 0
@@ -81,7 +78,7 @@ export const ingredientsSlice = createSlice({
             state.constructor.burger = []
             state.orderNumber = 0
             state.orderName = ''
-            state.isModalOpen = false
+            state.orderModalOpen = false
             state.ModalType = ''
         },
     },
