@@ -1,7 +1,7 @@
 import styles from './IngredientDetails.module.css';
 import PropTypes from 'prop-types';
 
-const IngredientDetails = (props) => (
+export const IngredientDetails = (props) => (
     <>
         <p className={`${styles.title} text text_type_main-large`}>Детали ингридиента</p>
         <img className={`${styles.image} mb-4`} src={props.value.image_large} alt={props.value.name}></img>
@@ -28,13 +28,11 @@ const IngredientDetails = (props) => (
 )
 
 IngredientDetails.propTypes = {
-    // image_large: PropTypes.string.isRequired,
-    // name: PropTypes.string.isRequired,
-    // calories: PropTypes.string.isRequired,
-    // proteins: PropTypes.string.isRequired,
-    // fat: PropTypes.string.isRequired,
-    // carbohydrates: PropTypes.string.isRequired,
+    image_large: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    calories: PropTypes.string.isRequired,
+    proteins: PropTypes.string.isRequired,
+    fat: PropTypes.string.isRequired,
+    carbohydrates: PropTypes.string.isRequired,
     value: PropTypes.array.isRequired,
 };
-
-export default IngredientDetails;

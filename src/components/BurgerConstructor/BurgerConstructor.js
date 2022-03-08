@@ -1,97 +1,115 @@
 import styles from "./BurgerConstructor.module.css";
-import {
-  CurrencyIcon,
-  ConstructorElement,
-  Button,
-  DragIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from 'prop-types';
+import './BurgerConstructor.css';
+import { CurrencyIcon, ConstructorElement, Button } from "@ya.praktikum/react-developer-burger-ui-components";
+import { ConstructorIngredient } from '../ConsructorIngredient/ConsructorIngredient'
+import { useSelector, useDispatch } from "react-redux";
+import { fetchOrderDetails } from '../../services/api';
+import { useDrop } from 'react-dnd';
+import { useMemo } from "react";
+import { ingredientsSelector, addIngredientInConstructorItem, deleteIngredientFromConstructorItem } from '../../services/slice/ingredients';
 
-function BurgerConstructor(props) {
+function BurgerConstructor() {
+
+  const { constructor } = useSelector(ingredientsSelector);
+  const dispatch = useDispatch();
+
+  const [{ canDrop, isOver }, dropTarget] = useDrop({
+    accept: 'ingredient',
+    drop(item) {
+      if (item.type === 'bun') {
+        dispatch(deleteIngredientFromConstructorItem(item))
+        dispatch(addIngredientInConstructorItem(item))
+      } else {
+        dispatch(addIngredientInConstructorItem(item))
+      }
+    },
+    collect: monitor => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop()
+    })
+  });
+
+  const isActiveForDnD = canDrop && isOver;
+  const constructorItems = constructor.burger
+  const bun = constructorItems.find(item => item.type === 'bun');
+  const mains = constructorItems.filter(item => item.type !== 'bun');
+
+  let total = useMemo(() => {
+    let sum
+    if (constructorItems.length > 0) {
+      sum = constructorItems.filter(ingredient => ingredient.type !== 'bun').reduce((prev, ingredient) => prev + ingredient.price, 0) + (constructorItems.some(ingredient => ingredient.type === 'bun') ? (constructorItems.find(ingredient => ingredient.type === 'bun').price * 2) : 0)
+      return sum
+    } else {
+      sum = 0
+      return sum
+    }
+  }, [constructorItems])
+
+  let className = 'mainConteiner';
+
+  if (isActiveForDnD) {
+    className = 'mainConteiner mainConteinerActive'
+  } else {
+    className = 'mainConteiner'
+  }
+
   return (
-    <section className={`${styles.BurgerIngredients} mt-25`}>
+    <section ref={dropTarget} className={`${className} mt-25`}>
       <div className={`${styles.box}`}>
-        <ConstructorElement
-          type="top"
-          isLocked={true}
-          text="Краторная булка N-200i (верх)"
-          price={200}
-          thumbnail={`https://code.s3.yandex.net/react/code/bun-02.png`}
-        />
-      </div>
-      <div className={`${styles.mainConteiner} mt-4 mb-4`}>
-        <div className={`${styles.box}`}>
-          <DragIcon type="primary" />
+        {constructor.burger.length === 0 && <p className={`${styles.text} mb-5 mt-10 text text_type_main-large`}>
+          Добавьте булки и ингредиенты сюда, чтобы сделать заказ!
+        </p>}
+        {bun && <div className={`pl-8 mb-4`}>
           <ConstructorElement
-            text="Соус Spicy-X"
-            price={90}
-            thumbnail={`https://code.s3.yandex.net/react/code/sauce-02.png`}
+            type="top"
+            isLocked={true}
+            text={bun.name + " (верх)"}
+            price={bun.price}
+            thumbnail={bun.image}
           />
-        </div>
-        <div className={`${styles.box}`}>
-          <DragIcon type="primary" />
+        </div>}
+
+        {mains.length > 0 && <div className={`${styles.ingredient}`}>
+          <div className={``}>
+            {mains.map((item, index) => {
+              return (
+                <ConstructorIngredient
+                  id={item._id}
+                  index={index}
+                  item={item}
+                  key={item.uniqueID}
+                />
+              )
+            }
+            )}
+          </div>
+        </div>}
+
+        {bun && <div className={`pl-8`}>
           <ConstructorElement
-            text="Филе Люминесцентного тетраодонтимформа"
-            price={988}
-            thumbnail={`https://code.s3.yandex.net/react/code/meat-03.png`}
+            type="bottom"
+            isLocked={true}
+            text={bun.name + " (низ)"}
+            price={bun.price}
+            thumbnail={bun.image}
           />
-        </div>
-        <div className={`${styles.box}`}>
-          <DragIcon type="primary" />
-          <ConstructorElement
-            text="Хрустящие минеральные кольца"
-            price={300}
-            thumbnail={`https://code.s3.yandex.net/react/code/mineral_rings.png`}
-          />
-        </div>
-        <div className={`${styles.box}`}>
-          <DragIcon type="primary" />
-          <ConstructorElement
-            text="Мини-салат Экзо-Плантаго"
-            price={4400}
-            thumbnail={`https://code.s3.yandex.net/react/code/salad.png`}
-          />
-        </div>
-        <div className={`${styles.box}`}>
-          <DragIcon type="primary" />
-          <ConstructorElement
-            text="Хрустящие минеральные кольца"
-            price={300}
-            thumbnail={`https://code.s3.yandex.net/react/code/mineral_rings.png`}
-          />
-        </div>
-        <div className={`${styles.box}`}>
-          <DragIcon type="primary" />
-          <ConstructorElement
-            text="Соус фирменный Space Sauce"
-            price={80}
-            thumbnail={`https://code.s3.yandex.net/react/code/sauce-04.png`}
-          />
-        </div>
-      </div>
-      <div className={`${styles.box}`}>
-        <ConstructorElement
-          type="bottom"
-          isLocked={true}
-          text="Краторная булка N-200i (низ)"
-          price={200}
-          thumbnail={`https://code.s3.yandex.net/react/code/bun-02.png`}
-        />
+        </div>}
       </div>
       <div className={`${styles.buttonConteiner} mt-10`}>
-        <span className={`text text_type_digits-medium mr-10`}>
-          500 <CurrencyIcon type="primary" />
-        </span>
-        <Button type="primary" size="large" onClick={props.openOrder}>
-          Оформить заказ
-        </Button>
+
+        {bun ? (<>
+          <span className={`text text_type_digits-medium mr-10`}>
+            {total} <CurrencyIcon type="primary" />
+          </span>
+          <Button type="primary" size="large"
+            onClick={() => dispatch(fetchOrderDetails(constructorItems))}
+          >
+            Оформить заказ
+          </Button>
+        </>) : (<></>)}
       </div>
     </section>
   );
 }
-
-BurgerConstructor.propTypes = {
-  openOrder: PropTypes.func.isRequired,
-};
 
 export default BurgerConstructor;

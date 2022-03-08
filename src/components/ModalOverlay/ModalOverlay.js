@@ -1,18 +1,22 @@
 import './ModalOverlay.css';
 import PropTypes from 'prop-types';
+import { ingredientsSelector } from "../../services/slice/ingredients";
+import { useSelector } from "react-redux";
 
 function ModalOverlay(props) {
+    const { isModalOpen } = useSelector(ingredientsSelector);
+
     let className = 'ModalOverlay'
 
-    if (props.isOpen === true) {
+    if (isModalOpen === true) {
         className += ' ModalOverlay-active'
     } else {
         className = 'ModalOverlay'
     }
 
-    if (props.isOpen === true) {
+    if (isModalOpen === true) {
         return (
-            <section onClick={props.closeModal} id='overlay' className={`${className}`}></section>
+            <section onClick={props.onClick} id='overlay' className={`${className}`}></section>
         )
     } else {
         return (
@@ -22,8 +26,8 @@ function ModalOverlay(props) {
 }
 
 ModalOverlay.propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    closeModal: PropTypes.func.isRequired,
+    onClick: PropTypes.func.isRequired,
 };
 
 export default ModalOverlay;
+
