@@ -1,0 +1,11 @@
+.loading {
+  font-family: JetBrains Mono;
+  font-style: normal;
+  font-weight: normal;
+  position: absolute;
+  width: 100%;
+  margin: auto;
+  align-self: center;
+  text-align: center;
+  overflow: hidden;
+}

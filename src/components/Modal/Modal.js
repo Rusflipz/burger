@@ -1,46 +1,43 @@
-import './Modal.css';
-import React from 'react';
+import styles from './Modal.module.css';
+import { useEffect } from 'react';
 import ModalOverlay from '../ModalOverlay/ModalOverlay';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
 function Modal(props) {
-    let className = 'Modal';
 
-    React.useEffect(() => {
+    useEffect(() => {
         const closeByEscape = (e) => {
             if (e.key === 'Escape') {
-                props.closeModal();
+                props.onClose()
             }
         }
         document.addEventListener('keydown', closeByEscape)
         return () => document.removeEventListener('keydown', closeByEscape)
     }, [])
 
-    if (props.isOpen === true) {
-        className += ' Modal-active'
-    } else {
-        className = 'Modal'
-    }
     const modalRoot = document.getElementById('modals')
-    return ReactDOM.createPortal(
-        <>
-            <ModalOverlay isOpen={props.isOpen} closeModal={props.closeModal} />
-            <section className={`${className} pl-10 pr-10 pt-10`}>
-                <div className={`Modal-close-icon`}>
-                    <CloseIcon type="primary" onClick={props.closeModal} />
-                </div>
-                {props.children}
-            </section>
-        </>
-        , modalRoot)
+    try {
+        return ReactDOM.createPortal(
+            <>
+                <ModalOverlay onClick={props.onClose} />
+                <section className={`${styles.Modal} pl-10 pr-10 pt-10`}>
+                    <div className={`${styles.ModalCloseIcon}`}>
+                        <CloseIcon type="primary" onClick={props.onClose} />
+                    </div>
+                    {props.children}
+                </section>
+            </>
+            , modalRoot)
+    } catch (error) {
+        console.error("React render error: ", error);
+    }
 }
 
-Modal.propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    closeModal: PropTypes.func.isRequired,
-    children: PropTypes.element.isRequired,
-};
-
 export default Modal;
+
+Modal.propTypes = {
+    children: PropTypes.object.isRequired,
+    onClose: PropTypes.func.isRequired
+};

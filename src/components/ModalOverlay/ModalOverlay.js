@@ -1,29 +1,15 @@
-import './ModalOverlay.css';
+import styles from './ModalOverlay.module.css';
 import PropTypes from 'prop-types';
 
 function ModalOverlay(props) {
-    let className = 'ModalOverlay'
-
-    if (props.isOpen === true) {
-        className += ' ModalOverlay-active'
-    } else {
-        className = 'ModalOverlay'
-    }
-
-    if (props.isOpen === true) {
-        return (
-            <section onClick={props.closeModal} id='overlay' className={`${className}`}></section>
-        )
-    } else {
-        return (
-            <></>
-        )
-    }
+    return (
+        <section onClick={props.onClick} id='overlay' className={`${styles.ModalOverlay}`}></section>
+    )
 }
 
 ModalOverlay.propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    closeModal: PropTypes.func.isRequired,
+    onClick: PropTypes.func.isRequired,
 };
 
 export default ModalOverlay;
+

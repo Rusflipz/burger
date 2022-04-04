@@ -1,0 +1,15 @@
+.error {
+    font-family: JetBrains Mono;
+    font-style: normal;
+    font-weight: normal;
+    position: absolute;
+    margin: auto;
+    width: 100%;
+    align-items: center;
+    align-self: center;
+    text-align: center;
+}
+
+.text {
+    text-align: center;
+}
