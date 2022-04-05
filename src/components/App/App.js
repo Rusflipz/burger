@@ -10,6 +10,7 @@ import { Loading } from '../Loading/loading';
 import { Error } from '../Error/error';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 function App() {
   const { loading, error } = useSelector(ingredientsSelector);
