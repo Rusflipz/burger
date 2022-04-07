@@ -3,6 +3,11 @@ import {
     getIngredients, getIngredientsSuccess, getIngredientsFailed, clearConstructor,
     getOrder, getOrderSuccess, getOrderFailed
 } from '../services/slice/ingredients';
+import {
+    postRegist, postRegistSuccess, postRegistFailed, postForgot, postForgotSuccess, postForgotFailed, postReset, postResetSuccess, postResetFailed, postLog, postLogSuccess, postLogFailed, getProfile, getProfileSuccess, getProfileFailed,
+} from '../services/slice/profile'
+import setCookie from '../services/Cookie'
+
 
 export const fetchIngredients = () => {
     return async dispatch => {
@@ -30,6 +35,186 @@ export const fetchOrderDetails = (ingredients) => {
             dispatch(getOrderSuccess(data))
         } catch (err) {
             dispatch(getOrderFailed())
+        }
+    }
+}
+
+export const postRegister = (information) => {
+    return async dispatch => {
+        dispatch(postRegist())
+        try {
+            const response = await fetch(`${url}auth/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    "email": information.mail,
+                    "password": information.password,
+                    "name": information.name
+                })
+            })
+            const data = await checkResponse(response)
+            let authToken;
+            let refreshToken;
+            authToken = data.accessToken.split('Bearer ')[1];
+            refreshToken = data.refreshToken;
+            console.log(authToken)
+            if (authToken) {
+                const name = 'token';
+                const token = authToken
+                setCookie(name, token);
+            }
+            if (refreshToken) {
+                const name = 'refreshToken';
+                const token = refreshToken
+                setCookie(name, token);
+            }
+            console.log(document.cookie)
+            dispatch(postRegistSuccess(data))
+        } catch (err) {
+            console.log(err)
+            dispatch(postRegistFailed())
+        }
+    }
+}
+
+export const postLogin = (information) => {
+    return async dispatch => {
+        dispatch(postLog())
+        try {
+            const response = await fetch(`${url}auth/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    "email": information.mail,
+                    "password": information.password,
+                    "name": information.name
+                })
+            })
+            const data = await checkResponse(response)
+            let authToken;
+            let refreshToken;
+            authToken = data.accessToken.split('Bearer ')[1];
+            refreshToken = data.refreshToken;
+            console.log(authToken)
+            if (authToken) {
+                const name = 'token';
+                const token = authToken
+                setCookie(name, token);
+            }
+            if (refreshToken) {
+                const name = 'refreshToken';
+                const token = refreshToken
+                setCookie(name, token);
+            }
+            console.log(document.cookie)
+            dispatch(postLogSuccess(data))
+        } catch (err) {
+            console.log(err)
+            dispatch(postLogFailed())
+        }
+    }
+}
+
+export const postForgotPassword = (information) => {
+    return async dispatch => {
+        dispatch(postForgot())
+        try {
+            const response = await fetch(`${url}password-reset`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    "email": information.mail
+                })
+            })
+            const data = await checkResponse(response)
+            dispatch(postForgotSuccess(data))
+        } catch (err) {
+            console.log(err)
+            dispatch(postForgotFailed())
+        }
+    }
+}
+
+export const postResetPassword = (information) => {
+    return async dispatch => {
+        dispatch(postReset())
+        try {
+            const response = await fetch(`${url}password-reset/reset`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    "password": "",
+                    "token": ""
+                })
+            })
+            const data = await checkResponse(response)
+            dispatch(postResetSuccess(data))
+        } catch (err) {
+            console.log(err)
+            dispatch(postResetFailed())
+        }
+    }
+}
+
+export const postLogOut = (information) => {
+    return async dispatch => {
+        dispatch(postReset())
+        try {
+            const response = await fetch(`${url}auth/logout`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    "token": ""
+                })
+            })
+            const data = await checkResponse(response)
+            dispatch(postResetSuccess(data))
+        } catch (err) {
+            console.log(err)
+            dispatch(postResetFailed())
+        }
+    }
+}
+
+export const getProfileInformation = (information) => {
+    return async dispatch => {
+        dispatch(getProfile())
+        try {
+            const response = await fetch(`${url}auth/logout`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    "authorization": ""
+                })
+            })
+            const data = await checkResponse(response)
+            dispatch(getProfileSuccess(data))
+        } catch (err) {
+            console.log(err)
+            dispatch(getProfileFailed())
+        }
+    }
+}
+
+export const editProfileInformation = (information) => {
+    return async dispatch => {
+        dispatch(getProfile())
+        try {
+            const response = await fetch(`${url}auth/logout`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    "authorization": "",
+                    "email": information.mail,
+                    "password": information.password,
+                    "name": information.name
+                })
+            })
+            const data = await checkResponse(response)
+            dispatch(getProfileSuccess(data))
+        } catch (err) {
+            console.log(err)
+            dispatch(getProfileFailed())
         }
     }
 }
