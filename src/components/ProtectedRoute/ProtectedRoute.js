@@ -5,29 +5,43 @@ import {getProfileInformation} from '../../services/api'
 import {getCookie} from '../../services/Cookie'
 
 export function ProtectedRoute({ children }) {
-  console.log(document.cookie)
-  let token = null;
+  // let { getUser, ...auth } = useAuth();
   const [isUserLoaded, setUserLoaded] = useState(false);
+  let token = null;
   const init = async () => {
   token = getCookie('token')
   console.log(getCookie('token'))
   await getProfileInformation(token);
-  setUserLoaded(true);
+  
 };
 
 useEffect(() => {
   init();
 }, []);
 
-  if (!isUserLoaded) {
-  return null;
-}
+useEffect(() => {
+  console.log('правлю')
+  console.log(!isUserLoaded)
+  setUserLoaded(!isUserLoaded)
+}, [token]);
 
 
+// if(token !== null){
+//   console.log('поставил true')
+//   setUserLoaded(true)
+//   console.log(isUserLoaded)
+// } else {
+//   console.log('поставил false')
+//   setUserLoaded(false)
+// }
+
+
+console.log(isUserLoaded)
   return (
     <Route
-      render={() => 
-        isUserLoaded ? (
+render={() =>
+isUserLoaded
+? (
           children
         ) : (
             <Redirect
