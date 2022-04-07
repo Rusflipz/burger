@@ -81,6 +81,7 @@ export const ingredientsSlice = createSlice({
             state.orderModalOpen = false
             state.ModalType = ''
         },
+        
     },
 })
 
