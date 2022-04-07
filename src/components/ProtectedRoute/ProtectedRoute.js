@@ -1,54 +1,36 @@
 import { Route, Redirect } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
-import {getProfileInformation} from '../../services/api'
-import {getCookie} from '../../services/Cookie'
+import { getCookie } from '../../services/Cookie';
+import { getProfileInformation } from '../../services/api';
+import { profileSelector } from '../../services/slice/profile';
 
 export function ProtectedRoute({ children }) {
-  // let { getUser, ...auth } = useAuth();
-  const [isUserLoaded, setUserLoaded] = useState(false);
-  let token = null;
-  const init = async () => {
-  token = getCookie('token')
-  console.log(getCookie('token'))
-  await getProfileInformation(token);
-  
-};
+    const { isUserLoaded } = useSelector(profileSelector);
+    console.log(isUserLoaded)
+    let token = null;
+    const init = async () => {
+        token = getCookie('token')
+        if (token !== null) {
+            isUserLoaded = true
+            console.log(isUserLoaded)
+        }
+    };
 
-useEffect(() => {
-  init();
-}, []);
+    useEffect(() => {
+        init();
+    }, []);
 
-useEffect(() => {
-  console.log('правлю')
-  console.log(!isUserLoaded)
-  setUserLoaded(!isUserLoaded)
-}, [token]);
+    // useEffect(() => {
+    //     if (token !== null){
+    //         isUserLoaded = true
+    //     }
+    // }, [token]);
+    
 
+    console.log(isUserLoaded)
+    return (<>
+        {isUserLoaded ? children : <Redirect to='/login' />}
+    </>)
 
-// if(token !== null){
-//   console.log('поставил true')
-//   setUserLoaded(true)
-//   console.log(isUserLoaded)
-// } else {
-//   console.log('поставил false')
-//   setUserLoaded(false)
-// }
-
-
-console.log(isUserLoaded)
-  return (
-    <Route
-render={() =>
-isUserLoaded
-? (
-          children
-        ) : (
-            <Redirect
-                        to='/login'
-          />
-        )
-      }
-    />
-  );
 } 

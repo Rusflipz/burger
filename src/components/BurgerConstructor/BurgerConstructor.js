@@ -8,9 +8,14 @@ import { useMemo } from "react";
 import { ingredientsSelector, addIngredientInConstructorItem, deleteIngredientFromConstructorItem, closeOrderСomponentsModal } from '../../services/slice/ingredients';
 import Modal from '../Modal/Modal';
 import { OrderDetails } from '../OrderDetails/OrderDetails';
+import { Route, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { profileSelector } from '../../services/slice/profile';
 
 
 function BurgerConstructor() {
+
+  const { isUserLoaded } = useSelector(profileSelector);
 
   const { constructor, orderModalOpen, orderNumber, orderName } = useSelector(ingredientsSelector);
   const dispatch = useDispatch();
@@ -95,11 +100,19 @@ function BurgerConstructor() {
           <span className={`text text_type_digits-medium mr-10`}>
             {total} <CurrencyIcon type="primary" />
           </span>
-          <Button type="primary" size="large"
-            onClick={() => dispatch(fetchOrderDetails(constructorItems))}
-          >
-            Оформить заказ
-          </Button>
+          {!isUserLoaded ?
+            <Link to='login'>
+              <Button type="primary" size="large"
+                onClick={() => console.log()}
+              >
+                Оформить заказ
+              </Button>
+            </Link>
+            : <Button type="primary" size="large"
+              onClick={() => dispatch(fetchOrderDetails(constructorItems))}
+            >
+              Оформить заказ
+            </Button>}
         </>) : (<></>)}
       </div>
       {orderModalOpen && <>

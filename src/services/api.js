@@ -5,14 +5,46 @@ import {
 } from '../services/slice/ingredients';
 import {
     postRegist, postRegistSuccess, postRegistFailed,
-     postForgot, postForgotSuccess, postForgotFailed,
-     postReset, postResetSuccess, postResetFailed,
-      postLog, postLogSuccess, postLogFailed,
-      logOut, logOutSuccess, logOutFailed,
-      getProfile, getProfileSuccess, getProfileFailed,
+    postForgot, postForgotSuccess, postForgotFailed,
+    postReset, postResetSuccess, postResetFailed,
+    postLog, postLogSuccess, postLogFailed,
+    logOut, logOutSuccess, logOutFailed,
+    getProfile, getProfileSuccess, getProfileFailed,
 } from '../services/slice/profile'
-import {setCookie, deleteCookie} from '../services/Cookie'
+import { setCookie, deleteCookie } from '../services/Cookie'
+import { useContext, useState, createContext } from 'react';
+import { useSelector, useDispatch } from "react-redux";
 
+
+// const AuthContext = createContext(undefined);
+
+// export function ProvideAuth({ children }) {
+//     const auth = useProvideAuth();
+//     console.log(auth)
+//     return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
+// }
+
+export const getProfileInformation = (information) => {
+    return async dispatch => {
+        dispatch(getProfile())
+        try {
+            const response = await fetch(`${url}auth/logout`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    "authorization": ""
+                })
+            })
+            const data = await checkResponse(response)
+            console.log(data)
+            // setUser({ ...data.user, id: data.user._id });
+            dispatch(getProfileSuccess(data))
+        } catch (err) {
+            console.log(err)
+            dispatch(getProfileFailed())
+        }
+    }
+}
 
 export const fetchIngredients = () => {
     return async dispatch => {
@@ -163,8 +195,8 @@ export const postResetPassword = (information) => {
 
 export const postLogOut = (information) => {
     return async dispatch => {
-         let authToken;
-            let refreshToken;
+        let authToken;
+        let refreshToken;
         dispatch(logOut())
         try {
             const response = await fetch(`${url}auth/logout`, {
@@ -187,26 +219,6 @@ export const postLogOut = (information) => {
         } catch (err) {
             console.log(err)
             dispatch(logOutFailed())
-        }
-    }
-}
-
-export const getProfileInformation = (information) => {
-    return async dispatch => {
-        dispatch(getProfile())
-        try {
-            const response = await fetch(`${url}auth/logout`, {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    "authorization": ""
-                })
-            })
-            const data = await checkResponse(response)
-            dispatch(getProfileSuccess(data))
-        } catch (err) {
-            console.log(err)
-            dispatch(getProfileFailed())
         }
     }
 }

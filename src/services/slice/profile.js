@@ -9,9 +9,11 @@ export const initialState = {
     accessToken: null,
     refreshToken: null,
     forgotSuccess: false,
+    forgotFailed:  false,
     name: null,
     mail: null,
     orderModalOpen: false,
+    isUserLoaded: false,
 }
 
 export const profileSlice = createSlice({
@@ -26,6 +28,7 @@ export const profileSlice = createSlice({
             state.profileInformation = payload
             state.loading = false
             state.error = false
+            state.isUserLoaded = true
             console.log(state.profileInformation)
             console.log('Регистрации прошла успешно')
         },
@@ -47,6 +50,7 @@ export const profileSlice = createSlice({
             state.mail = payload.user.email
             state.accessToken = payload.user.accessToken
             state.refreshToken = payload.user.refreshToken
+            state.isUserLoaded = true
             console.log('Авторизация прошла успешно')
         },
         postLogFailed: state => {
@@ -63,12 +67,15 @@ export const profileSlice = createSlice({
             state.forgotInformation = payload
             state.loading = false
             state.error = false
+            state.forgotSuccess = true
+            state.forgotFailed = false
             console.log(state.forgotInformation)
             console.log('Завяка принята')
         },
         postForgotFailed: state => {
             state.loading = false
             state.error = true
+            state.forgotFailed = true
             console.log('Ошибка сброса пароля')
         },
         postReset: state => {
@@ -80,6 +87,7 @@ export const profileSlice = createSlice({
             state.forgotInformation = payload
             state.loading = false
             state.error = false
+            state.forgotSuccess = false
             console.log(state.forgotInformation)
             console.log('Завяка принята')
         },
@@ -101,6 +109,7 @@ export const profileSlice = createSlice({
             state.mail = null
             state.accessToken = null
             state.refreshToken = null
+            state.isUserLoaded = false
             console.log(state.forgotInformation)
             console.log('Вы вышли')
         },

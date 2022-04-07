@@ -18,6 +18,8 @@ import { Resetpassword } from '../pages/Reset-password/Reset-password';
 import { Profile } from '../pages/Profile/Profile';
 import { ProtectedRoute } from '../ProtectedRoute/ProtectedRoute';
 import { IngredientPage } from '../IngredientPage/IngredientPage';
+import { ProvideAuth } from '../../services/api';
+
 
 function App() {
   const { loading, error } = useSelector(ingredientsSelector);
@@ -40,10 +42,9 @@ function App() {
 
   return (
     <div className={styles.App}>
-
-      <Router>
-        <AppHeader />
-        <Switch>
+        <Router>
+          <AppHeader />
+          <Switch>
             <Route path="/login" exact={true}>
               <LoginPage />
             </Route>
@@ -56,21 +57,21 @@ function App() {
             <Route path="/reset-password" exact={true}>
               <Resetpassword />
             </Route>
-          <Route path="/profile" exact={true}>
-            <ProtectedRoute path="/">
-              <Profile />
-            </ProtectedRoute>
-          </Route>
-          <Route path="/ingredients/:id" >
+            <Route path="/profile" exact={true}>
+              <ProtectedRoute path="/" >
+                <Profile />
+              </ProtectedRoute>
+            </Route>
+            <Route path="/ingredients/:id" >
               <IngredientPage />
-          </Route>
-          <Route path="/" exact={true}>
-            <main className={styles.main}>
-              {content()}
-            </main>
-          </Route>
-        </Switch>
-      </Router>
+            </Route>
+            <Route path="/" exact={true}>
+              <main className={styles.main}>
+                {content()}
+              </main>
+            </Route>
+          </Switch>
+        </Router>
     </div>
   )
 }
