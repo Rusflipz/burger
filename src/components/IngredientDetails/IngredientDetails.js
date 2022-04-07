@@ -1,7 +1,23 @@
 import styles from './IngredientDetails.module.css';
 import { dataPropTypes } from '../../utils/types';
+import { useEffect, useState } from "react";
 
 export function IngredientDetails(props) {
+    console.log(props)
+    
+    useEffect(() => {
+        window.location.href=`#/ingredients/:id${props.value._id}`;
+        return () =>
+        window.location.href=`#`;
+    }, []);
+
+    if (props.value._id){
+        window.location.href='#photo'
+    } 
+    else{
+        window.location.href='#'
+    }
+    
     return (
         <>
             <p className={`${styles.title} text text_type_main-large`}>Детали ингридиента</p>

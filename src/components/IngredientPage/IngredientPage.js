@@ -8,7 +8,7 @@ export function IngredientPage() {
     const [mainElement, setMainElement] = useState(null);
     useEffect(() => {
         console.log(ingredients)
-        let actualId = window.location.href.split('http://localhost:3000/:id')[1]
+        let actualId = window.location.href.split('http://localhost:3000/ingredients/:id')[1]
         ingredients.forEach(element => {
             let id = element._id
             if (element._id == actualId) {

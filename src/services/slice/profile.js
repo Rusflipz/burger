@@ -9,6 +9,8 @@ export const initialState = {
     accessToken: null,
     refreshToken: null,
     forgotSuccess: false,
+    name: null,
+    mail: null,
     orderModalOpen: false,
 }
 
@@ -37,10 +39,14 @@ export const profileSlice = createSlice({
             console.log('Идет авторизация')
         },
         postLogSuccess: (state, { payload }) => {
+            console.log(payload)
             state.profileInformation = payload
             state.loading = false
             state.error = false
-            console.log(state.profileInformation)
+            state.name = payload.user.name
+            state.mail = payload.user.email
+            state.accessToken = payload.user.accessToken
+            state.refreshToken = payload.user.refreshToken
             console.log('Авторизация прошла успешно')
         },
         postLogFailed: state => {
@@ -82,19 +88,23 @@ export const profileSlice = createSlice({
             state.error = true
             console.log('Ошибка сброса пароля')
         },
-        LogOut: state => {
+        logOut: state => {
             state.loading = false
             state.error = true
             console.log('Выход из системы...')
         },
-        LogOutSuccess: (state, { payload }) => {
-            state.forgotInformation = payload
+        logOutSuccess: (state, { payload }) => {
+            state.profileInformation = null
             state.loading = false
             state.error = false
+            state.name = null
+            state.mail = null
+            state.accessToken = null
+            state.refreshToken = null
             console.log(state.forgotInformation)
             console.log('Вы вышли')
         },
-        LogOutFailed: state => {
+        logOutFailed: state => {
             state.loading = false
             state.error = true
             console.log('Ошибка выхода')
@@ -121,7 +131,7 @@ export const profileSlice = createSlice({
 
 
 export const {
-    postRegist, postRegistSuccess, postRegistFailed, postForgot, postForgotSuccess, postForgotFailed, postReset, postResetSuccess, postResetFailed, postLog, postLogSuccess, postLogFailed, LogOut, LogOutSuccess, LogOutFailed, getProfile, getProfileSuccess, getProfileFailed,
+    postRegist, postRegistSuccess, postRegistFailed, postForgot, postForgotSuccess, postForgotFailed, postReset, postResetSuccess, postResetFailed, postLog, postLogSuccess, postLogFailed, logOut, logOutSuccess, logOutFailed, getProfile, getProfileSuccess, getProfileFailed,
 } = profileSlice.actions
 
 export const profileSelector = state => state.profile

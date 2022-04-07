@@ -61,7 +61,7 @@ function App() {
               <Profile />
             </ProtectedRoute>
           </Route>
-          <Route path="/:id" >
+          <Route path="/ingredients/:id" >
               <IngredientPage />
           </Route>
           <Route path="/" exact={true}>

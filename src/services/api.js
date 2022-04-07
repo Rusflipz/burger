@@ -4,9 +4,14 @@ import {
     getOrder, getOrderSuccess, getOrderFailed
 } from '../services/slice/ingredients';
 import {
-    postRegist, postRegistSuccess, postRegistFailed, postForgot, postForgotSuccess, postForgotFailed, postReset, postResetSuccess, postResetFailed, postLog, postLogSuccess, postLogFailed, getProfile, getProfileSuccess, getProfileFailed,
+    postRegist, postRegistSuccess, postRegistFailed,
+     postForgot, postForgotSuccess, postForgotFailed,
+     postReset, postResetSuccess, postResetFailed,
+      postLog, postLogSuccess, postLogFailed,
+      logOut, logOutSuccess, logOutFailed,
+      getProfile, getProfileSuccess, getProfileFailed,
 } from '../services/slice/profile'
-import setCookie from '../services/Cookie'
+import {setCookie, deleteCookie} from '../services/Cookie'
 
 
 export const fetchIngredients = () => {
@@ -81,16 +86,16 @@ export const postLogin = (information) => {
     return async dispatch => {
         dispatch(postLog())
         try {
-            const response = await fetch(`${url}auth/register`, {
+            const response = await fetch(`${url}auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     "email": information.mail,
                     "password": information.password,
-                    "name": information.name
                 })
             })
             const data = await checkResponse(response)
+            console.log(data)
             let authToken;
             let refreshToken;
             authToken = data.accessToken.split('Bearer ')[1];
@@ -158,20 +163,30 @@ export const postResetPassword = (information) => {
 
 export const postLogOut = (information) => {
     return async dispatch => {
-        dispatch(postReset())
+         let authToken;
+            let refreshToken;
+        dispatch(logOut())
         try {
             const response = await fetch(`${url}auth/logout`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    "token": ""
+                    "token": information
                 })
             })
             const data = await checkResponse(response)
-            dispatch(postResetSuccess(data))
+            if (authToken) {
+                const name = 'token';
+                deleteCookie(name);
+            }
+            if (refreshToken) {
+                const name = 'refreshToken';
+                deleteCookie(name);
+            }
+            dispatch(logOutSuccess(data))
         } catch (err) {
             console.log(err)
-            dispatch(postResetFailed())
+            dispatch(logOutFailed())
         }
     }
 }
