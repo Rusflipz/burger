@@ -10,38 +10,151 @@ import {
     postLog, postLogSuccess, postLogFailed,
     logOut, logOutSuccess, logOutFailed,
     getProfile, getProfileSuccess, getProfileFailed,
+    postChange, postChangeSuccess, postChangeFailed,
+    refreshProfile, refreshProfileSuccess, refreshProfileFailed,
 } from '../services/slice/profile'
-import { setCookie, deleteCookie } from '../services/Cookie'
+import { setCookie, deleteCookie, getCookie } from '../services/Cookie'
 import { useContext, useState, createContext } from 'react';
 import { useSelector, useDispatch } from "react-redux";
+import { IfFulfilled } from 'react-async';
+import { Route, Redirect } from 'react-router-dom';
 
+export const editProfile = (token, previus, actual) => {
+    let name;
+    let login;
+    let password;
 
-// const AuthContext = createContext(undefined);
+    if (previus.name == actual.name) {
+        name = previus.name
+    } else {
+        name = actual.name
+    }
 
-// export function ProvideAuth({ children }) {
-//     const auth = useProvideAuth();
-//     console.log(auth)
-//     return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
-// }
+    if (previus.login == actual.login) {
+        login = previus.login
+    } else {
+        login = actual.login
+    }
 
-export const getProfileInformation = (information) => {
+    if (previus.password == actual.password) {
+        password = previus.password
+    } else {
+        password = actual.password
+    }
+
+    if (previus.password !== actual.password) {
+        return async dispatch => {
+            dispatch(postChange())
+            try {
+                const response = await fetch(`${url}auth/user`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'authorization': `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
+                        "email": login,
+                        "password": password,
+                        "name": name
+                    })
+                })
+                const data = await checkResponse(response)
+                dispatch(postChangeSuccess(data))
+            } catch (err) {
+                console.log(err)
+                dispatch(postChangeFailed())
+            }
+        }
+    } else {
+        return async dispatch => {
+            dispatch(postChange())
+            try {
+                const response = await fetch(`${url}auth/user`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'authorization': `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
+                        "email": login,
+                        "name": name
+                    })
+                })
+                const data = await checkResponse(response)
+                dispatch(postChangeSuccess(data))
+            } catch (err) {
+                console.log(err)
+                dispatch(postChangeFailed())
+            }
+        }
+    }
+}
+
+export const refreshProfileInformation = () => {
+    let refreshToken = getCookie('refreshToken')
+    console.log('обновление токена')
+    console.log(refreshToken)
     return async dispatch => {
-        dispatch(getProfile())
+        dispatch(refreshProfile())
         try {
-            const response = await fetch(`${url}auth/logout`, {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' },
+            console.log('nen')
+            const response = await fetch(`${url}auth/token`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
                 body: JSON.stringify({
-                    "authorization": ""
+                    "token": refreshToken
                 })
             })
             const data = await checkResponse(response)
+            let authToken1;
+            let refreshToken1;
+            authToken1 = data.accessToken.split('Bearer ')[1];
+            refreshToken1 = data.refreshToken;
+            console.log(authToken1)
+            if (authToken1) {
+                const name = 'token';
+                const token = authToken1
+                setCookie(name, token);
+            }
+            if (refreshToken1) {
+                const name = 'refreshToken';
+                const token = refreshToken1
+                setCookie(name, token);
+            }
+            console.log(document.cookie)
+            dispatch(refreshProfileSuccess(data))
+            dispatch(getProfileInformation(authToken1))
+        } catch (err) {
+            // console.log(err)
+            dispatch(refreshProfileFailed())
+
+        }
+    }
+}
+
+export const getProfileInformation = (token) => {
+    console.log('Получение информации профиля')
+    return async dispatch => {
+        dispatch(getProfile())
+        try {
+            const response = await fetch(`${url}auth/user`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': `Bearer ${token}`,
+                },
+            })
+            const data = await checkResponse(response)
             console.log(data)
-            // setUser({ ...data.user, id: data.user._id });
             dispatch(getProfileSuccess(data))
         } catch (err) {
             console.log(err)
             dispatch(getProfileFailed())
+            if (err == 'Ошибка: 403') {
+                dispatch(refreshProfileInformation())
+            }
         }
     }
 }
@@ -127,12 +240,10 @@ export const postLogin = (information) => {
                 })
             })
             const data = await checkResponse(response)
-            console.log(data)
             let authToken;
             let refreshToken;
             authToken = data.accessToken.split('Bearer ')[1];
             refreshToken = data.refreshToken;
-            console.log(authToken)
             if (authToken) {
                 const name = 'token';
                 const token = authToken
@@ -195,8 +306,6 @@ export const postResetPassword = (information) => {
 
 export const postLogOut = (information) => {
     return async dispatch => {
-        let authToken;
-        let refreshToken;
         dispatch(logOut())
         try {
             const response = await fetch(`${url}auth/logout`, {
@@ -207,14 +316,8 @@ export const postLogOut = (information) => {
                 })
             })
             const data = await checkResponse(response)
-            if (authToken) {
-                const name = 'token';
-                deleteCookie(name);
-            }
-            if (refreshToken) {
-                const name = 'refreshToken';
-                deleteCookie(name);
-            }
+            deleteCookie('token');
+            deleteCookie('refreshToken');
             dispatch(logOutSuccess(data))
         } catch (err) {
             console.log(err)
@@ -223,25 +326,3 @@ export const postLogOut = (information) => {
     }
 }
 
-export const editProfileInformation = (information) => {
-    return async dispatch => {
-        dispatch(getProfile())
-        try {
-            const response = await fetch(`${url}auth/logout`, {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    "authorization": "",
-                    "email": information.mail,
-                    "password": information.password,
-                    "name": information.name
-                })
-            })
-            const data = await checkResponse(response)
-            dispatch(getProfileSuccess(data))
-        } catch (err) {
-            console.log(err)
-            dispatch(getProfileFailed())
-        }
-    }
-}

@@ -11,7 +11,7 @@ import {
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { postLogin } from '../../../services/api';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, useLocation } from 'react-router-dom';
 import { profileSelector } from '../../../services/slice/profile';
 
 
@@ -31,9 +31,19 @@ export function LoginPage() {
       mail: mailInput.current.value,
       password: passwordInput.current.value,
     }
-
     dispatch(postLogin(info))
   }
+
+  let location = useLocation();
+
+  if (isUserLoaded) {
+    return (
+      <Redirect
+        to={ location.state?.from || '/' }
+      />
+    );
+  }
+
 
   return (
     <>

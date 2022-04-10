@@ -10,24 +10,45 @@ import { Loading } from '../Loading/loading';
 import { Error } from '../Error/error';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Router, Switch, Route, useHistory, useLocation } from 'react-router-dom';
 import { LoginPage } from '../pages/Login/Login';
 import { RegistrationPage } from '../pages/Registration/Registration';
 import { Forgotpassword } from '../pages/Forgot-password/Forgot-password';
 import { Resetpassword } from '../pages/Reset-password/Reset-password';
 import { Profile } from '../pages/Profile/Profile';
-import { ProtectedRoute } from '../ProtectedRoute/ProtectedRoute';
+import { ProtectedRouteProfile } from '../ProtectedRoute/ProtectedRouteProfile';
 import { IngredientPage } from '../IngredientPage/IngredientPage';
 import { ProvideAuth } from '../../services/api';
+import { ProtectedRouteLogin } from '../ProtectedRoute/ProtectedRouteLogin';
+import { ProtectedRouteRegistration } from '../ProtectedRoute/ProtectedRouteRegistration';
+import { ProtectedForgotPassword } from '../ProtectedRoute/ProtectedForgotPassword';
+import { ProtectedResetPassword } from '../ProtectedRoute/ProtectedResetPassword';
+import { getProfileInformation } from '../../services/api'
+import { getCookie } from '../../services/Cookie';
+import Modal from '../Modal/Modal'
+import { IngredientDetails } from '../IngredientDetails/IngredientDetails'
 
 
 function App() {
   const { loading, error } = useSelector(ingredientsSelector);
   const dispatch = useDispatch()
+  let token = getCookie('token')
+
+  const history = useHistory();
+  const location = useLocation();
+
+  const background = location.state && location.state.background;
+
+  const closeModal = () => {
+    history.goBack();
+  };
 
   useEffect(() => {
     dispatch(fetchIngredients())
+    dispatch(getProfileInformation(token))
   }, [dispatch]);
+
+
 
   function content() {
     if (loading) return <Loading />
@@ -41,38 +62,54 @@ function App() {
   }
 
   return (
-    <div className={styles.App}>
-        <Router>
-          <AppHeader />
-          <Switch>
-            <Route path="/login" exact={true}>
+    <>
+      <div className={styles.App}>
+        <AppHeader />
+        <Switch location={background || location}>
+          <Route path="/login" exact={true}>
+            <ProtectedRouteLogin>
               <LoginPage />
-            </Route>
-            <Route path="/registration" exact={true}>
+            </ProtectedRouteLogin>
+          </Route>
+          <Route path="/registration" exact={true}>
+            <ProtectedRouteRegistration>
               <RegistrationPage />
-            </Route>
-            <Route path="/forgot-password" exact={true}>
+            </ProtectedRouteRegistration>
+          </Route>
+          <Route path="/forgot-password" exact={true}>
+            {/* <ProtectedForgotPassword> */}
               <Forgotpassword />
-            </Route>
-            <Route path="/reset-password" exact={true}>
+            {/* </ProtectedForgotPassword> */}
+          </Route>
+          <Route path="/reset-password" exact={true}>
+            <ProtectedResetPassword>
               <Resetpassword />
-            </Route>
-            <Route path="/profile" exact={true}>
-              <ProtectedRoute path="/" >
-                <Profile />
-              </ProtectedRoute>
-            </Route>
-            <Route path="/ingredients/:id" >
-              <IngredientPage />
-            </Route>
-            <Route path="/" exact={true}>
-              <main className={styles.main}>
-                {content()}
-              </main>
-            </Route>
-          </Switch>
-        </Router>
-    </div>
+            </ProtectedResetPassword>
+          </Route>
+          <Route path="/profile" exact={true}>
+            <ProtectedRouteProfile path="/" >
+              <Profile />
+            </ProtectedRouteProfile>
+          </Route>
+          <Route path="/ingredients/:id" exact={true}>
+            <IngredientPage />
+          </Route>
+          <Route path="/" exact={true}>
+            <main className={styles.main}>
+              {content()}
+            </main>
+          </Route>
+        </Switch>
+      </div>
+
+      {background && (
+        <Route path="/ingredients/:id" exact={true}>
+          <Modal onClose={closeModal}>
+            <IngredientDetails />
+          </Modal>
+        </Route>
+      )}
+    </>
   )
 }
 

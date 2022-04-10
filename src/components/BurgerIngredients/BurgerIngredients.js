@@ -78,7 +78,7 @@ function BurgerIngredients() {
             Булки
           </p>
           <div className={`${styles.cards}`}>
-            {buns.map(ingredient =>
+            {buns.map((ingredient) => 
               <BurgerIngredient item={ingredient} key={ingredient._id} />)}
           </div>
         </div>
