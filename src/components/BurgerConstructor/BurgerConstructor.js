@@ -103,7 +103,6 @@ function BurgerConstructor() {
           {!isUserLoaded ?
             <Link to='login'>
               <Button type="primary" size="large"
-                onClick={() => console.log()}
               >
                 Оформить заказ
               </Button>

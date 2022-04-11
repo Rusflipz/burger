@@ -6,13 +6,9 @@ import { useSelector } from "react-redux";
 import { ingredientsSelector } from '../../services/slice/ingredients';
 
 export function IngredientDetails(props) {
-    console.log(props)
-    console.log(useParams())
     const { ingredients } = useSelector(ingredientsSelector);
     const { id } = useParams();
-    console.log(id)
     const currentIngredient = ingredients.find((item) => item._id === id);
-    console.log(currentIngredient)
     return (
 
         <>

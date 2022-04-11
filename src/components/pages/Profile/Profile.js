@@ -38,17 +38,14 @@ export function Profile() {
   }
 
   useEffect(() => {
-    console.log('ставлю имя')
     setNameValue(name)
   }, [name])
 
   useEffect(() => {
-    console.log('ставлю логин')
     setmailValue(mail)  
   }, [mail])
 
   useEffect(() => {
-    console.log('ставлю пароль')
     setPasswordValue(password)
   }, [password])
 
@@ -57,19 +54,16 @@ export function Profile() {
   let token = getCookie('token')
 
   function handleChangeName(e) {
-    console.log(e.target.value)
     e.preventDefault();
     setNameValue(e.target.value)
   }
 
   function handleChangeMail(e) {
-    console.log(e.target.value)
     e.preventDefault();
     setmailValue(e.target.value)
   }
 
   function handleChangePassword(e) {
-    console.log(e.target.value)
     e.preventDefault();
     setPasswordValue(e.target.value)
   }
@@ -78,7 +72,6 @@ export function Profile() {
 
 
   function cancel() {
-    console.log('nen')
     dispatch(getProfileInformation(token))
     dispatch(stopChange(token))
     setNameValue(name)

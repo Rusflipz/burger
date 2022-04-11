@@ -93,11 +93,9 @@ export const editProfile = (token, previus, actual) => {
 export const refreshProfileInformation = () => {
     let refreshToken = getCookie('refreshToken')
     console.log('обновление токена')
-    console.log(refreshToken)
     return async dispatch => {
         dispatch(refreshProfile())
         try {
-            console.log('nen')
             const response = await fetch(`${url}auth/token`, {
                 method: 'POST',
                 headers: {
@@ -112,7 +110,6 @@ export const refreshProfileInformation = () => {
             let refreshToken1;
             authToken1 = data.accessToken.split('Bearer ')[1];
             refreshToken1 = data.refreshToken;
-            console.log(authToken1)
             if (authToken1) {
                 const name = 'token';
                 const token = authToken1
@@ -123,11 +120,10 @@ export const refreshProfileInformation = () => {
                 const token = refreshToken1
                 setCookie(name, token);
             }
-            console.log(document.cookie)
             dispatch(refreshProfileSuccess(data))
             dispatch(getProfileInformation(authToken1))
         } catch (err) {
-            // console.log(err)
+            console.log(err)
             dispatch(refreshProfileFailed())
 
         }
@@ -147,7 +143,6 @@ export const getProfileInformation = (token) => {
                 },
             })
             const data = await checkResponse(response)
-            console.log(data)
             dispatch(getProfileSuccess(data))
         } catch (err) {
             console.log(err)
@@ -207,7 +202,6 @@ export const postRegister = (information) => {
             let refreshToken;
             authToken = data.accessToken.split('Bearer ')[1];
             refreshToken = data.refreshToken;
-            console.log(authToken)
             if (authToken) {
                 const name = 'token';
                 const token = authToken
@@ -218,7 +212,6 @@ export const postRegister = (information) => {
                 const token = refreshToken
                 setCookie(name, token);
             }
-            console.log(document.cookie)
             dispatch(postRegistSuccess(data))
         } catch (err) {
             console.log(err)
@@ -254,7 +247,6 @@ export const postLogin = (information) => {
                 const token = refreshToken
                 setCookie(name, token);
             }
-            console.log(document.cookie)
             dispatch(postLogSuccess(data))
         } catch (err) {
             console.log(err)
@@ -283,7 +275,7 @@ export const postForgotPassword = (information) => {
     }
 }
 
-export const postResetPassword = (information) => {
+export const postResetPassword = (password, code) => {
     return async dispatch => {
         dispatch(postReset())
         try {
@@ -291,8 +283,8 @@ export const postResetPassword = (information) => {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    "password": "",
-                    "token": ""
+                    "password": password,
+                    "token": code
                 })
             })
             const data = await checkResponse(response)

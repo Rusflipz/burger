@@ -8,14 +8,8 @@ export function ProtectedRouteProfile({ children }) {
     const dispatch = useDispatch()
     console.log(document.cookie)
     let token = getCookie('token')
-    console.log('зашел')
+    console.log('зашел в прошиль протект')
     console.log(token)
-
-useEffect(() => {
-    console.log('обновляю токен')
-    token = getCookie('token')
-    console.log(token)
-}, [token])
 
     let isUserLoaded = false
     if (token !== '') {

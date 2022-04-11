@@ -6,13 +6,13 @@ import { profileSelector } from '../../services/slice/profile';
 
 export function ProtectedRouteLogin({ children, ...rest }) {
     let token = getCookie('token')
-
-    let isUserLoaded = true
+console.log(token)
+    let isUserLoaded = false
     if (token !== '') {
-        isUserLoaded = false
+        isUserLoaded = true
     }
     if (token == undefined) {
-        isUserLoaded = true
+        isUserLoaded = false
     }
 
     console.log(isUserLoaded)
@@ -36,11 +36,13 @@ export function ProtectedRouteLogin({ children, ...rest }) {
     //     }
     // </>)
 
+
+
     return (
         <Route
         {...rest}
             render={({ location }) =>
-                isUserLoaded ? (
+                !isUserLoaded ? (
                     children
                 ) : (
                     <Redirect

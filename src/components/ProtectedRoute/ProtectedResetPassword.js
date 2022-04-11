@@ -16,11 +16,8 @@ export function ProtectedResetPassword({ children }) {
         isUserLoaded = true
     }
     if (token == undefined){
-        isUserLoaded = true
+        isUserLoaded = false
     }
-
-console.log(isUserLoaded)
-console.log(forgotSuccess)
 
     return (<>
         {!isUserLoaded & forgotSuccess ? children : <Redirect to='/login' />}
