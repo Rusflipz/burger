@@ -18,30 +18,48 @@ import { Resetpassword } from '../pages/Reset-password/Reset-password';
 import { Profile } from '../pages/Profile/Profile';
 import { ProtectedRouteProfile } from '../ProtectedRoute/ProtectedRouteProfile';
 import { IngredientPage } from '../IngredientPage/IngredientPage';
-import { ProvideAuth } from '../../services/api';
 import { ProtectedRouteLogin } from '../ProtectedRoute/ProtectedRouteLogin';
 import { ProtectedRouteRegistration } from '../ProtectedRoute/ProtectedRouteRegistration';
 import { ProtectedForgotPassword } from '../ProtectedRoute/ProtectedForgotPassword';
 import { ProtectedResetPassword } from '../ProtectedRoute/ProtectedResetPassword';
-import { getProfileInformation } from '../../services/api'
+import { getProfileInformation, refreshProfileInformation } from '../../services/api'
 import { getCookie } from '../../services/Cookie';
-import Modal from '../Modal/Modal'
-import { IngredientDetails } from '../IngredientDetails/IngredientDetails'
+import Modal from '../Modal/Modal';
+import { IngredientDetails } from '../IngredientDetails/IngredientDetails';
+import {tokenNotFound} from '../../services/slice/profile'
 
 
 function App() {
-  const { loading, error } = useSelector(ingredientsSelector);
+  const { loading, error, isUserLoaded } = useSelector(ingredientsSelector);
   const dispatch = useDispatch()
   let token = getCookie('token')
+  let refreshToken = getCookie('refreshToken')
 
   const history = useHistory();
   const location = useLocation();
 
   const background = location.state && location.state.background;
 
+
   const closeModal = () => {
     history.goBack();
   };
+
+  useEffect(() => {
+    if(token == undefined & refreshToken !== undefined){
+      console.log('токен исчез')
+      dispatch(refreshProfileInformation())
+    }
+  }, [token])
+ 
+
+function refresh(){
+  console.log('Интервальное обновление')
+ dispatch(refreshProfileInformation())
+}
+
+setInterval(refresh, 540000);
+
 
   useEffect(() => {
     dispatch(fetchIngredients())
@@ -77,9 +95,9 @@ function App() {
             </ProtectedRouteRegistration>
           </Route>
           <Route path="/forgot-password" exact={true}>
-            {/* <ProtectedForgotPassword> */}
+            <ProtectedForgotPassword>
               <Forgotpassword />
-            {/* </ProtectedForgotPassword> */}
+            </ProtectedForgotPassword>
           </Route>
           <Route path="/reset-password" exact={true}>
             <ProtectedResetPassword>

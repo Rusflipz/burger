@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from './Forgot-password.module.css';
 import {
   BurgerIcon,
@@ -33,7 +33,7 @@ export function Forgotpassword() {
   const dispatch = useDispatch();
 
 
-  let mailInput = React.createRef();
+  const [mailValue, setmailValue] = useState(null);
 
   const login = React.useCallback(
     () => {
@@ -44,12 +44,16 @@ export function Forgotpassword() {
 
   function handleClick(e) {
     e.preventDefault();
-    mailInput.current.focus();
-    dispatch((postForgotPassword(mailInput.current.value)))
+    dispatch((postForgotPassword(mailValue)));
   }
+
+    function handleChangeMail(e) {
+      e.preventDefault();
+      setmailValue(e.target.value)
+    }
+
   return (
     <>
-     {/* {!isUserLoaded && <Redirect to={{ pathname: "/" }} />} */}
     {forgotSuccess && (
         <Redirect to={{ pathname: "/reset-password" }} />
       )}
@@ -58,7 +62,7 @@ export function Forgotpassword() {
         <form className={`${styles.form} mb-20`} onSubmit={() => { return false }}>
           <div className={`mb-6`}>
             <Input
-              ref={mailInput}
+            onChange={e => handleChangeMail(e)}
               placeholder='E-mail'
               size={'default'}
               type='email'

@@ -18,9 +18,7 @@ export const initialState = {
     isChangeName: false,
     isChangeLogin: false,
     isChangePassword: false,
-    isChange: false,
-    
-
+    isChange: false,  
 }
 
 export const profileSlice = createSlice({
@@ -195,6 +193,7 @@ export const profileSlice = createSlice({
         refreshProfileSuccess: (state, { payload }) => {
             state.loading = false
             state.error = false
+            state.isUserLoaded = true
             console.log(payload)
             console.log('Успешное обновление токена')
         },
@@ -203,6 +202,9 @@ export const profileSlice = createSlice({
             state.error = true
             console.log('Ошибка обновления токена')
         },
+        tokenNotFound: state =>{
+            state.isUserLoaded = false
+        }
     },
 })
 
@@ -216,6 +218,7 @@ export const {
        getProfile, getProfileSuccess, getProfileFailed,
        startChangeName, startChangeLogin, startChangePassword, stopChange, postChange, postChangeSuccess, postChangeFailed,
        refreshProfile, refreshProfileSuccess, refreshProfileFailed,
+       tokenNotFound,
 } = profileSlice.actions
 
 export const profileSelector = state => state.profile
