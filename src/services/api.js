@@ -12,6 +12,7 @@ import {
     getProfile, getProfileSuccess, getProfileFailed,
     postChange, postChangeSuccess, postChangeFailed,
     refreshProfile, refreshProfileSuccess, refreshProfileFailed,
+    firstTry
 } from '../services/slice/profile'
 import { setCookie, deleteCookie, getCookie } from '../services/Cookie'
 import { useContext, useState, createContext } from 'react';
@@ -85,6 +86,10 @@ export const editProfile = (token, previus, actual) => {
             } catch (err) {
                 console.log(err)
                 dispatch(postChangeFailed())
+                if (err == 'Ошибка: 403') {
+                    console.log('Исправление Ошибки')
+                    dispatch(refreshProfileInformation())
+                }
             }
         }
     }
@@ -130,11 +135,14 @@ export const refreshProfileInformation = () => {
     }
 }
 
-export const getProfileInformation = (token) => {
+export const getProfileInformation = () => {
     console.log('Получение информации профиля')
     return async dispatch => {
         dispatch(getProfile())
         try {
+            // if (getCookie("token") !== undefined) {
+                console.log('токен есть')
+                let token = getCookie("token");
             const response = await fetch(`${url}auth/user`, {
                 method: 'GET',
                 headers: {
@@ -144,11 +152,20 @@ export const getProfileInformation = (token) => {
             })
             const data = await checkResponse(response)
             dispatch(getProfileSuccess(data))
+        // }
+        //     else{
+        //         console.log('токена нет')
+        //         dispatch(refreshProfileInformation())
+        //     }
         } catch (err) {
             console.log(err)
             dispatch(getProfileFailed())
             if (err == 'Ошибка: 403') {
+                console.log('Исправление Ошибки')
                 dispatch(refreshProfileInformation())
+            }
+            if (err == 'Ошибка: 401') {
+                dispatch(firstTry())
             }
         }
     }
@@ -256,6 +273,7 @@ export const postLogin = (information) => {
 }
 
 export const postForgotPassword = (information) => {
+    console.log(information)
     return async dispatch => {
         dispatch(postForgot())
         try {
@@ -263,7 +281,7 @@ export const postForgotPassword = (information) => {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    "email": information.mail
+                    "email": information
                 })
             })
             const data = await checkResponse(response)

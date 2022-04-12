@@ -3,24 +3,25 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { getCookie } from '../../services/Cookie';
 import { profileSelector } from '../../services/slice/profile';
+import { getProfileInformation } from '../../services/api';
+import { Loading } from '../Loading/loading';
 
 export function ProtectedRouteProfile({ children }) {
-    const dispatch = useDispatch()
-    console.log(document.cookie)
-    let token = getCookie('token')
-    console.log('зашел в прошиль протект')
-    console.log(token)
-
-    let isUserLoaded = false
-    if (token !== '') {
-        isUserLoaded = true
-    }
-    if (token == undefined){
-        isUserLoaded = false
-    }
     let location = useLocation();
-    console.log(isUserLoaded)
-    return (<>
+
+    const dispatch = useDispatch()
+    const { loading, refreshSuccess, isUserLoaded, refreshing } = useSelector(profileSelector);
+
+    useEffect(() =>{
+        dispatch(getProfileInformation())
+    },[])
+
+    
+console.log(refreshing)
+console.log(isUserLoaded)
+
+    if(!refreshing){
+return (<>
         {isUserLoaded ? children : <Redirect to={{
                             // Маршрут, на который произойдёт переадресация
                             pathname: '/login',
@@ -28,4 +29,7 @@ export function ProtectedRouteProfile({ children }) {
               state: { from: location }
                         }} />}
     </>)
-} 
+    }
+    else return <Loading />
+
+                    }

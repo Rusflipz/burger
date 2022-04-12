@@ -45,25 +45,25 @@ function App() {
     history.goBack();
   };
 
-  useEffect(() => {
-    if(token == undefined & refreshToken !== undefined){
-      console.log('токен исчез')
-      dispatch(refreshProfileInformation())
-    }
-  }, [token])
+//   useEffect(() => {
+//     if(token == undefined & refreshToken !== undefined){
+//       console.log('токен исчез')
+//       dispatch(refreshProfileInformation())
+//     }
+//   }, [token])
  
 
-function refresh(){
-  console.log('Интервальное обновление')
- dispatch(refreshProfileInformation())
-}
+// function refresh(){
+//   console.log('Интервальное обновление')
+//  dispatch(refreshProfileInformation())
+// }
 
-setInterval(refresh, 540000);
+// setInterval(refresh, 540000);
 
 
   useEffect(() => {
     dispatch(fetchIngredients())
-    dispatch(getProfileInformation(token))
+    // dispatch(getProfileInformation(token))
   }, [dispatch]);
 
 

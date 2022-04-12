@@ -2,7 +2,7 @@ export function setCookie(name, value) {
     let CookieName = encodeURIComponent(name);
     let CookieValue = encodeURIComponent(value);
 
-    if(name == 'token'){document.cookie = `${CookieName}=${CookieValue}; max-age=600; path=/`;
+    if(name == 'token'){document.cookie = `${CookieName}=${CookieValue}; max-age=4; path=/`;
 console.log('меняю токен')
 }
     if(name == 'refreshToken'){document.cookie = `${CookieName}=${CookieValue}; max-age=1000; path=/`;
