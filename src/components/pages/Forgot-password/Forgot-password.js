@@ -44,6 +44,7 @@ export function Forgotpassword() {
 
   function handleClick(e) {
     e.preventDefault();
+    console.log(mailValue)
     dispatch((postForgotPassword(mailValue)));
   }
 

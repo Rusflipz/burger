@@ -19,6 +19,8 @@ export const initialState = {
     isChangeLogin: false,
     isChangePassword: false,
     isChange: false,  
+    refreshSuccess: false,
+    refreshing: false,
 }
 
 export const profileSlice = createSlice({
@@ -170,6 +172,7 @@ export const profileSlice = createSlice({
         getProfile: state => {
             state.loading = true
             state.error = false
+            state.refreshing = true
             console.log('Получение данных о пользователе...')
         },
         getProfileSuccess: (state, { payload }) => {
@@ -177,33 +180,45 @@ export const profileSlice = createSlice({
             state.mail = payload.user.email
             state.loading = false
             state.error = false
+            state.refreshSuccess = true
+            state.refreshing = false
             console.log(payload)
             console.log('Получил данные пользователя')
         },
         getProfileFailed: state => {
             state.loading = false
             state.error = true
+            state.refreshSuccess = false
+            state.isUserLoaded = false
             console.log('Ошибка полученя данных пользователя')
         },
         refreshProfile: state => {
             state.loading = false
             state.error = true
+            state.refreshing = true
             console.log('Обновление токена...')
         },
         refreshProfileSuccess: (state, { payload }) => {
             state.loading = false
             state.error = false
+            state.refreshing = false
             state.isUserLoaded = true
+            state.refreshSuccess = true
             console.log(payload)
             console.log('Успешное обновление токена')
         },
         refreshProfileFailed: state => {
             state.loading = false
+            state.refreshing = false
             state.error = true
+            state.refreshSuccess = false
             console.log('Ошибка обновления токена')
         },
         tokenNotFound: state =>{
             state.isUserLoaded = false
+        },
+        firstTry: state =>{
+            state.refreshing = false
         }
     },
 })
@@ -218,7 +233,7 @@ export const {
        getProfile, getProfileSuccess, getProfileFailed,
        startChangeName, startChangeLogin, startChangePassword, stopChange, postChange, postChangeSuccess, postChangeFailed,
        refreshProfile, refreshProfileSuccess, refreshProfileFailed,
-       tokenNotFound,
+       tokenNotFound, firstTry
 } = profileSlice.actions
 
 export const profileSelector = state => state.profile

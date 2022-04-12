@@ -5,15 +5,10 @@ import { getCookie } from '../../services/Cookie';
 import { profileSelector } from '../../services/slice/profile';
 
 export function ProtectedRouteLogin({ children, ...rest }) {
+    
     let token = getCookie('token')
-console.log(token)
-    let isUserLoaded = false
-    if (token !== '') {
-        isUserLoaded = true
-    }
-    if (token == undefined) {
-        isUserLoaded = false
-    }
+
+    const { loading, refreshSuccess, isUserLoaded, refreshing } = useSelector(profileSelector);
 
     console.log(isUserLoaded)
 
