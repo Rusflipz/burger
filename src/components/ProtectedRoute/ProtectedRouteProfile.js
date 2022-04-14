@@ -16,10 +16,6 @@ export function ProtectedRouteProfile({ children }) {
         dispatch(getProfileInformation())
     },[])
 
-    
-console.log(refreshing)
-console.log(isUserLoaded)
-
     if(!refreshing){
 return (<>
         {isUserLoaded ? children : <Redirect to={{

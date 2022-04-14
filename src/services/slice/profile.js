@@ -18,7 +18,7 @@ export const initialState = {
     isChangeName: false,
     isChangeLogin: false,
     isChangePassword: false,
-    isChange: false,  
+    isChange: false,
     refreshSuccess: false,
     refreshing: false,
 }
@@ -30,24 +30,20 @@ export const profileSlice = createSlice({
         startChangeName: state => {
             state.isChangeName = true;
             state.isChange = true;
-            console.log('Редактирование информации Имени')
         },
         startChangeLogin: state => {
             state.isChangeLogin = true;
             state.isChange = true;
-            console.log('Редактирование информации Логина')
         },
         startChangePassword: state => {
             state.isChangePassword = true;
             state.isChange = true;
-            console.log('Редактирование информации Пароля')
         },
         stopChange: (state) => {
             state.isChange = false;
             state.isChangeName = false;
             state.isChangeLogin = false;
             state.isChangePassword = false;
-            console.log('Отмена редактирования')
         },
         postChange: state => {
             state.isChange = false;
@@ -56,7 +52,6 @@ export const profileSlice = createSlice({
             state.isChangePassword = false;
             state.loading = true
             state.error = true
-            console.log('Отправка изменений')
         },
         postChangeSuccess: (state, { payload }) => {
             state.isChange = false;
@@ -65,17 +60,15 @@ export const profileSlice = createSlice({
             state.isChangePassword = false;
             state.loading = false
             state.error = false
-            console.log(payload)
-            console.log('Изменения произведены успешно')
+            console.log('Изменения профиля произведены успешно')
         },
         postChangeFailed: state => {
             state.loading = false
             state.error = true
-            console.log('Изменения не были произведены')
+            console.log('Изменения профиля не были произведены')
         },
         postRegist: state => {
             state.loading = true;
-            console.log('Идет регистрация')
         },
         postRegistSuccess: (state, { payload }) => {
             state.loading = false
@@ -90,7 +83,6 @@ export const profileSlice = createSlice({
         },
         postLog: state => {
             state.loading = true;
-            console.log('Идет авторизация')
         },
         postLogSuccess: (state, { payload }) => {
             console.log(payload)
@@ -111,7 +103,6 @@ export const profileSlice = createSlice({
         postForgot: state => {
             state.loading = false
             state.error = true
-            console.log('Отправка завяки на восстановления пароля')
         },
         postForgotSuccess: (state, { payload }) => {
             state.forgotInformation = payload
@@ -119,7 +110,6 @@ export const profileSlice = createSlice({
             state.error = false
             state.forgotSuccess = true
             state.forgotFailed = false
-            console.log(state.forgotInformation)
             console.log('Завяка принята')
         },
         postForgotFailed: state => {
@@ -132,14 +122,12 @@ export const profileSlice = createSlice({
         postReset: state => {
             state.loading = false
             state.error = true
-            console.log('Отправка завяки на восстановления пароля')
         },
         postResetSuccess: (state, { payload }) => {
             state.forgotInformation = payload
             state.loading = false
             state.error = false
             state.forgotSuccess = false
-            console.log(state.forgotInformation)
             console.log('Завяка принята')
         },
         postResetFailed: state => {
@@ -150,7 +138,6 @@ export const profileSlice = createSlice({
         logOut: state => {
             state.loading = false
             state.error = true
-            console.log('Выход из системы...')
         },
         logOutSuccess: (state, { payload }) => {
             state.profileInformation = null
@@ -173,7 +160,6 @@ export const profileSlice = createSlice({
             state.loading = true
             state.error = false
             state.refreshing = true
-            console.log('Получение данных о пользователе...')
         },
         getProfileSuccess: (state, { payload }) => {
             state.name = payload.user.name
@@ -196,7 +182,6 @@ export const profileSlice = createSlice({
             state.loading = false
             state.error = true
             state.refreshing = true
-            console.log('Обновление токена...')
         },
         refreshProfileSuccess: (state, { payload }) => {
             state.loading = false
@@ -214,10 +199,10 @@ export const profileSlice = createSlice({
             state.refreshSuccess = false
             console.log('Ошибка обновления токена')
         },
-        tokenNotFound: state =>{
+        tokenNotFound: state => {
             state.isUserLoaded = false
         },
-        firstTry: state =>{
+        firstTry: state => {
             state.refreshing = false
         }
     },
@@ -226,14 +211,14 @@ export const profileSlice = createSlice({
 
 export const {
     postRegist, postRegistSuccess, postRegistFailed,
-     postForgot, postForgotSuccess, postForgotFailed, 
-     postReset, postResetSuccess, postResetFailed, 
-     postLog, postLogSuccess, postLogFailed,
-      logOut, logOutSuccess, logOutFailed,
-       getProfile, getProfileSuccess, getProfileFailed,
-       startChangeName, startChangeLogin, startChangePassword, stopChange, postChange, postChangeSuccess, postChangeFailed,
-       refreshProfile, refreshProfileSuccess, refreshProfileFailed,
-       tokenNotFound, firstTry
+    postForgot, postForgotSuccess, postForgotFailed,
+    postReset, postResetSuccess, postResetFailed,
+    postLog, postLogSuccess, postLogFailed,
+    logOut, logOutSuccess, logOutFailed,
+    getProfile, getProfileSuccess, getProfileFailed,
+    startChangeName, startChangeLogin, startChangePassword, stopChange, postChange, postChangeSuccess, postChangeFailed,
+    refreshProfile, refreshProfileSuccess, refreshProfileFailed,
+    tokenNotFound, firstTry
 } = profileSlice.actions
 
 export const profileSelector = state => state.profile

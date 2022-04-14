@@ -16,9 +16,9 @@ import { profileSelector } from '../../../services/slice/profile';
 
 
 export function FeedPage() {
-  // const dispatch = useDispatch()
+  const dispatch = useDispatch()
 
-  // const { isUserLoaded } = useSelector(profileSelector);
+  const { isUserLoaded } = useSelector(profileSelector);
 
   // let mailInput = React.createRef();
   // let passwordInput = React.createRef();

@@ -10,28 +10,7 @@ export function ProtectedRouteLogin({ children, ...rest }) {
 
     const { loading, refreshSuccess, isUserLoaded, refreshing } = useSelector(profileSelector);
 
-    console.log(isUserLoaded)
-
     let location = useLocation();
-
-
-    // if (!isUserLoaded) {
-    //     return (
-    //       <Redirect
-
-    //         to={ state?.from || '/' }
-    //       />
-    //     );
-    //   }
-
-
-    // return (<>
-    //     {isUserLoaded ? children : 
-    //     <Redirect to='/profile' />
-    //     }
-    // </>)
-
-
 
     return (
         <Route

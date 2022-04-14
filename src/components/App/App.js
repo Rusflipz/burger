@@ -26,9 +26,8 @@ import { getProfileInformation, refreshProfileInformation } from '../../services
 import { getCookie } from '../../services/Cookie';
 import Modal from '../Modal/Modal';
 import { IngredientDetails } from '../IngredientDetails/IngredientDetails';
-import { tokenNotFound } from '../../services/slice/profile'
-import { FeedPage } from '../pages/Feed/Feed'
-
+import { tokenNotFound } from '../../services/slice/profile';
+import { FeedPage } from '../pages/Feed/Feed';
 
 function App() {
   const { loading, error, isUserLoaded } = useSelector(ingredientsSelector);
@@ -46,9 +45,11 @@ function App() {
   };
 
   useEffect(() => {
+    // dispatch(WebSocket())
     dispatch(fetchIngredients())
     // dispatch(getProfileInformation(token))
   }, [dispatch]);
+
 
   function content() {
     if (loading) return <Loading />
