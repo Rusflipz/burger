@@ -10,14 +10,46 @@ import { Loading } from '../Loading/loading';
 import { Error } from '../Error/error';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { Router, Switch, Route, useHistory, useLocation } from 'react-router-dom';
+import { LoginPage } from '../pages/Login/Login';
+import { RegistrationPage } from '../pages/Registration/Registration';
+import { Forgotpassword } from '../pages/Forgot-password/Forgot-password';
+import { Resetpassword } from '../pages/Reset-password/Reset-password';
+import { Profile } from '../pages/Profile/Profile';
+import { ProtectedRouteProfile } from '../ProtectedRoute/ProtectedRouteProfile';
+import { IngredientPage } from '../IngredientPage/IngredientPage';
+import { ProtectedRouteLogin } from '../ProtectedRoute/ProtectedRouteLogin';
+import { ProtectedRouteRegistration } from '../ProtectedRoute/ProtectedRouteRegistration';
+import { ProtectedForgotPassword } from '../ProtectedRoute/ProtectedForgotPassword';
+import { ProtectedResetPassword } from '../ProtectedRoute/ProtectedResetPassword';
+import { getProfileInformation, refreshProfileInformation } from '../../services/api'
+import { getCookie } from '../../services/Cookie';
+import Modal from '../Modal/Modal';
+import { IngredientDetails } from '../IngredientDetails/IngredientDetails';
+import { tokenNotFound } from '../../services/slice/profile';
+import { FeedPage } from '../pages/Feed/Feed';
 
 function App() {
-  const { loading, error } = useSelector(ingredientsSelector);
+  const { loading, error, isUserLoaded } = useSelector(ingredientsSelector);
   const dispatch = useDispatch()
+  let token = getCookie('token')
+  let refreshToken = getCookie('refreshToken')
+
+  const history = useHistory();
+  const location = useLocation();
+
+  const background = location.state && location.state.background;
+
+  const closeModal = () => {
+    history.goBack();
+  };
 
   useEffect(() => {
+    // dispatch(WebSocket())
     dispatch(fetchIngredients())
+    // dispatch(getProfileInformation(token))
   }, [dispatch]);
+
 
   function content() {
     if (loading) return <Loading />
@@ -31,12 +63,57 @@ function App() {
   }
 
   return (
-    <div className={styles.App}>
-      <AppHeader />
-      <main className={styles.main}>
-        {content()}
-      </main>
-    </div>
+    <>
+      <div className={styles.App}>
+        <AppHeader />
+        <Switch location={background || location}>
+          <Route path="/login" exact={true}>
+            <ProtectedRouteLogin>
+              <LoginPage />
+            </ProtectedRouteLogin>
+          </Route>
+          <Route path="/registration" exact={true}>
+            <ProtectedRouteRegistration>
+              <RegistrationPage />
+            </ProtectedRouteRegistration>
+          </Route>
+          <Route path="/forgot-password" exact={true}>
+            <ProtectedForgotPassword>
+              <Forgotpassword />
+            </ProtectedForgotPassword>
+          </Route>
+          <Route path="/reset-password" exact={true}>
+            <ProtectedResetPassword>
+              <Resetpassword />
+            </ProtectedResetPassword>
+          </Route>
+          <Route path="/profile" exact={true}>
+            <ProtectedRouteProfile path="/" >
+              <Profile />
+            </ProtectedRouteProfile>
+          </Route>
+          <Route path="/ingredients/:id" exact={true}>
+            <IngredientPage />
+          </Route>
+          <Route path="/feed" exact={true}>
+            <FeedPage />
+          </Route>
+          <Route path="/" exact={true}>
+            <main className={styles.main}>
+              {content()}
+            </main>
+          </Route>
+        </Switch>
+      </div>
+
+      {background && (
+        <Route path="/ingredients/:id" exact={true}>
+          <Modal onClose={closeModal}>
+            <IngredientDetails />
+          </Modal>
+        </Route>
+      )}
+    </>
   )
 }
 

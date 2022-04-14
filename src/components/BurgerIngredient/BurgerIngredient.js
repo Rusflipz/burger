@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from "react-redux";
 import { showIngredientСomponents, ingredientsSelector } from "../../services/slice/ingredients";
 import { useDrag } from 'react-dnd';
+import { Link, useLocation } from 'react-router-dom'
 
 export function BurgerIngredient({ item }) {
 
@@ -14,6 +15,8 @@ export function BurgerIngredient({ item }) {
   const constructorItems = constructor.burger
   const count = constructorItems.filter(element => element._id === item._id).length;
   const bunCount = 1;
+
+  const location = useLocation()
 
   const dispatch = useDispatch();
 
@@ -31,30 +34,32 @@ export function BurgerIngredient({ item }) {
 
   if (item.type === 'bun') {
     return (
-      <div
-        onClick={() => dispatch(showIngredientСomponents(item))}
-        className={`${styles.card}`}
-        key={`${item._id}`}
-        ref={dragRef}
-      >
-        <img
-          src={item.image}
-          alt={item.name}
-        />
-        <div className={`${styles.priceConteiner} mt-1 mb-1`}>
-          <p className="text text_type_digits-default">{item.price}</p>
-          <CurrencyIcon type="primary" />
-        </div>
-        <p className={`${styles.description} text text_type_main-default`}>
-          {item.name}
-        </p>
-        {count > 0 && <Counter count={bunCount} size="default" />}
-      </div>
+        <Link
+          to={{ pathname: `/ingredients/${item._id}`, state: { background: location } }}
+          // onClick={() => dispatch(showIngredientСomponents(item))}
+          className={`${styles.card}`}
+          key={`${item._id}`}
+          ref={dragRef}
+        >
+          <img
+            src={item.image}
+            alt={item.name}
+          />
+          <div className={`${styles.priceConteiner} mt-1 mb-1`}>
+            <p className={`text text_type_digits-default`}>{item.price}</p>
+            <CurrencyIcon type="primary" />
+          </div>
+          <p className={`${styles.description} text text_type_main-default`}>
+            {item.name}
+          </p>
+          {count > 0 && <Counter count={bunCount} size="default" />}
+        </Link>
     )
   } else {
     return (
-      <div
-        onClick={() => dispatch(showIngredientСomponents(item))}
+      <Link
+        to={{ pathname: `/ingredients/${item._id}`, state: { background: location } }}
+        // onClick={() => dispatch(showIngredientСomponents(item))}
         className={`${styles.card} mb-8 pl-2 pr-2`}
         key={`${item._id}`}
         ref={dragRef}
@@ -64,14 +69,14 @@ export function BurgerIngredient({ item }) {
           alt={item.name}
         />
         <div className={`${styles.priceConteiner} mt-1 mb-1`}>
-          <p className="text text_type_digits-default">{item.price}</p>
+          <p className={`text text_type_digits-default`}>{item.price}</p>
           <CurrencyIcon type="primary" />
         </div>
         <p className={`${styles.description} text text_type_main-default`}>
           {item.name}
         </p>
         {count > 0 && <Counter count={count} size="default" />}
-      </div>
+      </Link>
     )
   }
 }
