@@ -49,7 +49,7 @@ export function Resetpassword() {
       {!isUserLoaded && <Redirect to={{ pathname: "/" }} />}
       <div className={styles.wrapper}>
         <h1 className={`${styles.heading} text text_type_main-medium mb-6`}>Восстановление пароля</h1>
-        <form className={`${styles.form} mb-20`} onSubmit={() => { return false }}>
+        <form className={`${styles.form} mb-20`} onSubmit={() => { handleClick() }}>
           <div className={`mb-6`}>
             <Input
               onChange={e => handleChangePassword(e)}

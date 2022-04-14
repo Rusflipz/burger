@@ -4,11 +4,9 @@ export function setCookie(name, value) {
 
     if (name == 'token') {
         document.cookie = `${CookieName}=${CookieValue}; path=/`;
-        console.log('меняю токен')
     }
     if (name == 'refreshToken') {
         document.cookie = `${CookieName}=${CookieValue}; path=/`;
-        console.log('меняю рефреш токен')
     }
 }
 

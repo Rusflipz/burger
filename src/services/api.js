@@ -14,6 +14,9 @@ import {
     refreshProfile, refreshProfileSuccess, refreshProfileFailed,
     firstTry
 } from '../services/slice/profile'
+import {
+    getOrdersSuccess
+} from '../services/slice/order';
 import { setCookie, deleteCookie, getCookie } from '../services/Cookie'
 import { useContext, useState, createContext } from 'react';
 import { useSelector, useDispatch } from "react-redux";
@@ -87,7 +90,6 @@ export const editProfile = (token, previus, actual) => {
                 console.log(err)
                 dispatch(postChangeFailed())
                 if (err == 'Ошибка: 403') {
-                    console.log('Исправление Ошибки')
                     dispatch(refreshProfileInformation())
                 }
             }
@@ -97,7 +99,6 @@ export const editProfile = (token, previus, actual) => {
 
 export const refreshProfileInformation = () => {
     let refreshToken = getCookie('refreshToken')
-    console.log('обновление токена')
     return async dispatch => {
         dispatch(refreshProfile())
         try {
@@ -136,13 +137,12 @@ export const refreshProfileInformation = () => {
 }
 
 export const getProfileInformation = () => {
-    console.log('Получение информации профиля')
     return async dispatch => {
         dispatch(getProfile())
         try {
             // if (getCookie("token") !== undefined) {
-                console.log('токен есть')
-                let token = getCookie("token");
+            console.log('токен есть')
+            let token = getCookie("token");
             const response = await fetch(`${url}auth/user`, {
                 method: 'GET',
                 headers: {
@@ -152,19 +152,13 @@ export const getProfileInformation = () => {
             })
             const data = await checkResponse(response)
             dispatch(getProfileSuccess(data))
-        // }
-        //     else{
-        //         console.log('токена нет')
-        //         dispatch(refreshProfileInformation())
-        //     }
         } catch (err) {
             console.log(err)
             dispatch(getProfileFailed())
             if (err == 'Ошибка: 403') {
-                console.log('Исправление Ошибки')
                 dispatch(refreshProfileInformation())
             }
-            if (err == 'Ошибка: 401') {
+            if (err !== 'Ошибка: 403') {
                 dispatch(firstTry())
             }
         }
@@ -273,7 +267,6 @@ export const postLogin = (information) => {
 }
 
 export const postForgotPassword = (information) => {
-    console.log(information)
     return async dispatch => {
         dispatch(postForgot())
         try {
@@ -336,3 +329,39 @@ export const postLogOut = (information) => {
     }
 }
 
+export const getAllOrders = () => {
+    return async dispatch => {
+        // dispatch(logOut())
+        try {
+            const response = await fetch(`${url}orders/all`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    // "token": information
+                })
+            })
+            const data = await checkResponse(response)
+            // dispatch(logOutSuccess(data))
+        } catch (err) {
+            console.log(err)
+            // dispatch(logOutFailed())
+        }
+    }
+}
+
+const ws = new WebSocket("wss://norma.nomoreparties.space/orders/all")
+
+ws.onopen = (event) => {
+    console.log("Соединение установлено");
+}
+
+ws.onmessage = (event) => {  //Получение данных из соеденения
+
+    let ordersData = JSON.parse(event.data)
+getOrdersSuccess(ordersData)
+    console.log(ordersData.orders)
+}
+
+ws.onerror = (event) => {
+    console.log(`Ошибка ${event.message}`)
+}

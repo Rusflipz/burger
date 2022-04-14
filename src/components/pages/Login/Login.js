@@ -49,7 +49,7 @@ export function LoginPage() {
     <>
 {!isUserLoaded ? <div className={styles.wrapper}>
         <h1 className={`${styles.heading} text text_type_main-medium mb-6`}>Вход</h1>
-        <form className={`${styles.form} mb-20`} onSubmit={() => { return false }}>
+        <form className={`${styles.form} mb-20`} onSubmit={() => { handleClick() }}>
           <div className={`mb-6`}>
             <Input
               ref={mailInput}
