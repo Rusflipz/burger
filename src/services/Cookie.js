@@ -2,13 +2,14 @@ export function setCookie(name, value) {
     let CookieName = encodeURIComponent(name);
     let CookieValue = encodeURIComponent(value);
 
-    if(name == 'token'){document.cookie = `${CookieName}=${CookieValue}; max-age=600; path=/`;
-console.log('меняю токен')
-}
-    if(name == 'refreshToken'){document.cookie = `${CookieName}=${CookieValue}; max-age=1000; path=/`;
-    console.log('меняю рефреш токен')
-}
-    
+    if (name == 'token') {
+        document.cookie = `${CookieName}=${CookieValue}; path=/`;
+        console.log('меняю токен')
+    }
+    if (name == 'refreshToken') {
+        document.cookie = `${CookieName}=${CookieValue}; path=/`;
+        console.log('меняю рефреш токен')
+    }
 }
 
 export function getCookie(name) {
@@ -23,6 +24,3 @@ export function deleteCookie(name) {
         'max-age': -1
     })
 }
-
-
-//path=/ для token прописан и при попытке, перейти по прямой ссылке, происходит rederect на строницу логина, у меня не получилось повторить ваш эксперемент.

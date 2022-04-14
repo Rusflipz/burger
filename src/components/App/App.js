@@ -26,7 +26,8 @@ import { getProfileInformation, refreshProfileInformation } from '../../services
 import { getCookie } from '../../services/Cookie';
 import Modal from '../Modal/Modal';
 import { IngredientDetails } from '../IngredientDetails/IngredientDetails';
-import {tokenNotFound} from '../../services/slice/profile'
+import { tokenNotFound } from '../../services/slice/profile'
+import { FeedPage } from '../pages/Feed/Feed'
 
 
 function App() {
@@ -40,33 +41,14 @@ function App() {
 
   const background = location.state && location.state.background;
 
-
   const closeModal = () => {
     history.goBack();
   };
-
-//   useEffect(() => {
-//     if(token == undefined & refreshToken !== undefined){
-//       console.log('токен исчез')
-//       dispatch(refreshProfileInformation())
-//     }
-//   }, [token])
- 
-
-// function refresh(){
-//   console.log('Интервальное обновление')
-//  dispatch(refreshProfileInformation())
-// }
-
-// setInterval(refresh, 540000);
-
 
   useEffect(() => {
     dispatch(fetchIngredients())
     // dispatch(getProfileInformation(token))
   }, [dispatch]);
-
-
 
   function content() {
     if (loading) return <Loading />
@@ -111,6 +93,9 @@ function App() {
           </Route>
           <Route path="/ingredients/:id" exact={true}>
             <IngredientPage />
+          </Route>
+          <Route path="/feed" exact={true}>
+            <FeedPage />
           </Route>
           <Route path="/" exact={true}>
             <main className={styles.main}>
