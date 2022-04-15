@@ -5,6 +5,7 @@ import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { ingredientsSelector } from '../../services/slice/ingredients';
+import { orderSelector } from '../../services/slice/order';
 import { fetchIngredients } from '../../services/api';
 import { Loading } from '../Loading/loading';
 import { Error } from '../Error/error';
@@ -22,15 +23,18 @@ import { ProtectedRouteLogin } from '../ProtectedRoute/ProtectedRouteLogin';
 import { ProtectedRouteRegistration } from '../ProtectedRoute/ProtectedRouteRegistration';
 import { ProtectedForgotPassword } from '../ProtectedRoute/ProtectedForgotPassword';
 import { ProtectedResetPassword } from '../ProtectedRoute/ProtectedResetPassword';
-import { getProfileInformation, refreshProfileInformation } from '../../services/api'
+import { getProfileInformation, refreshProfileInformation, getOrders } from '../../services/api'
 import { getCookie } from '../../services/Cookie';
 import Modal from '../Modal/Modal';
 import { IngredientDetails } from '../IngredientDetails/IngredientDetails';
 import { tokenNotFound } from '../../services/slice/profile';
 import { FeedPage } from '../pages/Feed/Feed';
+import { OrederDetail } from '../OrederDetail/OrederDetail';
+import { OrderPage } from '../OrderPage/OrderPage';
 
 function App() {
   const { loading, error, isUserLoaded } = useSelector(ingredientsSelector);
+  const { orders } = useSelector(orderSelector);
   const dispatch = useDispatch()
   let token = getCookie('token')
   let refreshToken = getCookie('refreshToken')
@@ -38,14 +42,15 @@ function App() {
   const history = useHistory();
   const location = useLocation();
 
-  const background = location.state && location.state.background;
+  const background1 = location.state && location.state.background1;
+  const background2 = location.state && location.state.background2;
 
   const closeModal = () => {
     history.goBack();
   };
 
   useEffect(() => {
-    // dispatch(WebSocket())
+    dispatch(getOrders())
     dispatch(fetchIngredients())
     // dispatch(getProfileInformation(token))
   }, [dispatch]);
@@ -66,7 +71,7 @@ function App() {
     <>
       <div className={styles.App}>
         <AppHeader />
-        <Switch location={background || location}>
+        <Switch location={background1 || background2 || location}>
           <Route path="/login" exact={true}>
             <ProtectedRouteLogin>
               <LoginPage />
@@ -95,6 +100,9 @@ function App() {
           <Route path="/ingredients/:id" exact={true}>
             <IngredientPage />
           </Route>
+          <Route path="/orders/:id" exact={true}>
+            <OrderPage />
+          </Route>
           <Route path="/feed" exact={true}>
             <FeedPage />
           </Route>
@@ -106,13 +114,23 @@ function App() {
         </Switch>
       </div>
 
-      {background && (
+      {background1 && (<>
         <Route path="/ingredients/:id" exact={true}>
           <Modal onClose={closeModal}>
             <IngredientDetails />
           </Modal>
         </Route>
-      )}
+      </>)}
+
+      {background2 && (<>
+        <Route path="/orders/:id" exact={true}>
+          <Modal onClose={closeModal}>
+            <OrederDetail item={orders} />
+          </Modal>
+        </Route>
+      </>)}
+
+
     </>
   )
 }

@@ -35,7 +35,7 @@ export function BurgerIngredient({ item }) {
   if (item.type === 'bun') {
     return (
         <Link
-          to={{ pathname: `/ingredients/${item._id}`, state: { background: location } }}
+          to={{ pathname: `/ingredients/${item._id}`, state: { background1: location } }}
           // onClick={() => dispatch(showIngredientСomponents(item))}
           className={`${styles.card}`}
           key={`${item._id}`}
@@ -58,7 +58,7 @@ export function BurgerIngredient({ item }) {
   } else {
     return (
       <Link
-        to={{ pathname: `/ingredients/${item._id}`, state: { background: location } }}
+        to={{ pathname: `/ingredients/${item._id}`, state: { background1: location } }}
         // onClick={() => dispatch(showIngredientСomponents(item))}
         className={`${styles.card} mb-8 pl-2 pr-2`}
         key={`${item._id}`}

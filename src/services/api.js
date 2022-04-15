@@ -329,39 +329,46 @@ export const postLogOut = (information) => {
     }
 }
 
-export const getAllOrders = () => {
+export const getOrders = () => {
+    console.log('Отправил')
     return async dispatch => {
-        // dispatch(logOut())
         try {
-            const response = await fetch(`${url}orders/all`, {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    // "token": information
-                })
-            })
-            const data = await checkResponse(response)
-            // dispatch(logOutSuccess(data))
+            const ws = new WebSocket("wss://norma.nomoreparties.space/orders/all")
+
+            ws.onopen = (event) => {
+                console.log("Соединение установлено");
+            }
+
+            ws.onmessage = (event) => {  //Получение данных из соеденения
+                let ordersData = JSON.parse(event.data)
+                dispatch(getOrdersSuccess(ordersData))
+            }
+
+            ws.onerror = (event) => {
+                console.log(`Ошибка ${event.message}`)
+            }
+
         } catch (err) {
             console.log(err)
-            // dispatch(logOutFailed())
         }
     }
 }
 
-const ws = new WebSocket("wss://norma.nomoreparties.space/orders/all")
 
-ws.onopen = (event) => {
-    console.log("Соединение установлено");
-}
 
-ws.onmessage = (event) => {  //Получение данных из соеденения
+// const ws = new WebSocket("wss://norma.nomoreparties.space/orders/all")
 
-    let ordersData = JSON.parse(event.data)
-getOrdersSuccess(ordersData)
-    console.log(ordersData.orders)
-}
+// ws.onopen = (event) => {
+//     console.log("Соединение установлено");
+// }
 
-ws.onerror = (event) => {
-    console.log(`Ошибка ${event.message}`)
-}
+// ws.onmessage = (event) => {  //Получение данных из соеденения
+
+//     let ordersData = JSON.parse(event.data)
+//     getOrdersSuccess(ordersData)
+//     console.log(ordersData.orders)
+// }
+
+// ws.onerror = (event) => {
+//     console.log(`Ошибка ${event.message}`)
+// }

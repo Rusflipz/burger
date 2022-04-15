@@ -13,19 +13,20 @@ function AppHeader() {
       <div className={`${styles.contentBox}`}>
         <nav className={styles.navigation}>
           <Link className={`${styles.navigationItem} ml-1 pr-5 mr-2 mt-4 mb-4`}
-          to='/'
+            to='/'
           >
             <BurgerIcon type="secondary" />
             <span className={`text text_type_main-default ml-2`}>
               Конструктор
             </span>
           </Link>
-          <a className={`${styles.navigationItem} pl-5 pr-5 mt-4 mb-4`}>
+          <Link className={`${styles.navigationItem} pl-5 pr-5 mt-4 mb-4`}
+            to='/feed'>
             <ListIcon type="secondary" />
             <span className={`text text_type_main-default ml-2`}>
               Лента заказов
             </span>
-          </a>
+          </Link>
         </nav>
         <span className={styles.logo}>
           <Logo />
