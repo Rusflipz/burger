@@ -12,6 +12,7 @@ export const initialState = {
     currentOrder: true,
     loading: true,
     userDataSuccess: false,
+    isOrderOpen: false,
 }
 
 export const orderSlice = createSlice({
@@ -30,6 +31,12 @@ export const orderSlice = createSlice({
             state.userDataSuccess = true
             console.log('получил заказы пользователя')
             // state.loading = false
+        },
+        openOrder: (state) => {
+            state.isOrderOpen = true
+        },
+        closeOrder: (state) => {
+            state.isOrderOpen = true
         },
     },
 })

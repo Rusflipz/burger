@@ -9,7 +9,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 export function ProfileOrders() {
-
+console.log('nen')
   const location = useLocation()
 
   const { ingredients } = useSelector(ingredientsSelector);
