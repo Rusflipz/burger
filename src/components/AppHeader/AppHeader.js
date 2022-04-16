@@ -5,42 +5,50 @@ import {
   Logo,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 function AppHeader() {
   return (
     <header className={`${styles.header}`}>
       <div className={`${styles.contentBox}`}>
         <nav className={styles.navigation}>
-          <Link className={`${styles.navigationItem} ml-1 pr-5 mr-2 mt-4 mb-4`}
+          <NavLink
+            exact
+            className={`${styles.navigationItem} ml-1 pr-5 mr-2 mt-4 mb-4`}
+            activeClassName={styles.active}
             to='/'
           >
-            <BurgerIcon type="secondary" />
+            <BurgerIcon type='secondary' />
             <span className={`text text_type_main-default ml-2`}>
               Конструктор
             </span>
-          </Link>
-          <Link className={`${styles.navigationItem} pl-5 pr-5 mt-4 mb-4`}
+          </NavLink>
+          <NavLink
+            activeClassName={styles.active}
+            exact
+            className={`${styles.navigationItem} pl-5 pr-5 mt-4 mb-4`}
             to='/feed'>
-            <ListIcon type="secondary" />
+            <ListIcon type='secondary' />
             <span className={`text text_type_main-default ml-2`}>
               Лента заказов
             </span>
-          </Link>
+          </NavLink>
         </nav>
         <span className={styles.logo}>
           <Logo />
         </span>
         <nav className={styles.navigation}>
-          <Link
+          <NavLink
+            activeClassName={styles.active}
+            exact
             className={`${styles.navigationItem} ${styles.navigationItemProf} pl-5 pr-5 mt-4 mb-4`}
-            to='profile'
+            to='/profile'
           >
             <ProfileIcon type="secondary" />
             <span className={`text text_type_main-default ml-2`}>
               Личный кабинет
             </span>
-          </Link>
+          </NavLink>
         </nav>
       </div>
     </header>

@@ -17,7 +17,6 @@ export function FeedPage() {
   const { orders, dataSuccess } = useSelector(orderSelector);
 
   const Orders = (order) => {
-    console.log(order)
     let orderDate = new Date(order.item.createdAt);
     let orderDateHours = orderDate.getHours()
     let orderDateMinutes = orderDate.getMinutes()

@@ -41,3 +41,13 @@
 .navigationItemProf {
     margin-left: auto;
 }
+
+.active{
+    color: #F2F2F3;
+}
+
+.icon{
+    width: 20px;
+    height: 20px;
+    fill: #F2F2F3;
+}
