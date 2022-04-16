@@ -60,12 +60,10 @@ export const profileSlice = createSlice({
             state.isChangePassword = false;
             state.loading = false
             state.error = false
-            console.log('Изменения профиля произведены успешно')
         },
         postChangeFailed: state => {
             state.loading = false
             state.error = true
-            console.log('Изменения профиля не были произведены')
         },
         postRegist: state => {
             state.loading = true;
@@ -74,18 +72,15 @@ export const profileSlice = createSlice({
             state.loading = false
             state.error = false
             state.isUserLoaded = true
-            console.log('Регистрации прошла успешно')
         },
         postRegistFailed: state => {
             state.loading = false
             state.error = true
-            console.log('Ошибка регистрации')
         },
         postLog: state => {
             state.loading = true;
         },
         postLogSuccess: (state, { payload }) => {
-            console.log(payload)
             state.loading = false
             state.error = false
             state.name = payload.user.name
@@ -93,12 +88,10 @@ export const profileSlice = createSlice({
             state.accessToken = payload.user.accessToken
             state.refreshToken = payload.user.refreshToken
             state.isUserLoaded = true
-            console.log('Авторизация прошла успешно')
         },
         postLogFailed: state => {
             state.loading = false
             state.error = true
-            console.log('Ошибка Авторизации')
         },
         postForgot: state => {
             state.loading = false
@@ -110,14 +103,12 @@ export const profileSlice = createSlice({
             state.error = false
             state.forgotSuccess = true
             state.forgotFailed = false
-            console.log('Завяка принята')
         },
         postForgotFailed: state => {
             state.forgotSuccess = false
             state.loading = false
             state.error = true
             state.forgotFailed = true
-            console.log('Ошибка сброса пароля')
         },
         postReset: state => {
             state.loading = false
@@ -128,12 +119,10 @@ export const profileSlice = createSlice({
             state.loading = false
             state.error = false
             state.forgotSuccess = false
-            console.log('Завяка принята')
         },
         postResetFailed: state => {
             state.loading = false
             state.error = true
-            console.log('Ошибка сброса пароля')
         },
         logOut: state => {
             state.loading = false
@@ -149,12 +138,10 @@ export const profileSlice = createSlice({
             state.refreshToken = null
             state.isUserLoaded = false
             console.log(state.forgotInformation)
-            console.log('Вы вышли')
         },
         logOutFailed: state => {
             state.loading = false
             state.error = true
-            console.log('Ошибка выхода')
         },
         getProfile: state => {
             state.loading = true
@@ -168,15 +155,12 @@ export const profileSlice = createSlice({
             state.error = false
             state.refreshSuccess = true
             state.refreshing = false
-            console.log(payload)
-            console.log('Получил данные пользователя')
         },
         getProfileFailed: state => {
             state.loading = false
             state.error = true
             state.refreshSuccess = false
             state.isUserLoaded = false
-            console.log('Ошибка полученя данных пользователя')
         },
         refreshProfile: state => {
             state.loading = false
@@ -189,15 +173,12 @@ export const profileSlice = createSlice({
             state.refreshing = false
             state.isUserLoaded = true
             state.refreshSuccess = true
-            console.log(payload)
-            console.log('Успешное обновление токена')
         },
         refreshProfileFailed: state => {
             state.loading = false
             state.refreshing = false
             state.error = true
             state.refreshSuccess = false
-            console.log('Ошибка обновления токена')
         },
         tokenNotFound: state => {
             state.isUserLoaded = false

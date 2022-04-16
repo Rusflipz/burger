@@ -23,7 +23,7 @@ import { ProtectedRouteLogin } from '../ProtectedRoute/ProtectedRouteLogin';
 import { ProtectedRouteRegistration } from '../ProtectedRoute/ProtectedRouteRegistration';
 import { ProtectedForgotPassword } from '../ProtectedRoute/ProtectedForgotPassword';
 import { ProtectedResetPassword } from '../ProtectedRoute/ProtectedResetPassword';
-import { getProfileInformation, refreshProfileInformation, getOrders } from '../../services/api'
+import { getProfileInformation, refreshProfileInformation, getOrders, getUserOrders } from '../../services/api'
 import { getCookie } from '../../services/Cookie';
 import Modal from '../Modal/Modal';
 import { IngredientDetails } from '../IngredientDetails/IngredientDetails';
@@ -44,6 +44,7 @@ function App() {
 
   const background1 = location.state && location.state.background1;
   const background2 = location.state && location.state.background2;
+  const background3 = location.state && location.state.background3;
 
   const closeModal = () => {
     history.goBack();
@@ -52,6 +53,7 @@ function App() {
   useEffect(() => {
     dispatch(getOrders())
     dispatch(fetchIngredients())
+    dispatch(getUserOrders())
     // dispatch(getProfileInformation(token))
   }, [dispatch]);
 
@@ -71,7 +73,7 @@ function App() {
     <>
       <div className={styles.App}>
         <AppHeader />
-        <Switch location={background1 || background2 || location}>
+        <Switch location={background1 || background2 || background3 || location}>
           <Route path="/login" exact={true}>
             <ProtectedRouteLogin>
               <LoginPage />
@@ -123,7 +125,15 @@ function App() {
       </>)}
 
       {background2 && (<>
-        <Route path="/orders/:id" exact={true}>
+        <Route path="/feed/:id" exact={true}>
+          <Modal onClose={closeModal}>
+            <OrederDetail item={orders} />
+          </Modal>
+        </Route>
+      </>)}
+
+      {background3 && (<>
+        <Route path="/profile/orders/:id" exact={true}>
           <Modal onClose={closeModal}>
             <OrederDetail item={orders} />
           </Modal>

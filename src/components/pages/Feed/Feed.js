@@ -1,29 +1,14 @@
-import React, { useEffect } from 'react';
 import styles from './Feed.module.css';
-import {
-  BurgerIcon,
-  ListIcon,
-  Logo,
-  ProfileIcon,
-  Button,
-  Input
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector, useDispatch } from 'react-redux';
-import { postLogin, getOrders } from '../../../services/api';
-import { Route, Redirect, useLocation, Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useLocation, Link } from 'react-router-dom';
 import { orderSelector } from '../../../services/slice/order';
 import { ingredientsSelector } from '../../../services/slice/ingredients';
 import {
   CurrencyIcon,
-  Counter
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ImageUrl } from '../../../images/imagesForOrders/images';
-import {
-  scorePrice
-} from '../../../services/slice/order';
 
 export function FeedPage() {
-  const dispatch = useDispatch()
 
   const location = useLocation()
 
@@ -31,10 +16,8 @@ export function FeedPage() {
 
   const { orders, dataSuccess } = useSelector(orderSelector);
 
-  let done = [];
-  let process = [];
-
   const Orders = (order) => {
+    console.log(order)
     let orderDate = new Date(order.item.createdAt);
     let orderDateHours = orderDate.getHours()
     let orderDateMinutes = orderDate.getMinutes()
@@ -58,45 +41,65 @@ export function FeedPage() {
     let massage = `${day}, ${orderDateHours}:${orderDateMinutes} i-GMT+3`
 
     let totalCost = 0;
-    // let imgArray = []
+
     let ingredientIdArray = []
-    // Не откуда брать нормальные картинки, но оставил, а вдруг будут ссылки на них
+
+    let ingredient = []
 
     let length = order.item.ingredients.length
-    // if (order.item.ingredients.length < 4) {
+
     order.item.ingredients.forEach((ingredient) => {
       if (ingredient !== null) {
         let ing = ingredients.find(item => item._id == ingredient);
         let i = 0;
-
-        if (ing.type == 'bun') { // не смог реализовать, чтобы одна булка только оставалась
-          ingredientIdArray.unshift(ing._id);
-          // for (let i = 0; i < 1; i++) {
-          //   console.log(i)
-          //   ingredientIdArray.unshift(ing._id)
-          // }
-        } else {
-          ingredientIdArray.unshift(ing._id)
-        }
+        ingredientIdArray.unshift(ing._id);
         totalCost = totalCost + ing.price;
-
       }
     })
 
-    function Image(array) {
-      if (length < 4) {
-        let img = ImageUrl.find(item => item.id == array.item)
-        return <img className={`${styles.image}`} src={img.url}></img>
+    let resultReduce = ingredientIdArray.reduce(function (acc, cur) {
+      if (!acc.hash[cur]) {
+        acc.hash[cur] = { [cur]: 1 };
+        acc.map.set(acc.hash[cur], 1);
+        acc.result.push(acc.hash[cur]);
       } else {
-        let img = ImageUrl.find(item => item.id == array.item)
-        return <img className={`${styles.image}`} src={img.url}></img>
+        acc.hash[cur][cur] += 1;
+        acc.map.set(acc.hash[cur], acc.hash[cur][cur]);
       }
+      return acc;
+    }, {
+      hash: {},
+      map: new Map(),
+      result: []
+    });
+
+    let res = resultReduce.result.sort(function (a, b) {
+      return resultReduce.map.get(b) - resultReduce.map.get(a);
+    });
+
+    ingredient = res.reverse()
+
+    let moreActive = false;
+    let more;
+
+    if (ingredient.length > 5) {
+      more = ingredient.length - 5
+      moreActive = true;
+      ingredient.splice(4, ingredient.length - 5)
+      ingredient.push({ '0': 0 })
+    } else {
+    }
+
+    function Image(array) {
+      let id = Object.keys(array.item)[0]
+      let img = ImageUrl.find(item => item.id == id)
+      return <img className={`${styles.image}`} src={img.url}></img>
     }
 
     return (
       <div className={`${styles.orderBackgraund} pt-6 pb-6 pr-6 pl-6 mb-4`}>
         <Link
-          to={{ pathname: `/orders/${order.item._id}`, state: { background2: location } }}
+          to={{ pathname: `/feed/${order.item._id}`, state: { background2: location } }}
           className={`${styles.orderConteiner}`}>
           <div className={`${styles.orderNumber} mb-6`}>
             <p className={`${styles.number} text text_type_digits-default`}>{`#${order.item.number}`}</p>
@@ -104,7 +107,7 @@ export function FeedPage() {
           </div>
           <p className={`${styles.mainText} text text_type_main-medium mb-6`}>{order.item.name}</p>
           <div className={`${styles.orderInfoConteiner}`}>
-            <div className={`${styles.imageConteiner}`}>{dataSuccess && ingredientIdArray.map((imageId) => <Image item={imageId} />)}</div>
+            <div className={`${styles.imageConteiner}`}>{dataSuccess && ingredient.map((imageId) => <Image item={imageId} />)}{moreActive && <p className={`${styles.more} text text_type_digits-default`}>{`+${more}`}</p>}</div>
             <div className={`${styles.priceConteiner}`}><p className={`${styles.price} text text_type_digits-default`}>{totalCost}</p><CurrencyIcon /></div>
           </div>
         </Link>
@@ -122,14 +125,11 @@ export function FeedPage() {
     } else {
       return <></>
     }
-
-
   }
 
   function OrdersNumberProcess(order) {
     if (order.item.status !== 'done') {
       return <p className={`${styles.ordersProcessNumber} text text_type_digits-default`}>{order.item.number}</p>
-
     } else {
       return <></>
     }

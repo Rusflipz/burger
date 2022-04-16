@@ -33,5 +33,5 @@ export let ImageUrl = [
   { id: '60d3b41abdacab0026a733d2', url: img13 },
   { id: '60d3b41abdacab0026a733d3', url: img14 },
   { id: '60d3b41abdacab0026a733d4', url: img15 },
-  // { id: '0', url: img16 },
+  { id: '0', url: img16 },
 ]

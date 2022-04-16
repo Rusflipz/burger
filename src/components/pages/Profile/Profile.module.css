@@ -49,3 +49,26 @@
 .button:first-child{
     margin-right: 10px;
 }
+
+.ordersConteiner{
+    height: calc(100vh - 300px);
+    box-sizing: border-box;
+    overflow-y: scroll;
+}
+
+.ordersConteiner::-webkit-scrollbar {
+    width: 8px;
+    /* ширина scrollbar */
+}
+
+.ordersConteiner::-webkit-scrollbar-track {
+    background: #2F2F37;
+    /* цвет дорожки */
+}
+
+.ordersConteiner::-webkit-scrollbar-thumb {
+    background-color: #8585AD;
+    /* цвет плашки */
+    /* border-radius: 20px;       закругления плашки */
+    /* border: 3px solid orange;  padding вокруг плашки */
+}

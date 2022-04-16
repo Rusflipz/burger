@@ -10,13 +10,10 @@ import {
     CurrencyIcon,
     Counter
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import {
-    scorePrice
-} from '../../services/slice/order';
-// import { Loading } from '../Loading/loading';
+
 
 export function OrederDetail(props) {
-    console.log('nen')
+    console.log('тут')
     const { id } = useParams();
     const { dataSuccess, loading, currentOrderPrice } = useSelector(orderSelector);
     const { ingredients } = useSelector(ingredientsSelector);
@@ -24,7 +21,6 @@ export function OrederDetail(props) {
     if (props.item) {
 
         let currentOrder = props.item.orders.find((item) => item._id === id);
-        console.log(currentOrder)
 
         let totalCost = 0;
 
@@ -60,15 +56,37 @@ export function OrederDetail(props) {
 
         let massage = `${day}, ${orderDateHours}:${orderDateMinutes} i-GMT+3`
 
+        let resultReduce = currentOrder.ingredients.reduce(function (acc, cur) {
+            if (!acc.hash[cur]) {
+                acc.hash[cur] = { [cur]: 1 };
+                acc.map.set(acc.hash[cur], 1);
+                acc.result.push(acc.hash[cur]);
+            } else {
+                acc.hash[cur][cur] += 1;
+                acc.map.set(acc.hash[cur], acc.hash[cur][cur]);
+            }
+            return acc;
+        }, {
+            hash: {},
+            map: new Map(),
+            result: []
+        });
+
+        let res = resultReduce.result.sort(function (a, b) {
+            return resultReduce.map.get(b) - resultReduce.map.get(a);
+        });
+
         function Ingredient(array) {
             if (array.item) {
-                let img = ImageUrl.find(item => item.id == array.item)
-                let info = ingredients.find(item => item._id == array.item)
+                let id = Object.keys(array.item)[0];
+                let value = array.item[`${id}`];
+                let img = ImageUrl.find(item => item.id == id);
+                let info = ingredients.find(item => item._id == id);
                 return <div className={`${styles.ingredientConteiner} mr-6 mb-4`}>
                     <img className={`${styles.image} mr-4`} src={img.url}></img>
                     <p className={`${styles.ingredienrName} text text_type_main-default`}>{info.name}</p>
                     <div className={`${styles.priceConteiner}`}>
-                        <span className={`${styles.ingredientPrice} text text_type_digits-default`}>{`1 x${info.price}`}</span>
+                        <span className={`${styles.ingredientPrice} text text_type_digits-default`}>{`${value} x${info.price}`}</span>
                         <CurrencyIcon />
                     </div>
                 </div>
@@ -80,10 +98,7 @@ export function OrederDetail(props) {
             let totalPrice = 0
             currentOrder.ingredients.map((id) => {
                 if (id !== null) {
-                    console.log(id)
-                    // let img = ImageUrl.find(item => item.id == id)
                     let info = ingredients.find(item => item._id == id)
-                    console.log(info.price)
                     totalPrice = totalPrice + info.price
                 }
             })
@@ -105,7 +120,7 @@ export function OrederDetail(props) {
                         <p className={`text text_type_main-small mb-3 mb-15 ${styles.status}`}>{status}</p>
                         <p className={`text text_type_main-medium mb-3 mb-6 ${styles.structureText}`}>Состав:</p>
                         <div className={`${styles.ingredientsConteiner} mb-10`}>
-                            {dataSuccess && currentOrder.ingredients.map((imageId) => <Ingredient item={imageId} />)}
+                            {dataSuccess && res.map((imageId) => <Ingredient item={imageId} />)}
                         </div>
                         <div className={`${styles.bottomInfo} mb-10`}>
                             {dataSuccess && <Time />}

@@ -15,7 +15,7 @@ import {
     firstTry
 } from '../services/slice/profile'
 import {
-    getOrdersSuccess
+    getOrdersSuccess, getUserOrdersSuccess
 } from '../services/slice/order';
 import { setCookie, deleteCookie, getCookie } from '../services/Cookie'
 import { useContext, useState, createContext } from 'react';
@@ -179,13 +179,25 @@ export const fetchIngredients = () => {
 }
 
 export const fetchOrderDetails = (ingredients) => {
+    let arr = []
+    ingredients.map((i) => {
+        console.log(i)
+        arr.push(i._id)
+    })
+    let img = ingredients.find(item => item.type == 'bun')
+    arr.push(img._id)
     return async dispatch => {
         dispatch(getOrder())
         try {
+            console.log(arr)
+            let token = getCookie("token");
             const response = await fetch(`${url}orders`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ingredients: ingredients.map(i => i._id) })
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify({ ingredients: arr })
             })
             const data = await checkResponse(response)
             dispatch(getOrderSuccess(data))
@@ -354,21 +366,28 @@ export const getOrders = () => {
     }
 }
 
+export const getUserOrders = () => {
+    return async dispatch => {
+        try {
 
+            let token = getCookie("token");
 
-// const ws = new WebSocket("wss://norma.nomoreparties.space/orders/all")
+            const ws = new WebSocket(`wss://norma.nomoreparties.space/orders?token=${token}`)
 
-// ws.onopen = (event) => {
-//     console.log("Соединение установлено");
-// }
+            ws.onopen = (event) => {
+            }
 
-// ws.onmessage = (event) => {  //Получение данных из соеденения
+            ws.onmessage = (event) => {  //Получение данных из соеденения
+                let userOrdersData = JSON.parse(event.data)
+                dispatch(getUserOrdersSuccess(userOrdersData))
+            }
 
-//     let ordersData = JSON.parse(event.data)
-//     getOrdersSuccess(ordersData)
-//     console.log(ordersData.orders)
-// }
+            ws.onerror = (event) => {
+                console.log(`Ошибка ${event.message}`)
+            }
 
-// ws.onerror = (event) => {
-//     console.log(`Ошибка ${event.message}`)
-// }
+        } catch (err) {
+            console.log(err)
+        }
+    }
+}

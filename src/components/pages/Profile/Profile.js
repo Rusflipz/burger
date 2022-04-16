@@ -8,15 +8,23 @@ import {
   Button,
   Input
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from 'react-router-dom';
+import { Link, Route, useLocation, Switch } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 import { postLogOut, getProfileInformation } from '../../../services/api';
 import { getCookie } from '../../../services/Cookie';
 import { profileSelector, startChangeName, startChangeLogin, startChangePassword, stopChange, postChange } from '../../../services/slice/profile';
-import { editProfile } from '../../../services/api'
+import { editProfile } from '../../../services/api';
+import { ProfileOrders } from '../../pages/ProfileOrders/ProfileOrders'
 
 export function Profile() {
+
+
+
   const dispatch = useDispatch();
+
+  const location = useLocation()
+
+  const profileOrders = location.state && location.state.profileOrders;
 
   const [nameValue, setNameValue] = useState(null);
   const [mailValue, setmailValue] = useState(null);
@@ -26,13 +34,13 @@ export function Profile() {
   const { isChange, isChangeName, isChangeLogin, isChangePassword } = useSelector(profileSelector);
 
   let profile = {
-    name : name,
+    name: name,
     mail: mail,
     password: password
   }
 
   let profileChange = {
-    name : nameValue,
+    name: nameValue,
     mail: mailValue,
     password: passwordValue
   }
@@ -42,7 +50,7 @@ export function Profile() {
   }, [name])
 
   useEffect(() => {
-    setmailValue(mail)  
+    setmailValue(mail)
   }, [mail])
 
   useEffect(() => {
@@ -79,24 +87,8 @@ export function Profile() {
     setPasswordValue(password)
   }
 
-  // const nameField = React.useRef(null);
-  // const loginField = React.useRef(null);
-  // const passwordField = React.useRef(null);
-  // let nameValue = nameField.current;
-  // let loginValue = loginField.current;
-  // let passwordValue = passwordField.current;
-
- 
-  return (
-    <div className={styles.wrapper}>
-      <div className={`${styles.links_box} mr-15`}>
-        <Link to='/profile' className={`${styles.link} text text_type_main-medium`}>Профиль</Link>
-        <Link to='/' className={`${styles.link} text text_type_main-medium`}>История заказов</Link>
-        <Link to='/' className={`${styles.link} text text_type_main-medium mb-20`}
-          onClick={() => dispatch(postLogOut(refreshToken))}>Выход</Link>
-        <p className={`${styles.text} `}>В этом разделе вы можете
-          изменить свои персональные данные</p>
-      </div>
+  const Inputs = () => {
+    return (
       <div>
         <div className={`${styles.input} mb-6`}>
           {isChangeName ?
@@ -198,6 +190,37 @@ export function Profile() {
           </div> : <></>
         }
       </div>
-    </div>
-  );
+    )
+  }
+  return (
+    <>
+      <div className={styles.wrapper}>
+        <div className={`${styles.links_box} mr-15`}>
+          <Link to='/profile' className={`${styles.link} text text_type_main-medium`}>Профиль</Link>
+          <Link
+            to={{ pathname: `profile/orders`, state: { profileOrders: location } }}
+            className={`${styles.link} text text_type_main-medium`}>История заказов</Link>
+          <Link to='/' className={`${styles.link} text text_type_main-medium mb-20`}
+            onClick={() => dispatch(postLogOut(refreshToken))}>Выход</Link>
+          <p className={`${styles.text} `}>В этом разделе вы можете
+            изменить свои персональные данные</p>
+        </div>
+        <div className={`${styles.ordersConteiner}`}>
+          <ProfileOrders />
+        </div>
+        {/* <Switch location={profileOrders || location}>
+          <Route path="/profile" exact={true}>
+            <Inputs />
+          </Route>
+        </Switch>
+      </div>
+      {profileOrders && (<>
+        <Route path="/profile/orders" exact={true}>
+          <div> aSFADsgASDG</div>
+        </Route>
+      </>
+      )} */}
+      </div>
+    </>
+  )
 }
