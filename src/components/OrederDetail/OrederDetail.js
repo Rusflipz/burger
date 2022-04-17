@@ -13,15 +13,13 @@ import {
 
 
 export function OrederDetail(props) {
-    console.log('тут')
     const { id } = useParams();
     const { dataSuccess, loading, currentOrderPrice } = useSelector(orderSelector);
     const { ingredients } = useSelector(ingredientsSelector);
     const dispatch = useDispatch();
     if (props.item) {
 
-        let currentOrder = props.item.orders.find((item) => item._id === id);
-
+        let currentOrder = props.item.find((item) => item.number == id);
         let totalCost = 0;
 
         let status = ''
@@ -76,6 +74,7 @@ export function OrederDetail(props) {
             return resultReduce.map.get(b) - resultReduce.map.get(a);
         });
 
+
         function Ingredient(array) {
             if (array.item) {
                 let id = Object.keys(array.item)[0];
@@ -94,7 +93,6 @@ export function OrederDetail(props) {
         }
 
         function Time() {
-            console.log()
             let totalPrice = 0
             currentOrder.ingredients.map((id) => {
                 if (id !== null) {
@@ -120,7 +118,7 @@ export function OrederDetail(props) {
                         <p className={`text text_type_main-small mb-3 mb-15 ${styles.status}`}>{status}</p>
                         <p className={`text text_type_main-medium mb-3 mb-6 ${styles.structureText}`}>Состав:</p>
                         <div className={`${styles.ingredientsConteiner} mb-10`}>
-                            {dataSuccess && res.map((imageId) => <Ingredient item={imageId} />)}
+                            {dataSuccess && res.map((imageId) => <Ingredient item={imageId} key={Object.keys(imageId)[0]} />)}
                         </div>
                         <div className={`${styles.bottomInfo} mb-10`}>
                             {dataSuccess && <Time />}

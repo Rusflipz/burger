@@ -33,7 +33,7 @@ export function Forgotpassword() {
   const dispatch = useDispatch();
 
 
-  const [mailValue, setmailValue] = useState(null);
+  const [mailValue, setmailValue] = useState('');
 
   const login = React.useCallback(
     () => {
@@ -62,6 +62,7 @@ export function Forgotpassword() {
         <form className={`${styles.form} mb-20`} onSubmit={() => { handleClick() }}>
           <div className={`mb-6`}>
             <Input
+            value={mailValue}
             onChange={e => handleChangeMail(e)}
               placeholder='E-mail'
               size={'default'}

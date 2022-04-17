@@ -1,5 +1,5 @@
 import styles from './Feed.module.css';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useLocation, Link } from 'react-router-dom';
 import { orderSelector } from '../../../services/slice/order';
 import { ingredientsSelector } from '../../../services/slice/ingredients';
@@ -7,14 +7,24 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ImageUrl } from '../../../images/imagesForOrders/images';
+import { getOrders } from '../../../services/WebSocet';
+import React, { useEffect } from 'react';
+import { Loading } from '../../Loading/loading';
+import { Error } from '../../Error/error';
 
 export function FeedPage() {
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getOrders())
+  }, [])
 
   const location = useLocation()
 
   const { ingredients } = useSelector(ingredientsSelector);
 
-  const { orders, dataSuccess } = useSelector(orderSelector);
+  const { orders, dataSuccess, loadingOrder, errorOrder } = useSelector(orderSelector);
 
   const Orders = (order) => {
     let orderDate = new Date(order.item.createdAt);
@@ -98,7 +108,7 @@ export function FeedPage() {
     return (
       <div className={`${styles.orderBackgraund} pt-6 pb-6 pr-6 pl-6 mb-4`}>
         <Link
-          to={{ pathname: `/feed/${order.item._id}`, state: { background2: location } }}
+          to={{ pathname: `/feed/${order.item.number}`, state: { background2: location } }}
           className={`${styles.orderConteiner}`}>
           <div className={`${styles.orderNumber} mb-6`}>
             <p className={`${styles.number} text text_type_digits-default`}>{`#${order.item.number}`}</p>
@@ -106,7 +116,7 @@ export function FeedPage() {
           </div>
           <p className={`${styles.mainText} text text_type_main-medium mb-6`}>{order.item.name}</p>
           <div className={`${styles.orderInfoConteiner}`}>
-            <div className={`${styles.imageConteiner}`}>{dataSuccess && ingredient.map((imageId) => <Image item={imageId} />)}{moreActive && <p className={`${styles.more} text text_type_digits-default`}>{`+${more}`}</p>}</div>
+            <div className={`${styles.imageConteiner}`}>{dataSuccess && res.map((imageId) => <Image item={imageId} key={Object.keys(imageId)[0]} />)}{moreActive && <p className={`${styles.more} text text_type_digits-default`}>{`+${more}`}</p>}</div>
             <div className={`${styles.priceConteiner}`}><p className={`${styles.price} text text_type_digits-default`}>{totalCost}</p><CurrencyIcon /></div>
           </div>
         </Link>
@@ -133,6 +143,10 @@ export function FeedPage() {
       return <></>
     }
   }
+
+  if (loadingOrder) return <Loading />
+  if (errorOrder) return <Error />
+
 
   return (
     <>

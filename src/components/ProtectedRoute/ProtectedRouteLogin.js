@@ -5,16 +5,25 @@ import { getCookie } from '../../services/Cookie';
 import { profileSelector } from '../../services/slice/profile';
 
 export function ProtectedRouteLogin({ children, ...rest }) {
-    
+
     let token = getCookie('token')
 
-    const { loading, refreshSuccess, isUserLoaded, refreshing } = useSelector(profileSelector);
+    const { loading, refreshSuccess, refreshing } = useSelector(profileSelector);
 
     let location = useLocation();
+    let isUserLoaded = false;
+
+    if (getCookie('token') !== undefined) {
+        isUserLoaded = true
+    }
+
+    if (getCookie('token') == '') {
+        isUserLoaded = false
+    }
 
     return (
         <Route
-        {...rest}
+            {...rest}
             render={({ location }) =>
                 !isUserLoaded ? (
                     children

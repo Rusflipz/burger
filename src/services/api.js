@@ -140,8 +140,6 @@ export const getProfileInformation = () => {
     return async dispatch => {
         dispatch(getProfile())
         try {
-            // if (getCookie("token") !== undefined) {
-            console.log('токен есть')
             let token = getCookie("token");
             const response = await fetch(`${url}auth/user`, {
                 method: 'GET',
@@ -181,7 +179,6 @@ export const fetchIngredients = () => {
 export const fetchOrderDetails = (ingredients) => {
     let arr = []
     ingredients.map((i) => {
-        console.log(i)
         arr.push(i._id)
     })
     let img = ingredients.find(item => item.type == 'bun')
@@ -341,53 +338,3 @@ export const postLogOut = (information) => {
     }
 }
 
-export const getOrders = () => {
-    console.log('Отправил')
-    return async dispatch => {
-        try {
-            const ws = new WebSocket("wss://norma.nomoreparties.space/orders/all")
-
-            ws.onopen = (event) => {
-                console.log("Соединение установлено");
-            }
-
-            ws.onmessage = (event) => {  //Получение данных из соеденения
-                let ordersData = JSON.parse(event.data)
-                dispatch(getOrdersSuccess(ordersData))
-            }
-
-            ws.onerror = (event) => {
-                console.log(`Ошибка ${event.message}`)
-            }
-
-        } catch (err) {
-            console.log(err)
-        }
-    }
-}
-
-export const getUserOrders = () => {
-    return async dispatch => {
-        try {
-
-            let token = getCookie("token");
-
-            const ws = new WebSocket(`wss://norma.nomoreparties.space/orders?token=${token}`)
-
-            ws.onopen = (event) => {
-            }
-
-            ws.onmessage = (event) => {  //Получение данных из соеденения
-                let userOrdersData = JSON.parse(event.data)
-                dispatch(getUserOrdersSuccess(userOrdersData))
-            }
-
-            ws.onerror = (event) => {
-                console.log(`Ошибка ${event.message}`)
-            }
-
-        } catch (err) {
-            console.log(err)
-        }
-    }
-}

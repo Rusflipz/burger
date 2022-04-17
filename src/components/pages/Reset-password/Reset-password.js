@@ -17,8 +17,8 @@ export function Resetpassword() {
 
   let token = getCookie('token')
 
-  const [passwordValue, setPasswordValue] = useState(null);
-  const [codelValue, setcodeValue] = useState(null);
+  const [passwordValue, setPasswordValue] = useState('');
+  const [codelValue, setcodeValue] = useState('');
 
   let isUserLoaded = true
   if (token !== '') {
@@ -52,6 +52,7 @@ export function Resetpassword() {
         <form className={`${styles.form} mb-20`} onSubmit={() => { handleClick() }}>
           <div className={`mb-6`}>
             <Input
+              value={passwordValue}
               onChange={e => handleChangePassword(e)}
               placeholder='Введите новый пароль'
               size={'default'}
@@ -61,6 +62,7 @@ export function Resetpassword() {
           </div>
           <div className={`mb-6`}>
             <Input
+              value={codelValue}
               onChange={e => handleChangeCode(e)}
               placeholder='Введите код из письма'
               size={'default'}

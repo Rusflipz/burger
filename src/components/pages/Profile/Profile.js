@@ -8,7 +8,7 @@ import {
   Button,
   Input
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link, Route, useLocation, Switch, NavLink } from 'react-router-dom';
+import { Link, Route, useLocation, Switch, NavLink, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 import { postLogOut, getProfileInformation } from '../../../services/api';
 import { getCookie } from '../../../services/Cookie';
@@ -19,11 +19,14 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 export function Profile() {
 
+  const history = useHistory();
+  const location = useLocation();
+
   const dispatch = useDispatch();
 
-  const [nameValue, setNameValue] = useState(null);
-  const [mailValue, setmailValue] = useState(null);
-  const [passwordValue, setPasswordValue] = useState(null);
+  const [nameValue, setNameValue] = useState('');
+  const [mailValue, setmailValue] = useState('');
+  const [passwordValue, setPasswordValue] = useState('');
 
   const { name, mail, password } = useSelector(profileSelector);
   const { isChange, isChangeName, isChangeLogin, isChangePassword } = useSelector(profileSelector);
@@ -70,9 +73,6 @@ export function Profile() {
     e.preventDefault();
     setPasswordValue(e.target.value)
   }
-
-  // const [value, setValue] = React.useState('value')
-
 
   function cancel() {
     dispatch(getProfileInformation(token))
@@ -187,34 +187,24 @@ export function Profile() {
       </div>
     )
   }
+
   return (
     <>
-      <Router>
-        <div className={styles.wrapper}>
-          <div className={`${styles.links_box} mr-15`}>
-            <NavLink exact to={'/profile'} activeClassName={`${styles.active}`} className={`${styles.link} text text_type_main-medium`} >Профиль</NavLink>
-            <NavLink
-              exact
-              to={"/profile/orders"}
-              activeClassName={`${styles.active}`}
-              className={`${styles.link} text text_type_main-medium`}>История заказов</NavLink>
-            <NavLink exact to='/' activeClassName={`${styles.active}`} className={`${styles.link} text text_type_main-medium mb-20`}
-              onClick={() => dispatch(postLogOut(refreshToken))}>Выход</NavLink>
-            <p className={`${styles.text} `}>В этом разделе вы можете
-              изменить свои персональные данные</p>
-          </div>
-          <Switch>
-            <Route path="/profile" exact={true}>
-              <Inputs />
-            </Route>
-            <Route path="/profile/orders" exact={true}>
-              <div className={`${styles.ordersConteiner}`}>
-                <ProfileOrders />
-              </div>
-            </Route>
-          </Switch>
+      <div className={styles.wrapper}>
+        <div className={`${styles.links_box} mr-15`}>
+          <NavLink exact to={'/profile'} activeClassName={`${styles.active}`} className={`${styles.link} text text_type_main-medium`} >Профиль</NavLink>
+          <NavLink
+            exact
+            to={"/profile/orders"}
+            activeClassName={`${styles.active}`}
+            className={`${styles.link} text text_type_main-medium`}>История заказов</NavLink>
+          <NavLink exact to='/' activeClassName={`${styles.active}`} className={`${styles.link} text text_type_main-medium mb-20`}
+            onClick={() => dispatch(postLogOut(refreshToken))}>Выход</NavLink>
+          <p className={`${styles.text} `}>В этом разделе вы можете
+            изменить свои персональные данные</p>
         </div>
-      </Router>
+        <Inputs />
+      </div>
     </>
   )
 }

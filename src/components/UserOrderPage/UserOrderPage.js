@@ -1,4 +1,4 @@
-import styles from './OrderPage.module.css';
+import styles from './UserOrderPage.module.css';
 import { ingredientsSelector, } from '../../services/slice/ingredients';
 import { orderSelector, } from '../../services/slice/order';
 import { useSelector, useDispatch } from "react-redux";
@@ -10,19 +10,19 @@ import { current } from '@reduxjs/toolkit';
 import { render } from '@testing-library/react';
 import { Loading } from '../Loading/loading';
 
-export const OrderPage = () => {
+export const UserOrderPage = () => {
   const { id } = useParams();
-  const { orders, orders1, dataSuccess } = useSelector(orderSelector);
+  const { orders, userOrders1, dataSuccess } = useSelector(orderSelector);
 
   const currentOrder = useMemo(
-    () => orders1.find((el) => el.number == id),
-    [orders1, id]
+    () => userOrders1.find((el) => el.number == id),
+    [userOrders1, id]
   );
 
   return (
     <>{currentOrder &&
       <div className={styles.main}>
-        <OrederDetail item={orders1} />
+        <OrederDetail item={userOrders1} />
       </div>}
     </>
   )

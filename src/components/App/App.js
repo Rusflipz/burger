@@ -23,7 +23,8 @@ import { ProtectedRouteLogin } from '../ProtectedRoute/ProtectedRouteLogin';
 import { ProtectedRouteRegistration } from '../ProtectedRoute/ProtectedRouteRegistration';
 import { ProtectedForgotPassword } from '../ProtectedRoute/ProtectedForgotPassword';
 import { ProtectedResetPassword } from '../ProtectedRoute/ProtectedResetPassword';
-import { getProfileInformation, refreshProfileInformation, getOrders, getUserOrders } from '../../services/api'
+import { ProtectedRouteProfileOrders } from '../ProtectedRoute/ProtectedRouteProfileOrders';
+import { ProtectedUserOrder } from '../ProtectedRoute/ProtectedUserOrder';
 import { getCookie } from '../../services/Cookie';
 import Modal from '../Modal/Modal';
 import { IngredientDetails } from '../IngredientDetails/IngredientDetails';
@@ -31,10 +32,13 @@ import { tokenNotFound } from '../../services/slice/profile';
 import { FeedPage } from '../pages/Feed/Feed';
 import { OrederDetail } from '../OrederDetail/OrederDetail';
 import { OrderPage } from '../OrderPage/OrderPage';
+import { UserOrderPage } from '../UserOrderPage/UserOrderPage';
+import { ProfileOrders } from '../pages/ProfileOrders/ProfileOrders'
 
 function App() {
   const { loading, error, isUserLoaded } = useSelector(ingredientsSelector);
-  const { orders } = useSelector(orderSelector);
+  const { orders1, userOrders1 } = useSelector(orderSelector);
+
   const dispatch = useDispatch()
   let token = getCookie('token')
   let refreshToken = getCookie('refreshToken')
@@ -51,9 +55,9 @@ function App() {
   };
 
   useEffect(() => {
-    dispatch(getOrders())
+    // dispatch(getOrders())
     dispatch(fetchIngredients())
-    dispatch(getUserOrders())
+    // dispatch(getUserOrders())
     // dispatch(getProfileInformation(token))
   }, [dispatch]);
 
@@ -102,11 +106,21 @@ function App() {
           <Route path="/ingredients/:id" exact={true}>
             <IngredientPage />
           </Route>
-          <Route path="/orders/:id" exact={true}>
+          <Route path="/feed/:id" exact={true}>
             <OrderPage />
+          </Route>
+          <Route path="/profile/orders/:id" exact={true}>
+            <ProtectedUserOrder>
+              <UserOrderPage />
+            </ProtectedUserOrder>
           </Route>
           <Route path="/feed" exact={true}>
             <FeedPage />
+          </Route>
+          <Route path="/profile/orders" exact={true}>
+            <ProtectedRouteProfileOrders>
+              <ProfileOrders />
+            </ProtectedRouteProfileOrders>
           </Route>
           <Route path="/" exact={true}>
             <main className={styles.main}>
@@ -116,29 +130,35 @@ function App() {
         </Switch>
       </div>
 
-      {background1 && (<>
-        <Route path="/ingredients/:id" exact={true}>
-          <Modal onClose={closeModal}>
-            <IngredientDetails />
-          </Modal>
-        </Route>
-      </>)}
+      {
+        background1 && (<>
+          <Route path="/ingredients/:id" exact={true}>
+            <Modal onClose={closeModal}>
+              <IngredientDetails />
+            </Modal>
+          </Route>
+        </>)
+      }
 
-      {background2 && (<>
-        <Route path="/feed/:id" exact={true}>
-          <Modal onClose={closeModal}>
-            <OrederDetail item={orders} />
-          </Modal>
-        </Route>
-      </>)}
+      {
+        background2 && (<>
+          <Route path="/feed/:id" exact={true}>
+            <Modal onClose={closeModal}>
+              <OrederDetail item={orders1} />
+            </Modal>
+          </Route>
+        </>)
+      }
 
-      {background3 && (<>
-        <Route path="/profile/orders/:id" exact={true}>
-          <Modal onClose={closeModal}>
-            <OrederDetail item={orders} />
-          </Modal>
-        </Route>
-      </>)}
+      {
+        background3 && (<>
+          <Route path="/profile/orders/:id" exact={true}>
+            <Modal onClose={closeModal}>
+              <OrederDetail item={userOrders1} />
+            </Modal>
+          </Route>
+        </>)
+      }
 
 
     </>

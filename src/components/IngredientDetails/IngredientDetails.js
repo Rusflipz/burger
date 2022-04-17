@@ -5,12 +5,11 @@ import { Route, Redirect, StaticRouter, useParams } from 'react-router-dom';
 import { useSelector } from "react-redux";
 import { ingredientsSelector } from '../../services/slice/ingredients';
 
-export function IngredientDetails(props) {
+export function IngredientDetails() {
     const { ingredients } = useSelector(ingredientsSelector);
     const { id } = useParams();
     const currentIngredient = ingredients.find((item) => item._id === id);
     return (
-
         <>
             {currentIngredient && (
                 < div >
@@ -40,7 +39,3 @@ export function IngredientDetails(props) {
         </>
     )
 }
-
-IngredientDetails.propTypes = {
-    value: dataPropTypes.isRequired
-};

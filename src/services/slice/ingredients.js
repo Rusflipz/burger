@@ -65,7 +65,6 @@ export const ingredientsSlice = createSlice({
             state.loading = true;
         },
         getOrderSuccess: (state, { payload }) => {
-            console.log(payload)
             state.loading = false
             state.orderNumber = payload.order.number
             state.orderName = payload.name

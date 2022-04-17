@@ -1,22 +1,38 @@
 import styles from './ProfileOrders.module.css';
-import { Link, useLocation } from 'react-router-dom';
-import { useSelector } from "react-redux";
+import { Link, useLocation, NavLink } from 'react-router-dom';
+import { useSelector, useDispatch } from "react-redux";
 import Order, { orderSelector } from '../../../services/slice/order';
 import { ingredientsSelector } from '../../../services/slice/ingredients';
 import { ImageUrl } from '../../../images/imagesForOrders/images';
 import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { getCookie } from '../../../services/Cookie';
+import React, { useEffect } from 'react';
+import { postLogOut, getProfileInformation } from '../../../services/api';
+import { getUserOrders } from '../../../services/WebSocet';
+import { Loading } from '../../Loading/loading';
+import { Error } from '../../Error/error';
+
 
 export function ProfileOrders() {
-console.log('nen')
   const location = useLocation()
+
+  useEffect(() => {
+    dispatch(getUserOrders())
+  }, [])
 
   const { ingredients } = useSelector(ingredientsSelector);
 
-  const { userOrders, userDataSuccess } = useSelector(orderSelector);
+  const { userOrders, userDataSuccess, loadingUserOrder, errorUserOrder } = useSelector(orderSelector);
+
+  const dispatch = useDispatch();
+
+  let refreshToken = getCookie('refreshToken')
+  let token = getCookie('token')
 
   function Order(order) {
+
     let orderDate = new Date(order.item.createdAt);
     let orderDateHours = orderDate.getHours()
     let orderDateMinutes = orderDate.getMinutes()
@@ -98,7 +114,7 @@ console.log('nen')
     return (
       <div className={`${styles.orderBackgraund} pt-6 pb-6 pr-6 pl-6 mb-4`}>
         <Link
-          to={{ pathname: `profile/orders/${order.item._id}`, state: { background3: location } }}
+          to={{ pathname: `/profile/orders/${order.item.number}`, state: { background3: location } }}
           className={`${styles.orderConteiner}`}>
           <div className={`${styles.orderNumber} mb-6`}>
             <p className={`${styles.number} text text_type_digits-default`}>{`#${order.item.number}`}</p>
@@ -106,22 +122,41 @@ console.log('nen')
           </div>
           <p className={`${styles.mainText} text text_type_main-medium mb-6`}>{order.item.name}</p>
           <div className={`${styles.orderInfoConteiner}`}>
-            <div className={`${styles.imageConteiner}`}>{userDataSuccess && ingredient.map((imageId) => <Image item={imageId} />)}{moreActive && <p className={`${styles.more} text text_type_digits-default`}>{`+${more}`}</p>}</div>
+            <div className={`${styles.imageConteiner}`}>{userDataSuccess && ingredient.map((imageId) => <Image item={imageId} key={Object.keys(imageId)[0]} />)}{moreActive && <p className={`${styles.more} text text_type_digits-default`}>{`+${more}`}</p>}</div>
             <div className={`${styles.priceConteiner}`}><p className={`${styles.price} text text_type_digits-default`}>{totalCost}</p><CurrencyIcon /></div>
           </div>
         </Link>
       </div>)
   }
 
+  if (loadingUserOrder) return <Loading />
+  if (errorUserOrder) return <Error />
+
   if (userDataSuccess) {
-
     let arr = []
-
     userOrders.orders.map((order) => {
       arr.push(order)
     })
     const reversed = arr.reverse();
-    return <> {userDataSuccess && reversed.map((order) => <Order item={order} key={order._id} />)} </>
+    return <>
+      <div className={styles.wrapper}>
+        <div className={`${styles.links_box} mr-15`}>
+          <NavLink exact to={'/profile'} activeClassName={`${styles.active}`} className={`${styles.link} text text_type_main-medium`} >Профиль</NavLink>
+          <NavLink
+            exact
+            to={"/profile/orders"}
+            activeClassName={`${styles.active}`}
+            className={`${styles.link} text text_type_main-medium`}>История заказов</NavLink>
+          <NavLink exact to='/' activeClassName={`${styles.active}`} className={`${styles.link} text text_type_main-medium mb-20`}
+            onClick={() => dispatch(postLogOut(refreshToken))}>Выход</NavLink>
+          <p className={`${styles.text} `}>В этом разделе вы можете
+            изменить свои персональные данные</p>
+        </div>
+        <div className={`${styles.ordersConteiner}`}>
+          {userDataSuccess && arr.map((order) => <Order item={order} key={order._id} />)}
+        </div>
+      </div>
+    </>
   } else
     return <></>
 }

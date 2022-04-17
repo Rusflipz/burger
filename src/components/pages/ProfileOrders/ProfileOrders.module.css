@@ -100,16 +100,18 @@
 
 .image:nth-child(6) {
     position: relative;
-    left: 136px;
-    top: -68px;
+    left: -184px;
+    top: 0px;
     width: 64px;
     height: 64px;
 }
 
 .more {
+    width: 64px;
+    height: 64px;
     margin: 0;
     position: relative;
-    top: -115px;
+    top: -50px;
     left: 155px;
     font-weight: 400;
     font-size: 20px;
@@ -185,4 +187,84 @@
     height: 64px;
     position: relative;
     display: block;
+}
+
+.wrapper{
+    width: 1240px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    margin-top: 180px;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.heading{
+    text-align: center;
+}
+
+.text{
+    margin: 0;
+    margin-bottom: 16px;
+    padding: 0;
+    color: #8585AD;
+    opacity: 0.4;
+}
+
+.link{
+    text-decoration: none;
+    height: 64px;
+    color: #8585AD;
+}
+
+.links_box{
+    display: flex;
+    flex-direction: column;
+    width: 320px;
+}
+
+.input{
+    color: #8585AD;
+}
+
+.buttons{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.button:first-child{
+    margin-right: 10px;
+}
+
+.ordersConteiner{
+    max-width: 850px;
+    height: calc(100vh - 300px);
+    box-sizing: border-box;
+    overflow-y: scroll;
+}
+
+.ordersConteiner::-webkit-scrollbar {
+    width: 8px;
+    /* ширина scrollbar */
+}
+
+.ordersConteiner::-webkit-scrollbar-track {
+    background: #2F2F37;
+    /* цвет дорожки */
+}
+
+.ordersConteiner::-webkit-scrollbar-thumb {
+    background-color: #8585AD;
+    /* цвет плашки */
+    /* border-radius: 20px;       закругления плашки */
+    /* border: 3px solid orange;  padding вокруг плашки */
+}
+
+.active{
+    color: #F2F2F3;
 }

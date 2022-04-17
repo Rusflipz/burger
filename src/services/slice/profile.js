@@ -137,7 +137,6 @@ export const profileSlice = createSlice({
             state.accessToken = null
             state.refreshToken = null
             state.isUserLoaded = false
-            console.log(state.forgotInformation)
         },
         logOutFailed: state => {
             state.loading = false
