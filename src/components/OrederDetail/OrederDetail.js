@@ -1,7 +1,7 @@
 import styles from './OrederDetail.module.css';
 import { dataPropTypes } from '../../utils/types';
 import { useEffect, useState } from "react";
-import { Route, Redirect, StaticRouter, useParams } from 'react-router-dom';
+import { Route, Redirect, StaticRouter, useParams, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 import { ingredientsSelector } from '../../services/slice/ingredients';
 import { orderSelector } from '../../services/slice/order';
@@ -10,21 +10,31 @@ import {
     CurrencyIcon,
     Counter
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { getUserOrders } from '../../services/WebSocet';
+import { getOrders } from '../../services/WebSocet'
 
 
 export function OrederDetail(props) {
     const { id } = useParams();
-    const { dataSuccess, loading, currentOrderPrice } = useSelector(orderSelector);
-    const { ingredients } = useSelector(ingredientsSelector);
+    const location = useLocation();
     const dispatch = useDispatch();
-    if (props.item) {
 
-        let currentOrder = props.item.find((item) => item.number == id);
+    const { dataSuccess, userDataSuccess, orders1, userOrders1 } = useSelector(orderSelector);
+    const { ingredients } = useSelector(ingredientsSelector);
+
+    let a = false;
+    if (dataSuccess || userDataSuccess) {
+        a = true;
+    }
+
+    if (props.item !== null) {
+
+        let currentOrder = props.item.orders.find((item) => item.number == id);
         let totalCost = 0;
 
         let status = ''
 
-        if (dataSuccess) {
+        if (dataSuccess || userDataSuccess) {
             if (currentOrder.status == 'done') {
                 status = 'Выполнен'
             } else {
@@ -109,19 +119,20 @@ export function OrederDetail(props) {
             </>
         }
 
+
         return (
             <>
-                {dataSuccess && (
+                {a && (
                     <div className={`${styles.mainConteiner}`} >
                         <p className={`text text_type_digits-default mb-10`}>{`#${currentOrder.number}`}</p>
                         <p className={`text text_type_main-medium mb-3 ${styles.name}`}>{currentOrder.name}</p>
                         <p className={`text text_type_main-small mb-3 mb-15 ${styles.status}`}>{status}</p>
                         <p className={`text text_type_main-medium mb-3 mb-6 ${styles.structureText}`}>Состав:</p>
                         <div className={`${styles.ingredientsConteiner} mb-10`}>
-                            {dataSuccess && res.map((imageId) => <Ingredient item={imageId} key={Object.keys(imageId)[0]} />)}
+                            {a && res.map((imageId) => <Ingredient item={imageId} key={Object.keys(imageId)[0]} />)}
                         </div>
                         <div className={`${styles.bottomInfo} mb-10`}>
-                            {dataSuccess && <Time />}
+                            {a && <Time />}
 
                         </div>
                     </div>
