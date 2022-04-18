@@ -14,7 +14,6 @@ export const initialState = {
     orders1: [{ _id: '6259088c1a3b2c001bd008a6', ingredients: Array(2), status: 'done', name: 'Краторный бургер', createdAt: '2022-04-15T05:54:20.294Z' }],
     userOrders: null,
     userOrders1: [{ _id: '6259088c1a3b2c001bd008a6', ingredients: Array(2), status: 'done', name: 'Краторный бургер', createdAt: '2022-04-15T05:54:20.294Z' }],
-
 }
 
 export const orderSlice = createSlice({
