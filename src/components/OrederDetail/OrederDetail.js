@@ -22,14 +22,14 @@ export function OrederDetail(props) {
     const { dataSuccess, userDataSuccess, orders1, userOrders1 } = useSelector(orderSelector);
     const { ingredients } = useSelector(ingredientsSelector);
 
+
     let a = false;
     if (dataSuccess || userDataSuccess) {
         a = true;
     }
 
-    if (props.item !== null) {
-
-        let currentOrder = props.item.orders.find((item) => item.number == id);
+    if (a) {
+        let currentOrder = props.item.find((item) => item.number == id);
         let totalCost = 0;
 
         let status = ''

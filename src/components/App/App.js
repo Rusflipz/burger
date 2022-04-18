@@ -144,7 +144,7 @@ function App() {
         background2 && (<>
           <Route path="/feed/:id" exact={true}>
             <Modal onClose={closeModal}>
-              <OrederDetail item={orders} />
+              <OrederDetail item={orders1} />
             </Modal>
           </Route>
         </>)
@@ -154,7 +154,7 @@ function App() {
         background3 && (<>
           <Route path="/profile/orders/:id" exact={true}>
             <Modal onClose={closeModal}>
-              <OrederDetail item={userOrders} />
+              <OrederDetail item={userOrders1} />
             </Modal>
           </Route>
         </>)
