@@ -37,7 +37,7 @@ import { ProfileOrders } from '../pages/ProfileOrders/ProfileOrders'
 
 function App() {
   const { loading, error, isUserLoaded } = useSelector(ingredientsSelector);
-  const { orders1, userOrders1 } = useSelector(orderSelector);
+  const { orders1, userOrders1, orders, userOrders } = useSelector(orderSelector);
 
   const dispatch = useDispatch()
   let token = getCookie('token')
@@ -144,7 +144,7 @@ function App() {
         background2 && (<>
           <Route path="/feed/:id" exact={true}>
             <Modal onClose={closeModal}>
-              <OrederDetail item={orders1} />
+              <OrederDetail item={orders} />
             </Modal>
           </Route>
         </>)
@@ -154,7 +154,7 @@ function App() {
         background3 && (<>
           <Route path="/profile/orders/:id" exact={true}>
             <Modal onClose={closeModal}>
-              <OrederDetail item={userOrders1} />
+              <OrederDetail item={userOrders} />
             </Modal>
           </Route>
         </>)

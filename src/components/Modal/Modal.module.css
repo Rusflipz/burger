@@ -19,7 +19,7 @@
   z-index: 1;
   text-align: center;
   align-items: center;
-  height: auto;
+  height:fit-content;
   max-height: 650px;
   box-sizing: border-box;
 }

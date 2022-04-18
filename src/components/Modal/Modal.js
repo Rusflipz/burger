@@ -4,9 +4,13 @@ import ModalOverlay from '../ModalOverlay/ModalOverlay';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
+import { getUserOrders } from '../../services/WebSocet';
+import { getOrders } from '../../services/WebSocet';
+import { useSelector, useDispatch } from "react-redux";
+
 
 function Modal(props) {
-
+    const dispatch = useDispatch();
     useEffect(() => {
         const closeByEscape = (e) => {
             if (e.key === 'Escape') {
