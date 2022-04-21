@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { getCookie } from '../../services/Cookie';
 import { profileSelector } from '../../services/slice/profile';
 import { getProfileInformation } from '../../services/api';
-import { Loading } from '../Loading/loading';
+import { Loading } from '../../pages/Loading/loading';
 
 export function ProtectedRouteProfile({ children }) {
     let location = useLocation();

@@ -186,7 +186,6 @@ export const fetchOrderDetails = (ingredients) => {
     return async dispatch => {
         dispatch(getOrder())
         try {
-            console.log(arr)
             let token = getCookie("token");
             const response = await fetch(`${url}orders`, {
                 method: 'POST',

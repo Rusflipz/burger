@@ -9,9 +9,9 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { postLogin } from '../../../services/api';
+import { postLogin } from '../../services/api';
 import { Route, Redirect, useLocation } from 'react-router-dom';
-import { profileSelector } from '../../../services/slice/profile';
+import { profileSelector } from '../../services/slice/profile';
 import React, { useState } from 'react';
 
 

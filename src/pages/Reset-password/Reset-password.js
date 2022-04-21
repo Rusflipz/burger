@@ -10,8 +10,8 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { postResetPassword } from '../../../services/api';
-import { getCookie } from '../../../services/Cookie';
+import { postResetPassword } from '../../services/api';
+import { getCookie } from '../../services/Cookie';
 
 export function Resetpassword() {
 

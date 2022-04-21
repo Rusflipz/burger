@@ -10,9 +10,9 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useHistory, Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { profileSelector, postForgot } from '../../../services/slice/profile';
-import { postForgotPassword } from '../../../services/api';
-import { getCookie } from '../../../services/Cookie';
+import { profileSelector, postForgot } from '../../services/slice/profile';
+import { postForgotPassword } from '../../services/api';
+import { getCookie } from '../../services/Cookie';
 
 export function Forgotpassword() {
 

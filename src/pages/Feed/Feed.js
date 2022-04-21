@@ -1,16 +1,16 @@
 import styles from './Feed.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation, Link } from 'react-router-dom';
-import { orderSelector } from '../../../services/slice/order';
-import { ingredientsSelector } from '../../../services/slice/ingredients';
+import { orderSelector } from '../../services/slice/order';
+import { ingredientsSelector } from '../../services/slice/ingredients';
 import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { ImageUrl } from '../../../images/imagesForOrders/images';
-import { getOrders } from '../../../services/WebSocet';
+import { ImageUrl } from '../../images/imagesForOrders/images';
+import { getOrders } from '../../services/WebSocet';
 import React, { useEffect } from 'react';
-import { Loading } from '../../Loading/loading';
-import { Error } from '../../Error/error';
+import { Loading } from '../Loading/loading';
+import { Error } from '../Error/error';
 
 export function FeedPage() {
 

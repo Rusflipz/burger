@@ -9,7 +9,7 @@ import {
   Input
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from 'react-router-dom';
-import { postRegister } from '../../../services/api';
+import { postRegister } from '../../services/api';
 import { useSelector, useDispatch } from 'react-redux';
 
 export function RegistrationPage() {

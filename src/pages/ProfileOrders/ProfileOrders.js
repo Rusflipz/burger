@@ -1,18 +1,18 @@
 import styles from './ProfileOrders.module.css';
 import { Link, useLocation, NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
-import Order, { orderSelector } from '../../../services/slice/order';
-import { ingredientsSelector } from '../../../services/slice/ingredients';
-import { ImageUrl } from '../../../images/imagesForOrders/images';
+import Order, { orderSelector } from '../../services/slice/order';
+import { ingredientsSelector } from '../../services/slice/ingredients';
+import { ImageUrl } from '../../images/imagesForOrders/images';
 import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { getCookie } from '../../../services/Cookie';
+import { getCookie } from '../../services/Cookie';
 import React, { useEffect } from 'react';
-import { postLogOut, getProfileInformation } from '../../../services/api';
-import { getUserOrders } from '../../../services/WebSocet';
-import { Loading } from '../../Loading/loading';
-import { Error } from '../../Error/error';
+import { postLogOut, getProfileInformation } from '../../services/api';
+import { getUserOrders } from '../../services/WebSocet';
+import { Loading } from '../Loading/loading';
+import { Error } from '../Error/error';
 
 
 export function ProfileOrders() {

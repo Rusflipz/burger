@@ -6,29 +6,85 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { NavLink } from 'react-router-dom';
+import React, { useEffect, createRef } from "react";
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  headerLinksSelector,
+  constructorLinkActive, feedLinkActive, profileLinkActive,
+  constructorLinkNotActive, feedLinkNotActive, profileLinkNotActive
+} from '../../services/slice/HeaderLinks';
 
 function AppHeader() {
+
+  const dispatch = useDispatch();
+
+  const { constructorLinkValue, feedLinkValue, profileLinkValue } = useSelector(headerLinksSelector);
+
+  let constructorLink = createRef();
+  let feedLink = createRef();
+  let profileLink = createRef();
+
+  useEffect(() => {
+    constructorLink.current.focus();
+    feedLink.current.focus();
+    profileLink.current.focus();
+    if (constructorLink.current.className.includes("active")) {
+      dispatch(constructorLinkActive())
+      dispatch(feedLinkNotActive())
+      dispatch(profileLinkNotActive())
+    }
+    if (feedLink.current.className.includes("active")) {
+      dispatch(constructorLinkNotActive())
+      dispatch(feedLinkActive())
+      dispatch(profileLinkNotActive())
+    }
+    if (profileLink.current.className.includes("active")) {
+      dispatch(constructorLinkNotActive())
+      dispatch(feedLinkNotActive())
+      dispatch(profileLinkActive())
+    }
+  }, [constructorLinkValue, feedLinkValue, profileLinkValue])
+
+  function handleClickConstructorLink() {
+    dispatch(constructorLinkActive())
+    dispatch(feedLinkNotActive())
+    dispatch(profileLinkNotActive())
+  }
+  function handleClickFeedLink() {
+    dispatch(constructorLinkNotActive())
+    dispatch(feedLinkActive())
+    dispatch(profileLinkNotActive())
+  }
+  function handleClickProfileLink() {
+    dispatch(constructorLinkNotActive())
+    dispatch(feedLinkNotActive())
+    dispatch(profileLinkActive())
+  }
   return (
     <header className={`${styles.header}`}>
       <div className={`${styles.contentBox}`}>
         <nav className={styles.navigation}>
           <NavLink
+            onClick={handleClickConstructorLink}
+            ref={constructorLink}
             exact
             className={`${styles.navigationItem} ml-1 pr-5 mr-2 mt-4 mb-4`}
             activeClassName={styles.active}
             to='/'
           >
-            <BurgerIcon type='secondary' />
+            <BurgerIcon type={constructorLinkValue} />
             <span className={`text text_type_main-default ml-2`}>
               Конструктор
             </span>
           </NavLink>
           <NavLink
+            onClick={handleClickFeedLink}
+            ref={feedLink}
             activeClassName={styles.active}
             exact
             className={`${styles.navigationItem} pl-5 pr-5 mt-4 mb-4`}
             to='/feed'>
-            <ListIcon type='secondary' />
+            <ListIcon type={feedLinkValue} />
             <span className={`text text_type_main-default ml-2`}>
               Лента заказов
             </span>
@@ -39,12 +95,14 @@ function AppHeader() {
         </span>
         <nav className={styles.navigation}>
           <NavLink
+            onClick={handleClickProfileLink}
+            ref={profileLink}
             activeClassName={styles.active}
             exact
             className={`${styles.navigationItem} ${styles.navigationItemProf} pl-5 pr-5 mt-4 mb-4`}
             to='/profile'
           >
-            <ProfileIcon type="secondary" />
+            <ProfileIcon type={profileLinkValue} />
             <span className={`text text_type_main-default ml-2`}>
               Личный кабинет
             </span>

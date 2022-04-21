@@ -7,18 +7,18 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ingredientsSelector } from '../../services/slice/ingredients';
 import { orderSelector } from '../../services/slice/order';
 import { fetchIngredients } from '../../services/api';
-import { Loading } from '../Loading/loading';
-import { Error } from '../Error/error';
+import { Loading } from '../../pages/Loading/loading';
+import { Error } from '../../pages/Error/error';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { Router, Switch, Route, useHistory, useLocation } from 'react-router-dom';
-import { LoginPage } from '../pages/Login/Login';
-import { RegistrationPage } from '../pages/Registration/Registration';
-import { Forgotpassword } from '../pages/Forgot-password/Forgot-password';
-import { Resetpassword } from '../pages/Reset-password/Reset-password';
-import { Profile } from '../pages/Profile/Profile';
+import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
+import { LoginPage } from '../../pages/Login/Login';
+import { RegistrationPage } from '../../pages/Registration/Registration';
+import { Forgotpassword } from '../../pages/Forgot-password/Forgot-password';
+import { Resetpassword } from '../../pages/Reset-password/Reset-password';
+import { Profile } from '../../pages/Profile/Profile';
 import { ProtectedRouteProfile } from '../ProtectedRoute/ProtectedRouteProfile';
-import { IngredientPage } from '../IngredientPage/IngredientPage';
+import { IngredientPage } from '../../pages/IngredientPage/IngredientPage';
 import { ProtectedRouteLogin } from '../ProtectedRoute/ProtectedRouteLogin';
 import { ProtectedRouteRegistration } from '../ProtectedRoute/ProtectedRouteRegistration';
 import { ProtectedForgotPassword } from '../ProtectedRoute/ProtectedForgotPassword';
@@ -28,20 +28,17 @@ import { ProtectedUserOrder } from '../ProtectedRoute/ProtectedUserOrder';
 import { getCookie } from '../../services/Cookie';
 import Modal from '../Modal/Modal';
 import { IngredientDetails } from '../IngredientDetails/IngredientDetails';
-import { tokenNotFound } from '../../services/slice/profile';
-import { FeedPage } from '../pages/Feed/Feed';
+import { FeedPage } from '../../pages/Feed/Feed';
 import { OrederDetail } from '../OrederDetail/OrederDetail';
-import { OrderPage } from '../OrderPage/OrderPage';
-import { UserOrderPage } from '../UserOrderPage/UserOrderPage';
-import { ProfileOrders } from '../pages/ProfileOrders/ProfileOrders'
+import { OrderPage } from '../../pages/OrderPage/OrderPage';
+import { UserOrderPage } from '../../pages/UserOrderPage/UserOrderPage';
+import { ProfileOrders } from '../../pages/ProfileOrders/ProfileOrders'
 
 function App() {
   const { loading, error, isUserLoaded } = useSelector(ingredientsSelector);
   const { orders1, userOrders1, orders, userOrders } = useSelector(orderSelector);
 
   const dispatch = useDispatch()
-  let token = getCookie('token')
-  let refreshToken = getCookie('refreshToken')
 
   const history = useHistory();
   const location = useLocation();
@@ -55,10 +52,7 @@ function App() {
   };
 
   useEffect(() => {
-    // dispatch(getOrders())
     dispatch(fetchIngredients())
-    // dispatch(getUserOrders())
-    // dispatch(getProfileInformation(token))
   }, [dispatch]);
 
 
