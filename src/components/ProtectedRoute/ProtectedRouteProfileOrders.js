@@ -6,15 +6,11 @@ import { profileSelector } from '../../services/slice/profile';
 import { getProfileInformation } from '../../services/api';
 import { Loading } from '../../pages/Loading/loading';
 
-export function ProtectedRouteProfile({ children }) {
+export function ProtectedRouteProfileOrders({ children }) {
     let location = useLocation();
 
     const dispatch = useDispatch()
     const { loading, refreshSuccess, refreshing } = useSelector(profileSelector);
-
-    useEffect(() => {
-        dispatch(getProfileInformation())
-    }, [])
 
     let isUserLoaded = false;
 

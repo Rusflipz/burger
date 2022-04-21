@@ -10,9 +10,9 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useHistory, Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { profileSelector, postForgot } from '../../../services/slice/profile';
-import { postForgotPassword } from '../../../services/api';
-import { getCookie } from '../../../services/Cookie';
+import { profileSelector, postForgot } from '../../services/slice/profile';
+import { postForgotPassword } from '../../services/api';
+import { getCookie } from '../../services/Cookie';
 
 export function Forgotpassword() {
 
@@ -33,7 +33,7 @@ export function Forgotpassword() {
   const dispatch = useDispatch();
 
 
-  const [mailValue, setmailValue] = useState(null);
+  const [mailValue, setmailValue] = useState('');
 
   const login = React.useCallback(
     () => {
@@ -62,6 +62,7 @@ export function Forgotpassword() {
         <form className={`${styles.form} mb-20`} onSubmit={() => { handleClick() }}>
           <div className={`mb-6`}>
             <Input
+            value={mailValue}
             onChange={e => handleChangeMail(e)}
               placeholder='E-mail'
               size={'default'}

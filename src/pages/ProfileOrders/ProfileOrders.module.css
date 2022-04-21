@@ -1,0 +1,270 @@
+.mainConteiner {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 60px;
+    margin: 0 auto;
+    width: 1240px;
+    height: 100vh;
+}
+
+.title {
+    width: 1240px;
+    height: 40px;
+    margin: 0 auto;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.feedLent {
+    height: calc(100% - 200px);
+    box-sizing: border-box;
+    overflow-y: scroll;
+}
+
+.feedLent::-webkit-scrollbar {
+    width: 8px;
+    /* ширина scrollbar */
+}
+
+.feedLent::-webkit-scrollbar-track {
+    background: #2F2F37;
+    /* цвет дорожки */
+}
+
+.feedLent::-webkit-scrollbar-thumb {
+    background-color: #8585AD;
+    /* цвет плашки */
+    /* border-radius: 20px;       закругления плашки */
+    /* border: 3px solid orange;  padding вокруг плашки */
+}
+
+.orderConteiner {
+    text-decoration: none;
+    color: #f2f2f3;
+}
+
+.orderBackgraund {
+    overflow: hidden;
+    background-color: #1C1C21;
+    border-radius: 40px;
+}
+
+.orderNumber {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+}
+
+.number {
+    text-align: left;
+}
+
+.date {
+    text-align: end;
+    color: #8585AD;
+}
+
+.image {
+    position: relative;
+    width: 64px;
+    height: 64px;
+}
+
+.image:nth-child(2) {
+    position: relative;
+    left: -30px;
+    width: 64px;
+    height: 64px;
+}
+
+.image:nth-child(3) {
+    position: relative;
+    left: -60px;
+    width: 64px;
+    height: 64px;
+}
+
+.image:nth-child(4) {
+    position: relative;
+    left: -90px;
+    width: 64px;
+    height: 64px;
+}
+
+.image:nth-child(5) {
+    position: relative;
+    left: -120px;
+    width: 64px;
+    height: 64px;
+}
+
+.image:nth-child(6) {
+    position: relative;
+    left: -184px;
+    top: 0px;
+    width: 64px;
+    height: 64px;
+}
+
+.more {
+    width: 64px;
+    height: 64px;
+    margin: 0;
+    position: relative;
+    top: -50px;
+    left: 155px;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+}
+
+.orderInfoConteiner {
+    display: flex;
+    flex-direction: row;
+}
+
+.price {
+    margin-right: 10px;
+}
+
+.priceConteiner {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    margin-right: 0;
+    margin-left: auto;
+}
+
+.ordersDoneValue {
+    text-shadow: 0px 0px 16px rgba(51, 51, 255, 0.25), 0px 0px 8px rgba(51, 51, 255, 0.25), 0px 4px 32px rgba(51, 51, 255, 0.5);
+}
+
+.ordersInfo {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 36px;
+}
+
+.ordersDone {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.ordersProcess {
+    display: flex;
+    flex-direction: column;
+}
+
+.ordersDoneNumbers {
+    width: 280px;
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.ordersDoneNumbers::after {
+    content: "";
+    height: 100%;
+    width: 100%;
+    flex-shrink: 1;
+}
+
+.ordersDoneNumber {
+    color: #00CCCC;
+    margin-right: 15px;
+}
+
+.ordersProcessNumber {
+    margin-right: 15px;
+}
+
+.imageConteiner {
+    box-sizing: border-box;
+    width: 500px;
+    height: 64px;
+    position: relative;
+    display: block;
+}
+
+.wrapper{
+    width: 1240px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    margin-top: 180px;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.heading{
+    text-align: center;
+}
+
+.text{
+    margin: 0;
+    margin-bottom: 16px;
+    padding: 0;
+    color: #8585AD;
+    opacity: 0.4;
+}
+
+.link{
+    text-decoration: none;
+    height: 64px;
+    color: #8585AD;
+}
+
+.links_box{
+    display: flex;
+    flex-direction: column;
+    width: 320px;
+}
+
+.input{
+    color: #8585AD;
+}
+
+.buttons{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.button:first-child{
+    margin-right: 10px;
+}
+
+.ordersConteiner{
+    max-width: 850px;
+    height: calc(100vh - 300px);
+    box-sizing: border-box;
+    overflow-y: scroll;
+}
+
+.ordersConteiner::-webkit-scrollbar {
+    width: 8px;
+    /* ширина scrollbar */
+}
+
+.ordersConteiner::-webkit-scrollbar-track {
+    background: #2F2F37;
+    /* цвет дорожки */
+}
+
+.ordersConteiner::-webkit-scrollbar-thumb {
+    background-color: #8585AD;
+    /* цвет плашки */
+    /* border-radius: 20px;       закругления плашки */
+    /* border: 3px solid orange;  padding вокруг плашки */
+}
+
+.active{
+    color: #F2F2F3;
+}

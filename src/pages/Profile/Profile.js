@@ -8,31 +8,37 @@ import {
   Button,
   Input
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from 'react-router-dom';
+import { Link, Route, useLocation, Switch, NavLink, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
-import { postLogOut, getProfileInformation } from '../../../services/api';
-import { getCookie } from '../../../services/Cookie';
-import { profileSelector, startChangeName, startChangeLogin, startChangePassword, stopChange, postChange } from '../../../services/slice/profile';
-import { editProfile } from '../../../services/api'
+import { postLogOut, getProfileInformation } from '../../services/api';
+import { getCookie } from '../../services/Cookie';
+import { profileSelector, startChangeName, startChangeLogin, startChangePassword, stopChange, postChange } from '../../services/slice/profile';
+import { editProfile } from '../../services/api';
+import { ProfileOrders } from '../ProfileOrders/ProfileOrders';
+import { BrowserRouter as Router } from "react-router-dom";
 
 export function Profile() {
+
+  const history = useHistory();
+  const location = useLocation();
+
   const dispatch = useDispatch();
 
-  const [nameValue, setNameValue] = useState(null);
-  const [mailValue, setmailValue] = useState(null);
-  const [passwordValue, setPasswordValue] = useState(null);
+  const [nameValue, setNameValue] = useState('');
+  const [mailValue, setmailValue] = useState('');
+  const [passwordValue, setPasswordValue] = useState('');
 
   const { name, mail, password } = useSelector(profileSelector);
   const { isChange, isChangeName, isChangeLogin, isChangePassword } = useSelector(profileSelector);
 
   let profile = {
-    name : name,
+    name: name,
     mail: mail,
     password: password
   }
 
   let profileChange = {
-    name : nameValue,
+    name: nameValue,
     mail: mailValue,
     password: passwordValue
   }
@@ -42,7 +48,7 @@ export function Profile() {
   }, [name])
 
   useEffect(() => {
-    setmailValue(mail)  
+    setmailValue(mail)
   }, [mail])
 
   useEffect(() => {
@@ -68,9 +74,6 @@ export function Profile() {
     setPasswordValue(e.target.value)
   }
 
-  // const [value, setValue] = React.useState('value')
-
-
   function cancel() {
     dispatch(getProfileInformation(token))
     dispatch(stopChange(token))
@@ -79,24 +82,8 @@ export function Profile() {
     setPasswordValue(password)
   }
 
-  // const nameField = React.useRef(null);
-  // const loginField = React.useRef(null);
-  // const passwordField = React.useRef(null);
-  // let nameValue = nameField.current;
-  // let loginValue = loginField.current;
-  // let passwordValue = passwordField.current;
-
- 
-  return (
-    <div className={styles.wrapper}>
-      <div className={`${styles.links_box} mr-15`}>
-        <Link to='/profile' className={`${styles.link} text text_type_main-medium`}>Профиль</Link>
-        <Link to='/feed' className={`${styles.link} text text_type_main-medium`}>История заказов</Link>
-        <Link to='/' className={`${styles.link} text text_type_main-medium mb-20`}
-          onClick={() => dispatch(postLogOut(refreshToken))}>Выход</Link>
-        <p className={`${styles.text} `}>В этом разделе вы можете
-          изменить свои персональные данные</p>
-      </div>
+  const Inputs = () => {
+    return (
       <div>
         <div className={`${styles.input} mb-6`}>
           {isChangeName ?
@@ -198,6 +185,26 @@ export function Profile() {
           </div> : <></>
         }
       </div>
-    </div>
-  );
+    )
+  }
+
+  return (
+    <>
+      <div className={styles.wrapper}>
+        <div className={`${styles.links_box} mr-15`}>
+          <NavLink exact to={'/profile'} activeClassName={`${styles.active}`} className={`${styles.link} text text_type_main-medium`} >Профиль</NavLink>
+          <NavLink
+            exact
+            to={"/profile/orders"}
+            activeClassName={`${styles.active}`}
+            className={`${styles.link} text text_type_main-medium`}>История заказов</NavLink>
+          <NavLink exact to='/' activeClassName={`${styles.active}`} className={`${styles.link} text text_type_main-medium mb-20`}
+            onClick={() => dispatch(postLogOut(refreshToken))}>Выход</NavLink>
+          <p className={`${styles.text} `}>В этом разделе вы можете
+            изменить свои персональные данные</p>
+        </div>
+        <Inputs />
+      </div>
+    </>
+  )
 }

@@ -3,7 +3,7 @@ import { ingredientsSelector, } from '../../services/slice/ingredients';
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
-import { IngredientDetails } from '../IngredientDetails/IngredientDetails';
+import { IngredientDetails } from '../../components/IngredientDetails/IngredientDetails';
 
 export const IngredientPage = () => {
     const { id } = useParams();

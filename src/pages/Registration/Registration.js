@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from './Registration.module.css';
 import {
   BurgerIcon,
@@ -9,25 +9,37 @@ import {
   Input
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from 'react-router-dom';
-import { postRegister } from '../../../services/api';
+import { postRegister } from '../../services/api';
 import { useSelector, useDispatch } from 'react-redux';
 
 export function RegistrationPage() {
   const dispatch = useDispatch()
 
-  let nameInput = React.createRef();
-  let mailInput = React.createRef();
-  let passwordInput = React.createRef();
+  const [nameValue, setNameValue] = useState('');
+  const [mailValue, setmailValue] = useState('');
+  const [passwordValue, setPasswordValue] = useState('');
+
+  function handleChangeName(e) {
+    e.preventDefault();
+    setNameValue(e.target.value)
+  }
+
+  function handleChangeMail(e) {
+    e.preventDefault();
+    setmailValue(e.target.value)
+  }
+
+  function handleChangePassword(e) {
+    e.preventDefault();
+    setPasswordValue(e.target.value)
+  }
 
   function handleClick(e) {
     e.preventDefault();
-    nameInput.current.focus();
-    mailInput.current.focus();
-    passwordInput.current.focus();
     let info = {
-      name: nameInput.current.value,
-      mail: mailInput.current.value,
-      password: passwordInput.current.value,
+      name: nameValue,
+      mail: mailValue,
+      password: passwordValue,
     }
     dispatch(postRegister(info))
   }
@@ -38,7 +50,8 @@ export function RegistrationPage() {
       <form className={`${styles.form} mb-20`} onSubmit={() => { handleClick() }}>
         <div className={`mb-6`}>
           <Input
-            ref={nameInput}
+            onChange={e => handleChangeName(e)}
+            value={nameValue}
             name='Name'
             placeholder='Имя'
             size={'default'}
@@ -47,7 +60,8 @@ export function RegistrationPage() {
         </div>
         <div className={`mb-6`}>
           <Input
-            ref={mailInput}
+            onChange={e => handleChangeMail(e)}
+            value={mailValue}
             name='E-mail'
             placeholder='E-mail'
             size={'default'}
@@ -56,7 +70,8 @@ export function RegistrationPage() {
         </div>
         <div className={`mb-6`}>
           <Input
-            ref={passwordInput}
+            onChange={e => handleChangePassword(e)}
+            value={passwordValue}
             name='Password'
             placeholder='Пароль'
             size={'default'}

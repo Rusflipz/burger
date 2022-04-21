@@ -11,11 +11,20 @@ import { OrderDetails } from '../OrderDetails/OrderDetails';
 import { Route, Redirect } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { profileSelector } from '../../services/slice/profile';
+import { getCookie } from '../../services/Cookie';
 
 
 function BurgerConstructor() {
 
-  const { isUserLoaded } = useSelector(profileSelector);
+  let isUserLoaded = false;
+
+  if (getCookie('token') !== undefined) {
+      isUserLoaded = true
+  }
+
+  if (getCookie('token') == '') {
+      isUserLoaded = false
+  }
 
   const { constructor, orderModalOpen, orderNumber, orderName } = useSelector(ingredientsSelector);
   const dispatch = useDispatch();

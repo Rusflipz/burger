@@ -15,7 +15,7 @@ import {
     firstTry
 } from '../services/slice/profile'
 import {
-    getOrdersSuccess
+    getOrdersSuccess, getUserOrdersSuccess
 } from '../services/slice/order';
 import { setCookie, deleteCookie, getCookie } from '../services/Cookie'
 import { useContext, useState, createContext } from 'react';
@@ -140,8 +140,6 @@ export const getProfileInformation = () => {
     return async dispatch => {
         dispatch(getProfile())
         try {
-            // if (getCookie("token") !== undefined) {
-            console.log('токен есть')
             let token = getCookie("token");
             const response = await fetch(`${url}auth/user`, {
                 method: 'GET',
@@ -179,13 +177,23 @@ export const fetchIngredients = () => {
 }
 
 export const fetchOrderDetails = (ingredients) => {
+    let arr = []
+    ingredients.map((i) => {
+        arr.push(i._id)
+    })
+    let img = ingredients.find(item => item.type == 'bun')
+    arr.push(img._id)
     return async dispatch => {
         dispatch(getOrder())
         try {
+            let token = getCookie("token");
             const response = await fetch(`${url}orders`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ingredients: ingredients.map(i => i._id) })
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify({ ingredients: arr })
             })
             const data = await checkResponse(response)
             dispatch(getOrderSuccess(data))
@@ -329,39 +337,3 @@ export const postLogOut = (information) => {
     }
 }
 
-export const getAllOrders = () => {
-    return async dispatch => {
-        // dispatch(logOut())
-        try {
-            const response = await fetch(`${url}orders/all`, {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    // "token": information
-                })
-            })
-            const data = await checkResponse(response)
-            // dispatch(logOutSuccess(data))
-        } catch (err) {
-            console.log(err)
-            // dispatch(logOutFailed())
-        }
-    }
-}
-
-const ws = new WebSocket("wss://norma.nomoreparties.space/orders/all")
-
-ws.onopen = (event) => {
-    console.log("Соединение установлено");
-}
-
-ws.onmessage = (event) => {  //Получение данных из соеденения
-
-    let ordersData = JSON.parse(event.data)
-getOrdersSuccess(ordersData)
-    console.log(ordersData.orders)
-}
-
-ws.onerror = (event) => {
-    console.log(`Ошибка ${event.message}`)
-}
