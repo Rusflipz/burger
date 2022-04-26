@@ -59,24 +59,24 @@ export function Profile() {
   let refreshToken = getCookie('refreshToken')
   let token = getCookie('token')
 
-  function handleChangeName(e) {
+  function handleChangeName(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     setNameValue(e.target.value)
   }
 
-  function handleChangeMail(e) {
+  function handleChangeMail(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     setmailValue(e.target.value)
   }
 
-  function handleChangePassword(e) {
+  function handleChangePassword(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     setPasswordValue(e.target.value)
   }
 
   function cancel() {
-    dispatch(getProfileInformation(token))
-    dispatch(stopChange(token))
+    dispatch(getProfileInformation())
+    dispatch(stopChange())
     setNameValue(name)
     setmailValue(mail)
     setPasswordValue(password)
@@ -108,6 +108,7 @@ export function Profile() {
               errorText={'Ошибка'}
               error={false}
               disabled
+              onChange={e => { return false }}
               onIconClick={() => dispatch(startChangeName())}
               value={nameValue}
               icon={'EditIcon'}
@@ -132,6 +133,7 @@ export function Profile() {
             </div>
             :
             <Input
+              onChange={e => { return false }}
               disabled
               onIconClick={() => dispatch(startChangeLogin())}
               value={mailValue}
@@ -159,6 +161,7 @@ export function Profile() {
             </div>
             :
             <Input
+              onChange={e => { return false }}
               disabled
               onIconClick={() => dispatch(startChangePassword())}
               icon={'EditIcon'}

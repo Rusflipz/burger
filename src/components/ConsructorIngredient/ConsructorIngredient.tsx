@@ -1,13 +1,15 @@
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { useDispatch } from 'react-redux';
 import { deleteIngredientFromConstructorItem, dragItems } from '../../services/slice/ingredients';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
+import { Iingredients } from '../../utils/Interface'
 
-export const ConstructorIngredient = ({ item, index }) => {
+export const ConstructorIngredient = ({ item, index }: { item: Iingredients, index: number }) => {
     const dispatch = useDispatch();
-    const ref = useRef(null)
+    const ref = useRef<HTMLDivElement>(null)
+
 
     const handleDeleteItem = () => {
         dispatch(deleteIngredientFromConstructorItem(item))
@@ -30,7 +32,7 @@ export const ConstructorIngredient = ({ item, index }) => {
             if (dragIndex === hoverIndex) return;
             dispatch(dragItems({ drag: dragIndex, hover: hoverIndex }))
         },
-        hover: (item, monitor) => {
+        hover: (item: { index: number }, monitor: any) => {
             if (!ref.current) return
             const dragIndex = item.index
             const hoverIndex = index
@@ -50,12 +52,13 @@ export const ConstructorIngredient = ({ item, index }) => {
             item.index = hoverIndex
         },
     })
-    const dragDropRef = dragRef(dropRef(ref))
 
-    const opacity = isDragging ? .5 : 1
+    // const dragDropRef = dragRef(dropRef(ref))
+
+    // const opacity = isDragging ? .5 : 1
 
     return (
-        <div className={`pl-2 pr-2 mt-4 mb-4`} ref={dragDropRef} draggable data-handler-id={handlerId}>
+        <div className={`pl-2 pr-2 mt-4 mb-4`} ref={ref} draggable data-handler-id={handlerId}>
             <DragIcon type="primary" />
             <ConstructorElement
                 text={item.name}
@@ -67,7 +70,7 @@ export const ConstructorIngredient = ({ item, index }) => {
     )
 }
 
-ConstructorIngredient.propTypes = {
-    item: PropTypes.object.isRequired,
-    index: PropTypes.number.isRequired,
-};
+// ConstructorIngredient.propTypes = {
+//     item: PropTypes.object.isRequired,
+//     index: PropTypes.number.isRequired,
+// };

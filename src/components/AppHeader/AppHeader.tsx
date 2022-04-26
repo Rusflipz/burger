@@ -6,7 +6,7 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { NavLink } from 'react-router-dom';
-import React, { useEffect, createRef } from "react";
+import React, { useEffect, createRef, useRef } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import {
   headerLinksSelector,
@@ -20,28 +20,34 @@ function AppHeader() {
 
   const { constructorLinkValue, feedLinkValue, profileLinkValue } = useSelector(headerLinksSelector);
 
-  let constructorLink = createRef();
-  let feedLink = createRef();
-  let profileLink = createRef();
+  let constructorLink = useRef<HTMLAnchorElement>(null);
+  let feedLink = useRef<HTMLAnchorElement>(null);
+  let profileLink = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
-    constructorLink.current.focus();
-    feedLink.current.focus();
-    profileLink.current.focus();
-    if (constructorLink.current.className.includes("active")) {
-      dispatch(constructorLinkActive())
-      dispatch(feedLinkNotActive())
-      dispatch(profileLinkNotActive())
+    if (constructorLink && constructorLink.current) {
+      constructorLink.current.focus();
+      if (constructorLink.current.className.includes("active")) {
+        dispatch(constructorLinkActive())
+        dispatch(feedLinkNotActive())
+        dispatch(profileLinkNotActive())
+      }
     }
-    if (feedLink.current.className.includes("active")) {
-      dispatch(constructorLinkNotActive())
-      dispatch(feedLinkActive())
-      dispatch(profileLinkNotActive())
+    if (feedLink && feedLink.current) {
+      feedLink.current.focus();
+      if (feedLink.current.className.includes("active")) {
+        dispatch(constructorLinkNotActive())
+        dispatch(feedLinkActive())
+        dispatch(profileLinkNotActive())
+      }
     }
-    if (profileLink.current.className.includes("active")) {
-      dispatch(constructorLinkNotActive())
-      dispatch(feedLinkNotActive())
-      dispatch(profileLinkActive())
+    if (profileLink && profileLink.current) {
+      profileLink.current.focus();
+      if (profileLink.current.className.includes("active")) {
+        dispatch(constructorLinkNotActive())
+        dispatch(feedLinkNotActive())
+        dispatch(profileLinkActive())
+      }
     }
   }, [constructorLinkValue, feedLinkValue, profileLinkValue])
 

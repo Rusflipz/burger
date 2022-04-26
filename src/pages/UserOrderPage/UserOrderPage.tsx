@@ -15,11 +15,11 @@ export const UserOrderPage = () => {
     dispatch(getUserOrders())
   }, [])
 
-  const { id } = useParams();
+  const { id }: {id: string} = useParams();
   const { orders, userOrders1, userDataSuccess, loadingUserOrder, errorUserOrder } = useSelector(orderSelector);
 
   const currentOrder = useMemo(
-    () => userOrders1.find((el) => el.number == id),
+    () => userOrders1.find((el: { number: string; }) => el.number == id),
     [userOrders1, id]
   );
 

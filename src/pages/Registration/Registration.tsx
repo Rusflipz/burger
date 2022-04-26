@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import styles from './Registration.module.css';
 import {
   BurgerIcon,
@@ -19,22 +19,22 @@ export function RegistrationPage() {
   const [mailValue, setmailValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
 
-  function handleChangeName(e) {
+  function handleChangeName(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     setNameValue(e.target.value)
   }
 
-  function handleChangeMail(e) {
+  function handleChangeMail(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     setmailValue(e.target.value)
   }
 
-  function handleChangePassword(e) {
+  function handleChangePassword(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     setPasswordValue(e.target.value)
   }
 
-  function handleClick(e) {
+  function handleClick(e: React.SyntheticEvent<Element, Event>) {
     e.preventDefault();
     let info = {
       name: nameValue,
@@ -47,7 +47,9 @@ export function RegistrationPage() {
   return (
     <div className={styles.wrapper}>
       <h1 className={`${styles.heading} text text_type_main-medium mb-6`}>Регистрация</h1>
-      <form className={`${styles.form} mb-20`} onSubmit={() => { handleClick() }}>
+      <form className={`${styles.form} mb-20`}
+      //  onSubmit={() => { handleClick() }}
+      >
         <div className={`mb-6`}>
           <Input
             onChange={e => handleChangeName(e)}

@@ -6,10 +6,10 @@ import { useParams } from "react-router-dom";
 import { IngredientDetails } from '../../components/IngredientDetails/IngredientDetails';
 
 export const IngredientPage = () => {
-    const { id } = useParams();
+    const { id }: {id: string} = useParams();
     const { ingredients } = useSelector(ingredientsSelector);
     const currentIngredient = useMemo(
-      () => ingredients.find((el) => el._id === id),
+      () => ingredients.find((el: { _id: string; }) => el._id === id),
       [ingredients, id]
     );
   

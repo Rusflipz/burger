@@ -23,7 +23,7 @@ export function LoginPage() {
   const [mailValue, setmailValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
 
-  function handleClick(e) {
+  function handleClick(e: React.SyntheticEvent<Element, Event>) {
     e.preventDefault();
     let info = {
       mail: mailValue,
@@ -32,14 +32,25 @@ export function LoginPage() {
     dispatch(postLogin(info))
   }
 
-  let location = useLocation();
+  interface LocationState {
+    from: string;
+    pathname: string;
+    search: string;
+    hash: string;
+    state: object | undefined;
+    background2: LocationState;
+    background3: LocationState;
+    background1: LocationState;
+  }
 
-  function handleChangeMail(e) {
+  let location = useLocation<LocationState>();
+
+  function handleChangeMail(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     setmailValue(e.target.value)
   }
 
-  function handleChangePassword(e) {
+  function handleChangePassword(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     setPasswordValue(e.target.value)
   }
@@ -57,7 +68,9 @@ export function LoginPage() {
     <>
       {!isUserLoaded ? <div className={styles.wrapper}>
         <h1 className={`${styles.heading} text text_type_main-medium mb-6`}>Вход</h1>
-        <form className={`${styles.form} mb-20`} onSubmit={() => { handleClick() }}>
+        <form className={`${styles.form} mb-20`}
+        // onSubmit={() => { handleClick() }}
+        >
           <div className={`mb-6`}>
             <Input
               onChange={e => handleChangeMail(e)}

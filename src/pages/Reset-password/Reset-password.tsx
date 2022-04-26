@@ -30,17 +30,17 @@ export function Resetpassword() {
 
   const dispatch = useDispatch();
 
-  function handleChangePassword(e) {
+  function handleChangePassword(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     setPasswordValue(e.target.value)
   }
 
-  function handleChangeCode(e) {
+  function handleChangeCode(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     setcodeValue(e.target.value)
   }
 
-  function handleClick(e) {
+  function handleClick(e: React.SyntheticEvent<Element, Event>) {
     e.preventDefault();
     dispatch((postResetPassword(passwordValue, codelValue)))
   }
@@ -49,7 +49,9 @@ export function Resetpassword() {
       {!isUserLoaded && <Redirect to={{ pathname: "/" }} />}
       <div className={styles.wrapper}>
         <h1 className={`${styles.heading} text text_type_main-medium mb-6`}>Восстановление пароля</h1>
-        <form className={`${styles.form} mb-20`} onSubmit={() => { handleClick() }}>
+        <form className={`${styles.form} mb-20`}
+        //  onSubmit={() => { handleClick() }}
+         >
           <div className={`mb-6`}>
             <Input
               value={passwordValue}

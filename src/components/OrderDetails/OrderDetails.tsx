@@ -1,7 +1,8 @@
 import done from '../../images/done.png'
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
+import { Iorder } from '../../utils/Interface'
 
-export const OrderDetails = (props) => (
+export const OrderDetails = (props: Iorder) => (
     <>
         <p className={`text text_type_digits-large mb-8 mt-20`}>{props.orderNumber}</p>
         <p className={`text text_type_main-medium mb-15`}>идентификатор заказа</p>
@@ -12,7 +13,7 @@ export const OrderDetails = (props) => (
     </>
 )
 
-OrderDetails.propTypes = {
-    orderNumber: PropTypes.number.isRequired,
-    orderName: PropTypes.string.isRequired,
-};
+// OrderDetails.propTypes = {
+//     orderNumber: PropTypes.number.isRequired,
+//     orderName: PropTypes.string.isRequired,
+// };

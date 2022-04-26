@@ -1,14 +1,16 @@
 import styles from './IngredientDetails.module.css';
-import { dataPropTypes } from '../../utils/types';
+// import { dataPropTypes } from '../../utils/types';
 import { useEffect, useState } from "react";
 import { Route, Redirect, StaticRouter, useParams } from 'react-router-dom';
 import { useSelector } from "react-redux";
 import { ingredientsSelector } from '../../services/slice/ingredients';
+import { Iingredients } from '../../utils/Interface'
 
 export function IngredientDetails() {
     const { ingredients } = useSelector(ingredientsSelector);
-    const { id } = useParams();
-    const currentIngredient = ingredients.find((item) => item._id === id);
+    const { id }: { id: string } = useParams();
+
+    const currentIngredient = ingredients.find((item: Iingredients) => item._id === id);
     return (
         <>
             {currentIngredient && (

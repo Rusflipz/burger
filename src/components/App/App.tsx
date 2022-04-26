@@ -40,8 +40,18 @@ function App() {
 
   const dispatch = useDispatch()
 
+  interface LocationState {
+    pathname: string;
+    search: string;
+    hash: string;
+    state: object | undefined;
+    background2: LocationState;
+    background3: LocationState;
+    background1: LocationState;
+  }
+
   const history = useHistory();
-  const location = useLocation();
+  const location = useLocation<LocationState>();
 
   const background1 = location.state && location.state.background1;
   const background2 = location.state && location.state.background2;
@@ -93,7 +103,9 @@ function App() {
             </ProtectedResetPassword>
           </Route>
           <Route path="/profile" exact={true}>
-            <ProtectedRouteProfile path="/" >
+            <ProtectedRouteProfile
+            //  path="/"
+            >
               <Profile />
             </ProtectedRouteProfile>
           </Route>

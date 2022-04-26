@@ -25,7 +25,7 @@ function Modal(props) {
     try {
         return ReactDOM.createPortal(
             <>
-                <ModalOverlay onClick={props.onClose} />
+                <ModalOverlay onClose={props.onClose} />
                 <section className={`${styles.Modal} pl-10 pr-10 pt-10`}>
                     <div className={`${styles.ModalCloseIcon}`}>
                         <CloseIcon type="primary" onClick={props.onClose} />
@@ -36,6 +36,7 @@ function Modal(props) {
             , modalRoot)
     } catch (error) {
         console.error("React render error: ", error);
+        return null
     }
 }
 
