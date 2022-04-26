@@ -63,13 +63,13 @@ export function LoginPage() {
     );
   }
 
-
+  let disabledSubmit = false
   return (
     <>
       {!isUserLoaded ? <div className={styles.wrapper}>
         <h1 className={`${styles.heading} text text_type_main-medium mb-6`}>Вход</h1>
         <form className={`${styles.form} mb-20`}
-        // onSubmit={() => { handleClick() }}
+          onSubmit={() => { handleClick }}
         >
           <div className={`mb-6`}>
             <Input
@@ -90,9 +90,7 @@ export function LoginPage() {
               value={passwordValue}
             />
           </div>
-          <Button
-            onClick={(e) => handleClick(e)}
-          >
+          <Button type="primary" size="medium" onClick={e => handleClick(e)}>
             Войти
           </Button>
         </form>
