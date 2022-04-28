@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { getCookie } from '../../services/Cookie';
 import { profileSelector } from '../../services/slice/profile';
 
-export function ProtectedRouteLogin({ children, ...rest }) {
+export function ProtectedRouteLogin({ children, ...rest }: {children: JSX.Element}) {
 
     let token = getCookie('token')
 

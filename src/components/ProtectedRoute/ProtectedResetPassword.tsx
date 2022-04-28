@@ -4,11 +4,14 @@ import { useState, useEffect } from 'react';
 import { getCookie } from '../../services/Cookie';
 import { profileSelector } from '../../services/slice/profile';
 
-export function ProtectedForgotPassword({ children }) {
+
+export function ProtectedResetPassword({ children }: {children: JSX.Element}) {
+
     let token = getCookie('token')
 
-    let isUserLoaded = false
+    const { forgotSuccess }: {forgotSuccess: boolean} = useSelector(profileSelector);
 
+    let isUserLoaded = false
     if (token !== '') {
         isUserLoaded = true
     }
@@ -16,9 +19,8 @@ export function ProtectedForgotPassword({ children }) {
         isUserLoaded = false
     }
 
-
     return (<>
-        {!isUserLoaded ? children : <Redirect to='/login' />}
+        {!isUserLoaded && forgotSuccess ? children : <Redirect to='/login' />}
     </>)
 
 } 

@@ -1,40 +1,48 @@
-import { ReactNode } from "react";
+import { Key, ReactNode } from "react";
 
 export interface Iingredients {
-    calories: number;
-    carbohydrates: number;
-    fat: number;
-    image: string;
-    image_large: string;
-    image_mobile: string;
+    uniqueID?: Key | null | undefined;
+    calories?: number;
+    carbohydrates?: number;
+    fat?: number;
+    image?: string;
+    image_large?: string;
+    image_mobile?: string;
     name: string;
     price: number;
     proteins: number;
     type: string;
     __v: number;
     _id: string;
-    item: {
-        calories: number;
-        carbohydrates: number;
-        fat: number;
-        image: string;
-        image_large: string;
-        image_mobile: string;
-        name: string;
-        price: number;
-        proteins: number;
-        type: string;
-        __v: number;
-        _id: string;
-    }
+    id: string;
+    // item: {
+    //     calories: number;
+    //     carbohydrates: number;
+    //     fat: number;
+    //     image: string;
+    //     image_large: string;
+    //     image_mobile: string;
+    //     name: string;
+    //     price: number;
+    //     proteins: number;
+    //     type: string;
+    //     __v: number;
+    //     _id: string;
+    //     id: string;
+    // }
 }
 
+
+// createdAt ЛОМАЕТСЯ ПОЧЕМУ-ТО, ЕЛСИ ЭТО НЕ any
 export interface Iorder{
-    createdAt: string | number | Date;
-    ingredients: any;
-    name: ReactNode;
-    status: string;
-    number: string;
+    createdAt?: any | undefined | string;
+    ingredients?: any;
+    name?: ReactNode;
+    status?: string;
+    number?: string;
     orderNumber: ReactNode;
     orderName: ReactNode;
+    currentOrder?:{
+        createdAt?: string;
+    }
 }

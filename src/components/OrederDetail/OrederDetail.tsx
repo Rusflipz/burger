@@ -13,7 +13,6 @@ import {
 import { getUserOrders } from '../../services/WebSocet';
 import { getOrders } from '../../services/WebSocet'
 import { Iorder } from '../../utils/Interface'
-import { JsxElement } from 'typescript';
 
 
 
@@ -88,7 +87,7 @@ export function OrederDetail(props: { item: Array<Iorder> }) {
             }
         }
 
-        //Тут ругается на формат Date, а typeof пишет, что это обьект, поэтому тут any, тк тут ничего сломатьсяч не может
+        //Тут ругается на формат Date, а typeof пишет, что это обьект, поэтому тут any, тк тут ничего сломаться не может
         let orderDate: any = new Date(currentOrder.createdAt);
         let orderDateHours = orderDate.getHours()
         let orderDateMinutes = orderDate.getMinutes()

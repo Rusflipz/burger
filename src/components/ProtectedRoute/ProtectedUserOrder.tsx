@@ -5,7 +5,7 @@ import { getCookie } from '../../services/Cookie';
 import { profileSelector } from '../../services/slice/profile';
 
 
-export function ProtectedUserOrder({ children }) {
+export function ProtectedUserOrder({ children }: { children: JSX.Element }) {
 
     let token = getCookie('token')
 
@@ -15,7 +15,7 @@ export function ProtectedUserOrder({ children }) {
     if (token !== '') {
         isUserLoaded = true
     }
-    if (token == undefined){
+    if (token == undefined) {
         isUserLoaded = false
     }
 

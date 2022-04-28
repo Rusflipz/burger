@@ -4,23 +4,17 @@ import { useState, useEffect } from 'react';
 import { getCookie } from '../../services/Cookie';
 import { profileSelector } from '../../services/slice/profile';
 
-
-export function ProtectedResetPassword({ children }) {
-
+export function ProtectedRouteRegistration({ children }: { children: JSX.Element }) {
     let token = getCookie('token')
-
-    const { forgotSuccess } = useSelector(profileSelector);
-
-    let isUserLoaded = false
+    let isUserLoaded = true
     if (token !== '') {
-        isUserLoaded = true
-    }
-    if (token == undefined){
         isUserLoaded = false
     }
-
+    if (token == undefined) {
+        isUserLoaded = true
+    }
     return (<>
-        {!isUserLoaded & forgotSuccess ? children : <Redirect to='/login' />}
+        {isUserLoaded ? children : <Redirect to='/login' />}
     </>)
 
 } 

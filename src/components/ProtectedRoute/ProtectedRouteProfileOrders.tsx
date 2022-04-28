@@ -6,7 +6,7 @@ import { profileSelector } from '../../services/slice/profile';
 import { getProfileInformation } from '../../services/api';
 import { Loading } from '../../pages/Loading/loading';
 
-export function ProtectedRouteProfileOrders({ children }) {
+export function ProtectedRouteProfileOrders({ children }: { children: JSX.Element }) {
     let location = useLocation();
 
     const dispatch = useDispatch()

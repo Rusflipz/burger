@@ -9,8 +9,11 @@ import { showIngredientСomponents, ingredientsSelector } from "../../services/s
 import { useDrag } from 'react-dnd';
 import { Link, useLocation } from 'react-router-dom';
 import { Iingredients } from '../../utils/Interface'
+import { ReactFragment, ReactNode } from "react";
 
-export function BurgerIngredient({ item }: Iingredients) {
+// TypeScipt ругается, при любом другом обохначении даже REACT.FK не могу вызвать это из дркгого места подругому
+
+export const BurgerIngredient: any = ({ item }: { item: Iingredients }) => {
 
   const { constructor } = useSelector(ingredientsSelector)
   const constructorItems = constructor.burger

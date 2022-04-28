@@ -12,7 +12,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { postLogin } from '../../services/api';
 import { Route, Redirect, useLocation } from 'react-router-dom';
 import { profileSelector } from '../../services/slice/profile';
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+
 
 
 export function LoginPage() {
@@ -69,7 +70,7 @@ export function LoginPage() {
       {!isUserLoaded ? <div className={styles.wrapper}>
         <h1 className={`${styles.heading} text text_type_main-medium mb-6`}>Вход</h1>
         <form className={`${styles.form} mb-20`}
-          onSubmit={() => { handleClick }}
+          onSubmit={(e) => { handleClick(e) }}
         >
           <div className={`mb-6`}>
             <Input
@@ -90,9 +91,7 @@ export function LoginPage() {
               value={passwordValue}
             />
           </div>
-          <Button type="primary" size="medium" onClick={e => handleClick(e)}>
-            Войти
-          </Button>
+          <Button onClick={e => handleClick(e)}>Войти</Button>
         </form>
         <p className={`${styles.text} mb-4`}>Вы — новый пользователь? <Link to='/registration' className={styles.link}>Зарегистрироваться</Link></p>
         <p className={styles.text}>Забыли пароль? <Link to='/forgot-password' className={styles.link}>Восстановить пароль</Link></p>

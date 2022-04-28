@@ -1,11 +1,12 @@
 import styles from "./BurgerIngredients.module.css";
-import { useMemo, useState, useRef } from "react";
+import { useMemo, useState, useRef, MutableRefObject, SetStateAction } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector, useDispatch } from "react-redux";
 import { ingredientsSelector, removeIngredientСomponents } from "../../services/slice/ingredients";
 import { BurgerIngredient } from '../BurgerIngredient/BurgerIngredient';
 import Modal from '../Modal/Modal';
 import { IngredientDetails } from '../IngredientDetails/IngredientDetails';
+import { Iingredients } from '../../utils/Interface'
 
 function BurgerIngredients() {
 
@@ -13,16 +14,16 @@ function BurgerIngredients() {
   const { ingredients, ingredientСomponents, ingredientModalOpen } = useSelector(ingredientsSelector);
   const dispatch = useDispatch();
 
-  const buns = useMemo(() => ingredients.filter((prod) => prod.type === "bun"), [ingredients])
-  const sauces = useMemo(() => ingredients.filter((prod) => prod.type === "sauce"), [ingredients])
-  const mains = useMemo(() => ingredients.filter((prod) => prod.type === "main"), [ingredients])
+  const buns = useMemo(() => ingredients.filter((prod: { type: string; }) => prod.type === "bun"), [ingredients])
+  const sauces = useMemo(() => ingredients.filter((prod: { type: string; }) => prod.type === "sauce"), [ingredients])
+  const mains = useMemo(() => ingredients.filter((prod: { type: string; }) => prod.type === "main"), [ingredients])
 
   const containerRef = useRef(null);
   const mainsRef = useRef(null);
   const saucesRef = useRef(null);
   const bunsRef = useRef(null);
 
-  const TabClick = (evt, ref) => {
+  const TabClick = (evt: SetStateAction<string>, ref: MutableRefObject<null>) => {
     setCurrent(evt);
     ref.current.scrollIntoView({ block: 'start', behavior: 'smooth' })
   }
@@ -78,7 +79,7 @@ function BurgerIngredients() {
             Булки
           </p>
           <div className={`${styles.cards}`}>
-            {buns.map((ingredient) => 
+            {buns.map((ingredient: Iingredients) => 
               <BurgerIngredient item={ingredient} key={ingredient._id} />)}
           </div>
         </div>
@@ -90,7 +91,7 @@ function BurgerIngredients() {
             Соусы
           </p>
           <div className={`${styles.cards}`}>
-            {sauces.map(ingredient =>
+            {sauces.map((ingredient: Iingredients) =>
               <BurgerIngredient item={ingredient} key={ingredient._id} />)}
           </div>
         </div>
@@ -101,14 +102,14 @@ function BurgerIngredients() {
             Ингридиенты
           </p>
           <div className={`${styles.cards}`}>
-            {mains.map(ingredient =>
+            {mains.map((ingredient: Iingredients) =>
               <BurgerIngredient item={ingredient} key={ingredient._id} />)}
           </div>
         </div>
       </div>
       {ingredientModalOpen && <>
-        <Modal onClose={() => dispatch(removeIngredientСomponents())}>
-          <IngredientDetails value={ingredientСomponents} />
+        <Modal onClose={() => dispatch(removeIngredientСomponents(''))}>
+          <IngredientDetails />
         </Modal>
       </>}
     </section>

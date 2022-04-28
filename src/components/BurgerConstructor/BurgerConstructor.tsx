@@ -12,6 +12,7 @@ import { Route, Redirect } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { profileSelector } from '../../services/slice/profile';
 import { getCookie } from '../../services/Cookie';
+import { Iingredients } from '../../utils/Interface'
 
 
 function BurgerConstructor() {
@@ -31,7 +32,7 @@ function BurgerConstructor() {
 
   const [{ canDrop, isOver }, dropTarget] = useDrop({
     accept: 'ingredient',
-    drop(item) {
+    drop(item: Iingredients) {
       if (item.type === 'bun') {
         dispatch(deleteIngredientFromConstructorItem(item))
         dispatch(addIngredientInConstructorItem(item))
@@ -47,13 +48,13 @@ function BurgerConstructor() {
 
   const isActiveForDnD = canDrop && isOver;
   const constructorItems = constructor.burger
-  const bun = constructorItems.find(item => item.type === 'bun');
-  const mains = constructorItems.filter(item => item.type !== 'bun');
+  const bun = constructorItems.find((item: { type: string; }) => item.type === 'bun');
+  const mains = constructorItems.filter((item: { type: string; }) => item.type !== 'bun');
 
   let total = useMemo(() => {
     let sum
     if (constructorItems.length > 0) {
-      sum = constructorItems.filter(ingredient => ingredient.type !== 'bun').reduce((prev, ingredient) => prev + ingredient.price, 0) + (constructorItems.some(ingredient => ingredient.type === 'bun') ? (constructorItems.find(ingredient => ingredient.type === 'bun').price * 2) : 0)
+      sum = constructorItems.filter((ingredient: { type: string; }) => ingredient.type !== 'bun').reduce((prev: any, ingredient: { price: Number; }) => prev + ingredient.price, 0) + (constructorItems.some((ingredient: { type: string; }) => ingredient.type === 'bun') ? (constructorItems.find((ingredient: { type: string; }) => ingredient.type === 'bun').price * 2) : 0)
       return sum
     } else {
       sum = 0
@@ -79,10 +80,10 @@ function BurgerConstructor() {
 
         {mains.length > 0 && <div className={`${styles.ingredient}`}>
           <div className={``}>
-            {mains.map((item, index) => {
+            {mains.map((item: Iingredients, index: number) => {
               return (
                 <ConstructorIngredient
-                  id={item._id}
+                  // id={item._id}
                   index={index}
                   item={item}
                   key={item.uniqueID}
@@ -124,7 +125,7 @@ function BurgerConstructor() {
         </>) : (<></>)}
       </div>
       {orderModalOpen && <>
-        <Modal onClose={() => dispatch(closeOrderСomponentsModal())}>
+        <Modal onClose={() => dispatch(closeOrderСomponentsModal(""))}>
           <OrderDetails orderNumber={orderNumber} orderName={orderName} />
         </Modal>
       </>}
