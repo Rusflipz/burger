@@ -34,7 +34,7 @@ export interface Iingredients {
 
 
 // createdAt ЛОМАЕТСЯ ПОЧЕМУ-ТО, ЕЛСИ ЭТО НЕ any
-export interface Iorder{
+export interface Iorder {
     _id?: string;
     createdAt?: any | undefined | string;
     ingredients?: any;
@@ -43,7 +43,7 @@ export interface Iorder{
     number?: string;
     orderNumber?: string;
     orderName?: string;
-    currentOrder?:{
+    currentOrder?: {
         createdAt?: string;
     }
 }

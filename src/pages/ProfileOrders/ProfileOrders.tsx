@@ -13,6 +13,7 @@ import { postLogOut, getProfileInformation } from '../../services/api';
 import { getUserOrders } from '../../services/WebSocet';
 import { Loading } from '../Loading/loading';
 import { Error } from '../Error/error';
+import { Iorder } from '../../utils/Interface';
 
 
 export function ProfileOrders() {
@@ -31,12 +32,12 @@ export function ProfileOrders() {
   let refreshToken = getCookie('refreshToken')
   let token = getCookie('token')
 
-  function Order(order) {
+  function Order(order: { item: Iorder }) {
 
-    let orderDate = new Date(order.item.createdAt);
+    let orderDate: any = new Date(order.item.createdAt);
     let orderDateHours = orderDate.getHours()
     let orderDateMinutes = orderDate.getMinutes()
-    let now = new Date();
+    let now: any = new Date();
     let diff = now - orderDate;
     let result = Math.round(diff / (1000 * 60 * 60 * 24) % 30);
     let day;
@@ -57,22 +58,26 @@ export function ProfileOrders() {
 
     let totalCost = 0;
 
-    let ingredientIdArray = []
+    let ingredientIdArray: Array<string> = []
 
     let ingredient = []
 
     let length = order.item.ingredients.length
 
-    order.item.ingredients.forEach((ingredient) => {
+    order.item.ingredients.forEach((ingredient: Array<string> | null) => {
       if (ingredient !== null) {
-        let ing = ingredients.find(item => item._id == ingredient);
+        let ing = ingredients.find((item: { _id: string[]; }) => item._id == ingredient);
         let i = 0;
         ingredientIdArray.unshift(ing._id);
         totalCost = totalCost + ing.price;
       }
     })
 
-    let resultReduce = ingredientIdArray.reduce(function (acc, cur) {
+    let resultReduce = ingredientIdArray.reduce(function (acc: {
+      hash: any;
+      map: any;
+      result: any;
+    }, cur) {
       if (!acc.hash[cur]) {
         acc.hash[cur] = { [cur]: 1 };
         acc.map.set(acc.hash[cur], 1);
@@ -88,7 +93,7 @@ export function ProfileOrders() {
       result: []
     });
 
-    let res = resultReduce.result.sort(function (a, b) {
+    let res = resultReduce.result.sort(function (a: Array<string>, b: Array<string>) {
       return resultReduce.map.get(b) - resultReduce.map.get(a);
     });
 
@@ -105,10 +110,12 @@ export function ProfileOrders() {
     } else {
     }
 
-    function Image(array) {
+    function Image(array: { item: {}; }) {
       let id = Object.keys(array.item)[0]
       let img = ImageUrl.find(item => item.id == id)
-      return <img className={`${styles.image}`} src={img.url}></img>
+      if (img !== undefined) {
+        return <img className={`${styles.image}`} src={img.url}></img>
+      } else return <></>
     }
 
     return (
@@ -122,8 +129,8 @@ export function ProfileOrders() {
           </div>
           <p className={`${styles.mainText} text text_type_main-medium mb-6`}>{order.item.name}</p>
           <div className={`${styles.orderInfoConteiner}`}>
-            <div className={`${styles.imageConteiner}`}>{userDataSuccess && ingredient.map((imageId) => <Image item={imageId} key={Object.keys(imageId)[0]} />)}{moreActive && <p className={`${styles.more} text text_type_digits-default`}>{`+${more}`}</p>}</div>
-            <div className={`${styles.priceConteiner}`}><p className={`${styles.price} text text_type_digits-default`}>{totalCost}</p><CurrencyIcon /></div>
+            <div className={`${styles.imageConteiner}`}>{userDataSuccess && ingredient.map((imageId: {}) => <Image item={imageId} key={Object.keys(imageId)[0]} />)}{moreActive && <p className={`${styles.more} text text_type_digits-default`}>{`+${more}`}</p>}</div>
+            <div className={`${styles.priceConteiner}`}><p className={`${styles.price} text text_type_digits-default`}>{totalCost}</p><CurrencyIcon type='primary' /></div>
           </div>
         </Link>
       </div>)
@@ -133,8 +140,8 @@ export function ProfileOrders() {
   if (errorUserOrder) return <Error />
 
   if (userDataSuccess) {
-    let arr = []
-    userOrders.orders.map((order) => {
+    let arr: Array<any> = []
+    userOrders.orders.map((order: any) => {
       arr.push(order)
     })
     const reversed = arr.reverse();

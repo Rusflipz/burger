@@ -1,13 +1,13 @@
 import {
     connectingOrders, connectingOrdersSuccess, getOrdersSuccess, failConnectingOrders,
     connectingUserOrders, connectingUserOrdersSuccess, getUserOrdersSuccess, failConnectingUserOrders
-} from '../services/slice/order';
-import { setCookie, deleteCookie, getCookie } from '../services/Cookie'
+} from './slice/order';
+import { setCookie, deleteCookie, getCookie } from './Cookie'
 
 
 
 export const getOrders = () => {
-    return async dispatch => {
+    return async (dispatch: (arg0: any) => void) => {
         try {
             dispatch(connectingOrders())
             let order = null
@@ -24,9 +24,10 @@ export const getOrders = () => {
 
             order.onclose = (event) => {
                 dispatch(failConnectingOrders())
+                console.log(`Соеденение закрыто`)
             }
 
-            order.onerror = (event) => {
+            order.onerror = (event: any) => {
                 dispatch(failConnectingOrders())
                 console.log(`Ошибка ${event.message}`)
             }
@@ -38,7 +39,7 @@ export const getOrders = () => {
 }
 
 export const getUserOrders = () => {
-    return async dispatch => {
+    return async (dispatch: (arg0: any) => void) => {
         try {
             dispatch(connectingUserOrders())
             let userOrder = null
@@ -58,7 +59,7 @@ export const getUserOrders = () => {
                 dispatch(failConnectingUserOrders())
             }
 
-            userOrder.onerror = (event) => {
+            userOrder.onerror = (event: any) => {
                 dispatch(failConnectingUserOrders())
                 console.log(`Ошибка ${event.message}`)
             }

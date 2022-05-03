@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import uniqid from 'uniqid';
 
 export const initialState = {
     constructorLinkValue: 'secondary',
@@ -39,6 +38,6 @@ export const {
 
 } = headerLinksSlice.actions
 
-export const headerLinksSelector = state => state.headerLinks
+export const headerLinksSelector = (state: { headerLinks: any }) => state.headerLinks
 
 export default headerLinksSlice.reducer

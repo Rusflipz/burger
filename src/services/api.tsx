@@ -2,7 +2,7 @@ import { url, checkResponse } from '../utils/constants';
 import {
     getIngredients, getIngredientsSuccess, getIngredientsFailed, clearConstructor,
     getOrder, getOrderSuccess, getOrderFailed
-} from '../services/slice/ingredients';
+} from './slice/ingredients';
 import {
     postRegist, postRegistSuccess, postRegistFailed,
     postForgot, postForgotSuccess, postForgotFailed,
@@ -13,20 +13,20 @@ import {
     postChange, postChangeSuccess, postChangeFailed,
     refreshProfile, refreshProfileSuccess, refreshProfileFailed,
     firstTry
-} from '../services/slice/profile'
+} from './slice/profile'
 import {
     getOrdersSuccess, getUserOrdersSuccess
-} from '../services/slice/order';
-import { setCookie, deleteCookie, getCookie } from '../services/Cookie'
+} from './slice/order';
+import { setCookie, deleteCookie, getCookie } from './Cookie'
 import { useContext, useState, createContext } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { IfFulfilled } from 'react-async';
 import { Route, Redirect } from 'react-router-dom';
 
-export const editProfile = (token, previus, actual) => {
-    let name;
-    let login;
-    let password;
+export const editProfile = (token: string | undefined, previus: { name: string, mail: string, password: string }, actual: { name: string, mail: string, password: string }) => {
+    let name: string;
+    let login: string;
+    let password: string;
 
     if (previus.name == actual.name) {
         name = previus.name
@@ -34,10 +34,10 @@ export const editProfile = (token, previus, actual) => {
         name = actual.name
     }
 
-    if (previus.login == actual.login) {
-        login = previus.login
+    if (previus.mail == actual.mail) {
+        login = previus.mail
     } else {
-        login = actual.login
+        login = actual.mail
     }
 
     if (previus.password == actual.password) {
@@ -47,7 +47,7 @@ export const editProfile = (token, previus, actual) => {
     }
 
     if (previus.password !== actual.password) {
-        return async dispatch => {
+        return async (dispatch: any) => {
             dispatch(postChange())
             try {
                 const response = await fetch(`${url}auth/user`, {
@@ -70,7 +70,7 @@ export const editProfile = (token, previus, actual) => {
             }
         }
     } else {
-        return async dispatch => {
+        return async (dispatch: any) => {
             dispatch(postChange())
             try {
                 const response = await fetch(`${url}auth/user`, {
@@ -99,7 +99,7 @@ export const editProfile = (token, previus, actual) => {
 
 export const refreshProfileInformation = () => {
     let refreshToken = getCookie('refreshToken')
-    return async dispatch => {
+    return async (dispatch: any) => {
         dispatch(refreshProfile())
         try {
             const response = await fetch(`${url}auth/token`, {
@@ -127,7 +127,7 @@ export const refreshProfileInformation = () => {
                 setCookie(name, token);
             }
             dispatch(refreshProfileSuccess(data))
-            dispatch(getProfileInformation(authToken1))
+            dispatch(getProfileInformation())
         } catch (err) {
             console.log(err)
             dispatch(refreshProfileFailed())
@@ -137,7 +137,7 @@ export const refreshProfileInformation = () => {
 }
 
 export const getProfileInformation = () => {
-    return async dispatch => {
+    return async (dispatch: any) => {
         dispatch(getProfile())
         try {
             let token = getCookie("token");
@@ -164,27 +164,27 @@ export const getProfileInformation = () => {
 }
 
 export const fetchIngredients = () => {
-    return async dispatch => {
-        dispatch(getIngredients())
+    return async (dispatch: any) => {
+        dispatch(getIngredients(null))
         try {
             const response = await fetch(`${url}ingredients`)
             const data = await checkResponse(response)
             dispatch(getIngredientsSuccess(data.data))
         } catch (err) {
-            dispatch(getIngredientsFailed())
+            dispatch(getIngredientsFailed(null))
         }
     }
 }
 
-export const fetchOrderDetails = (ingredients) => {
-    let arr = []
+export const fetchOrderDetails = (ingredients: Array<any>) => {
+    let arr: Array<string> = []
     ingredients.map((i) => {
         arr.push(i._id)
     })
     let img = ingredients.find(item => item.type == 'bun')
     arr.push(img._id)
-    return async dispatch => {
-        dispatch(getOrder())
+    return async (dispatch: any) => {
+        dispatch(getOrder(null))
         try {
             let token = getCookie("token");
             const response = await fetch(`${url}orders`, {
@@ -198,13 +198,13 @@ export const fetchOrderDetails = (ingredients) => {
             const data = await checkResponse(response)
             dispatch(getOrderSuccess(data))
         } catch (err) {
-            dispatch(getOrderFailed())
+            dispatch(getOrderFailed(null))
         }
     }
 }
 
-export const postRegister = (information) => {
-    return async dispatch => {
+export const postRegister = (information: { name: string; mail: string; password: string; }) => {
+    return async (dispatch: any) => {
         dispatch(postRegist())
         try {
             const response = await fetch(`${url}auth/register`, {
@@ -239,8 +239,8 @@ export const postRegister = (information) => {
     }
 }
 
-export const postLogin = (information) => {
-    return async dispatch => {
+export const postLogin = (information: { mail: string; password: string; }) => {
+    return async (dispatch: any) => {
         dispatch(postLog())
         try {
             const response = await fetch(`${url}auth/login`, {
@@ -274,8 +274,8 @@ export const postLogin = (information) => {
     }
 }
 
-export const postForgotPassword = (information) => {
-    return async dispatch => {
+export const postForgotPassword = (information: string) => {
+    return async (dispatch: any) => {
         dispatch(postForgot())
         try {
             const response = await fetch(`${url}password-reset`, {
@@ -294,8 +294,8 @@ export const postForgotPassword = (information) => {
     }
 }
 
-export const postResetPassword = (password, code) => {
-    return async dispatch => {
+export const postResetPassword = (password: string, code: string) => {
+    return async (dispatch: any) => {
         dispatch(postReset())
         try {
             const response = await fetch(`${url}password-reset/reset`, {
@@ -315,8 +315,8 @@ export const postResetPassword = (password, code) => {
     }
 }
 
-export const postLogOut = (information) => {
-    return async dispatch => {
+export const postLogOut = (information: string | undefined) => {
+    return async (dispatch: any) => {
         dispatch(logOut())
         try {
             const response = await fetch(`${url}auth/logout`, {
