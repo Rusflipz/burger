@@ -5,7 +5,7 @@ export interface Iingredients {
     calories?: number;
     carbohydrates?: number;
     fat?: number;
-    image?: string;
+    image: string;
     image_large?: string;
     image_mobile?: string;
     name: string;
@@ -35,13 +35,14 @@ export interface Iingredients {
 
 // createdAt ЛОМАЕТСЯ ПОЧЕМУ-ТО, ЕЛСИ ЭТО НЕ any
 export interface Iorder{
+    _id?: string;
     createdAt?: any | undefined | string;
     ingredients?: any;
     name?: ReactNode;
     status?: string;
     number?: string;
-    orderNumber: ReactNode;
-    orderName: ReactNode;
+    orderNumber?: string;
+    orderName?: string;
     currentOrder?:{
         createdAt?: string;
     }

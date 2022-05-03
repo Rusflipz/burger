@@ -11,6 +11,7 @@ import { getOrders } from '../../services/WebSocet';
 import React, { useEffect } from 'react';
 import { Loading } from '../Loading/loading';
 import { Error } from '../Error/error';
+import { Iorder } from '../../utils/Interface';
 
 export function FeedPage() {
 
@@ -26,11 +27,11 @@ export function FeedPage() {
 
   const { orders, dataSuccess, loadingOrder, errorOrder } = useSelector(orderSelector);
 
-  const Orders = (order) => {
-    let orderDate = new Date(order.item.createdAt);
+  const Orders = (order: { item: Iorder }) => {
+    let orderDate: any = new Date(order.item.createdAt);
     let orderDateHours = orderDate.getHours()
     let orderDateMinutes = orderDate.getMinutes()
-    let now = new Date();
+    let now: any = new Date();
     let diff = now - orderDate;
     let result = Math.round(diff / (1000 * 60 * 60 * 24) % 30);
     let day;
@@ -51,22 +52,26 @@ export function FeedPage() {
 
     let totalCost = 0;
 
-    let ingredientIdArray = []
+    let ingredientIdArray: Array<string> = []
 
     let ingredient = []
 
     let length = order.item.ingredients.length
 
-    order.item.ingredients.forEach((ingredient) => {
+    order.item.ingredients.forEach((ingredient: Array<string> | null) => {
       if (ingredient !== null) {
-        let ing = ingredients.find(item => item._id == ingredient);
+        let ing = ingredients.find((item: { _id: string[]; }) => item._id == ingredient);
         let i = 0;
         ingredientIdArray.unshift(ing._id);
         totalCost = totalCost + ing.price;
       }
     })
 
-    let resultReduce = ingredientIdArray.reduce(function (acc, cur) {
+    let resultReduce = ingredientIdArray.reduce(function (acc: {
+      hash: any;
+      map: any;
+      result: any;
+    }, cur) {
       if (!acc.hash[cur]) {
         acc.hash[cur] = { [cur]: 1 };
         acc.map.set(acc.hash[cur], 1);
@@ -82,7 +87,7 @@ export function FeedPage() {
       result: []
     });
 
-    let res = resultReduce.result.sort(function (a, b) {
+    let res = resultReduce.result.sort(function (a: Array<string>, b: Array<string>) {
       return resultReduce.map.get(b) - resultReduce.map.get(a);
     });
 
@@ -91,18 +96,22 @@ export function FeedPage() {
     let moreActive = false;
     let more;
 
+
     if (ingredient.length > 5) {
+      let obj = { '0': 0 }
       more = ingredient.length - 5
       moreActive = true;
       ingredient.splice(4, ingredient.length - 5)
-      ingredient.push({ '0': 0 })
+      ingredient.push(obj)
     } else {
     }
 
-    function Image(array) {
+    function Image(array: { item: {}; }) {
       let id = Object.keys(array.item)[0]
       let img = ImageUrl.find(item => item.id == id)
-      return <img className={`${styles.image}`} src={img.url}></img>
+      if (img !== undefined) {
+        return <img className={`${styles.image}`} src={img.url}></img>
+      } else return <></>
     }
 
     return (
@@ -116,8 +125,8 @@ export function FeedPage() {
           </div>
           <p className={`${styles.mainText} text text_type_main-medium mb-6`}>{order.item.name}</p>
           <div className={`${styles.orderInfoConteiner}`}>
-            <div className={`${styles.imageConteiner}`}>{dataSuccess && res.map((imageId) => <Image item={imageId} key={Object.keys(imageId)[0]} />)}{moreActive && <p className={`${styles.more} text text_type_digits-default`}>{`+${more}`}</p>}</div>
-            <div className={`${styles.priceConteiner}`}><p className={`${styles.price} text text_type_digits-default`}>{totalCost}</p><CurrencyIcon /></div>
+            <div className={`${styles.imageConteiner}`}>{dataSuccess && res.map((imageId: {}) => <Image item={imageId} key={Object.keys(imageId)[0]} />)}{moreActive && <p className={`${styles.more} text text_type_digits-default`}>{`+${more}`}</p>}</div>
+            <div className={`${styles.priceConteiner}`}><p className={`${styles.price} text text_type_digits-default`}>{totalCost}</p><CurrencyIcon type='primary' /></div>
           </div>
         </Link>
       </div>)
@@ -128,7 +137,7 @@ export function FeedPage() {
     a = orders.orders.slice(0, 15)
   }
 
-  function OrdersNumberDone(order) {
+  function OrdersNumberDone(order: { item: Iorder }) {
     if (order.item.status == 'done') {
       return <p className={`${styles.ordersDoneNumber} text text_type_digits-default`}>{order.item.number}</p>
     } else {
@@ -136,7 +145,7 @@ export function FeedPage() {
     }
   }
 
-  function OrdersNumberProcess(order) {
+  function OrdersNumberProcess(order: { item: Iorder }) {
     if (order.item.status !== 'done') {
       return <p className={`${styles.ordersProcessNumber} text text_type_digits-default`}>{order.item.number}</p>
     } else {
@@ -153,7 +162,7 @@ export function FeedPage() {
       <p className={`${styles.title} text text_type_main-large`}>Лента заказов</p>
       <div className={`${styles.mainConteiner}`}>
         <div className={`${styles.feedLent} mr-15`}>
-          {dataSuccess && orders.orders.map((order) =>
+          {dataSuccess && orders.orders.map((order: Iorder) =>
             <Orders item={order} key={order._id} />)}
         </div>
         <div className={`${styles.infoLent}`}>
@@ -161,14 +170,14 @@ export function FeedPage() {
             <div className={`${styles.ordersDone}`}>
               <p className={`text text_type_main-medium mb-6`}>Готовы:</p>
               <div className={`${styles.ordersDoneNumbers}`}>
-                {dataSuccess && a.map((order) =>
+                {dataSuccess && a.map((order: { _id: string; }) =>
                   <OrdersNumberDone item={order} key={order._id} />)}
               </div>
             </div>
             <div className={`${styles.ordersProcess}`}>
               <p className={`text text_type_main-medium mb-6`}>В работе:</p>
               <div className={`${styles.ordersDoneNumbers}`}>
-                {dataSuccess && a.map((order) =>
+                {dataSuccess && a.map((order: { _id: string; }) =>
                   <OrdersNumberProcess item={order} key={order._id} />)}
               </div>
             </div>

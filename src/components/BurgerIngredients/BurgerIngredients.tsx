@@ -1,5 +1,5 @@
 import styles from "./BurgerIngredients.module.css";
-import { useMemo, useState, useRef, MutableRefObject, SetStateAction } from "react";
+import { useMemo, useState, useRef, MutableRefObject, SetStateAction, useEffect, Ref } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector, useDispatch } from "react-redux";
 import { ingredientsSelector, removeIngredientСomponents } from "../../services/slice/ingredients";
@@ -18,40 +18,44 @@ function BurgerIngredients() {
   const sauces = useMemo(() => ingredients.filter((prod: { type: string; }) => prod.type === "sauce"), [ingredients])
   const mains = useMemo(() => ingredients.filter((prod: { type: string; }) => prod.type === "main"), [ingredients])
 
-  const containerRef = useRef(null);
-  const mainsRef = useRef(null);
-  const saucesRef = useRef(null);
-  const bunsRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const mainsRef = useRef<HTMLParagraphElement>(null);
+  const saucesRef = useRef<HTMLParagraphElement>(null);
+  const bunsRef = useRef<HTMLParagraphElement>(null);
 
-  const TabClick = (evt: SetStateAction<string>, ref: MutableRefObject<null>) => {
+  const TabClick = (evt: SetStateAction<string>, ref: React.RefObject<HTMLParagraphElement>) => {
     setCurrent(evt);
-    ref.current.scrollIntoView({ block: 'start', behavior: 'smooth' })
+    if (ref.current !== null) {
+      ref.current.scrollIntoView({ block: 'start', behavior: 'smooth' })
+    }
   }
 
   const Scroll = () => {
-    const top = containerRef.current.getBoundingClientRect().y;
-    const bunsDistance = Math.abs(
-      top - bunsRef.current.getBoundingClientRect().y
-    );
-    const saucesDistance = Math.abs(
-      top - saucesRef.current.getBoundingClientRect().y
-    );
-    const mainsDistance = Math.abs(
-      top - mainsRef.current.getBoundingClientRect().y
-    );
-    const minTabDistance = Math.min(
-      bunsDistance,
-      saucesDistance,
-      mainsDistance
-    );
+    if (containerRef.current !== null && mainsRef.current !== null && saucesRef.current !== null && bunsRef.current !== null) {
+      const top = containerRef.current.getBoundingClientRect().y;
+      const bunsDistance = Math.abs(
+        top - bunsRef.current.getBoundingClientRect().y
+      );
+      const saucesDistance = Math.abs(
+        top - saucesRef.current.getBoundingClientRect().y
+      );
+      const mainsDistance = Math.abs(
+        top - mainsRef.current.getBoundingClientRect().y
+      );
+      const minTabDistance = Math.min(
+        bunsDistance,
+        saucesDistance,
+        mainsDistance
+      );
 
-    const activeTab =
-      minTabDistance === saucesDistance
-        ? 'sauce'
-        : minTabDistance === mainsDistance
-          ? 'main'
-          : 'bun';
-    setCurrent(activeTab);
+      const activeTab =
+        minTabDistance === saucesDistance
+          ? 'sauce'
+          : minTabDistance === mainsDistance
+            ? 'main'
+            : 'bun';
+      setCurrent(activeTab);
+    }
   }
 
   return ingredients.length && (
@@ -79,7 +83,7 @@ function BurgerIngredients() {
             Булки
           </p>
           <div className={`${styles.cards}`}>
-            {buns.map((ingredient: Iingredients) => 
+            {buns.map((ingredient: Iingredients) =>
               <BurgerIngredient item={ingredient} key={ingredient._id} />)}
           </div>
         </div>
@@ -115,5 +119,6 @@ function BurgerIngredients() {
     </section>
   );
 }
+
 
 export default BurgerIngredients;
