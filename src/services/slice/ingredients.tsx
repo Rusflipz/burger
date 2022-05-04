@@ -1,7 +1,22 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import uniqid from 'uniqid';
+import { Iingredients } from '../../utils/Interface'
 
-export const initialState = {
+interface CounterState {
+    loading: boolean;
+    error: boolean;
+    ingredients: Array<any>;
+    ingredientСomponents: Array<string>;
+    ingredientModalOpen: boolean;
+    constructor: {
+        burger: Array<any>;
+    };
+    orderModalOpen: boolean;
+    orderNumber: number;
+    orderName: string;
+}
+
+export const initialState: CounterState = {
     loading: false,
     error: false,
     ingredients: [],
@@ -40,7 +55,7 @@ export const ingredientsSlice = createSlice({
             state.ingredientModalOpen = false
         },
         addIngredientInConstructorItem: {
-            reducer: (state, { payload }) => {
+            reducer: (state, { payload }: { payload: Iingredients }) => {
                 state.constructor.burger = [...state.constructor.burger, payload]
             },
             prepare: item => {
@@ -79,9 +94,8 @@ export const ingredientsSlice = createSlice({
             state.orderNumber = 0
             state.orderName = ''
             state.orderModalOpen = false
-            state.ModalType = ''
         },
-        
+
     },
 })
 
@@ -94,9 +108,8 @@ export const {
     removeIngredientСomponents,
     addIngredientInConstructorItem,
     deleteIngredientFromConstructorItem,
-    clearConstructor,
     getOrder, getOrderFailed, getOrderSuccess, closeOrderСomponentsModal, dragItems } = ingredientsSlice.actions
 
-export const ingredientsSelector = state => state.ingredients
+export const ingredientsSelector = (state: { ingredients: any; }) => state.ingredients
 
 export default ingredientsSlice.reducer

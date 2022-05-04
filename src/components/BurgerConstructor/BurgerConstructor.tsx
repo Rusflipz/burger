@@ -20,11 +20,11 @@ function BurgerConstructor() {
   let isUserLoaded = false;
 
   if (getCookie('token') !== undefined) {
-      isUserLoaded = true
+    isUserLoaded = true
   }
 
   if (getCookie('token') == '') {
-      isUserLoaded = false
+    isUserLoaded = false
   }
 
   const { constructor, orderModalOpen, orderNumber, orderName } = useSelector(ingredientsSelector);
@@ -125,7 +125,7 @@ function BurgerConstructor() {
         </>) : (<></>)}
       </div>
       {orderModalOpen && <>
-        <Modal onClose={() => dispatch(closeOrderСomponentsModal(""))}>
+        <Modal onClose={() => dispatch(closeOrderСomponentsModal())}>
           <OrderDetails orderNumber={orderNumber} orderName={orderName} />
         </Modal>
       </>}
