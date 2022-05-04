@@ -1,7 +1,28 @@
 import { createSlice } from '@reduxjs/toolkit';
-import uniqid from 'uniqid';
 
-export const initialState = {
+interface CounterState {
+    loading: boolean;
+    error: boolean;
+    profileInformation: Array<any> | null;
+    forgotInformation: Array<any>;
+    accessToken: null | string;
+    refreshToken: null | string;
+    forgotSuccess: boolean;
+    forgotFailed: boolean;
+    name: string;
+    mail: string;
+    password: string;
+    orderModalOpen: boolean;
+    isUserLoaded: boolean;
+    isChangeName: boolean;
+    isChangeLogin: boolean;
+    isChangePassword: boolean;
+    isChange: boolean;
+    refreshSuccess: boolean;
+    refreshing: boolean;
+}
+
+export const initialState: CounterState = {
     loading: false,
     error: false,
     profileInformation: [],
@@ -201,6 +222,6 @@ export const {
     tokenNotFound, firstTry
 } = profileSlice.actions
 
-export const profileSelector = state => state.profile
+export const profileSelector = (state: { profile: any; }) => state.profile
 
 export default profileSlice.reducer

@@ -1,7 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
 import uniqid from 'uniqid';
 
-export const initialState = {
+interface CounterState {
+    loadingOrder: boolean;
+    errorOrder: boolean;
+    connectionSuccessOrder: boolean;
+    dataSuccess: boolean;
+    loadingUserOrder: boolean;
+    errorUserOrder: boolean;
+    connectionSuccessUserOrder: boolean;
+    userDataSuccess: boolean;
+    orders: Array<any> | null;
+    orders1: Array<any>;
+    userOrders: Array<any> | null;
+    userOrders1: Array<any>;
+}
+
+
+export const initialState: CounterState = {
     loadingOrder: false,
     errorOrder: false,
     connectionSuccessOrder: false,
@@ -17,7 +33,7 @@ export const initialState = {
 }
 
 export const orderSlice = createSlice({
-    name: 'profile',
+    name: 'order',
     initialState,
     reducers: {
         connectingOrders: (state) => {
@@ -38,7 +54,7 @@ export const orderSlice = createSlice({
             state.loadingOrder = false
             state.connectionSuccessOrder = false
             state.dataSuccess = false
-            state.error = true
+            state.errorOrder = true
         },
         connectingUserOrders: (state) => {
             state.loadingUserOrder = true
@@ -69,6 +85,6 @@ export const {
     connectingUserOrders, connectingUserOrdersSuccess, getUserOrdersSuccess, failConnectingUserOrders
 } = orderSlice.actions
 
-export const orderSelector = state => state.order
+export const orderSelector = (state: { order: any; }) => state.order
 
 export default orderSlice.reducer

@@ -112,7 +112,7 @@ function BurgerIngredients() {
         </div>
       </div>
       {ingredientModalOpen && <>
-        <Modal onClose={() => dispatch(removeIngredientСomponents(''))}>
+        <Modal onClose={() => dispatch(removeIngredientСomponents())}>
           <IngredientDetails />
         </Modal>
       </>}

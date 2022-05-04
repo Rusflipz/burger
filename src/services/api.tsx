@@ -1,6 +1,6 @@
 import { url, checkResponse } from '../utils/constants';
 import {
-    getIngredients, getIngredientsSuccess, getIngredientsFailed, clearConstructor,
+    getIngredients, getIngredientsSuccess, getIngredientsFailed,
     getOrder, getOrderSuccess, getOrderFailed
 } from './slice/ingredients';
 import {
@@ -165,13 +165,13 @@ export const getProfileInformation = () => {
 
 export const fetchIngredients = () => {
     return async (dispatch: any) => {
-        dispatch(getIngredients(null))
+        dispatch(getIngredients())
         try {
             const response = await fetch(`${url}ingredients`)
             const data = await checkResponse(response)
             dispatch(getIngredientsSuccess(data.data))
         } catch (err) {
-            dispatch(getIngredientsFailed(null))
+            dispatch(getIngredientsFailed())
         }
     }
 }
@@ -184,7 +184,7 @@ export const fetchOrderDetails = (ingredients: Array<any>) => {
     let img = ingredients.find(item => item.type == 'bun')
     arr.push(img._id)
     return async (dispatch: any) => {
-        dispatch(getOrder(null))
+        dispatch(getOrder())
         try {
             let token = getCookie("token");
             const response = await fetch(`${url}orders`, {
@@ -198,7 +198,7 @@ export const fetchOrderDetails = (ingredients: Array<any>) => {
             const data = await checkResponse(response)
             dispatch(getOrderSuccess(data))
         } catch (err) {
-            dispatch(getOrderFailed(null))
+            dispatch(getOrderFailed())
         }
     }
 }
