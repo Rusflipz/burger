@@ -6,7 +6,7 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { NavLink } from 'react-router-dom';
-import React, { useEffect, createRef, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import {
   headerLinksSelector,

@@ -1,7 +1,5 @@
 import styles from './IngredientDetails.module.css';
-// import { dataPropTypes } from '../../utils/types';
-import { useEffect, useState } from "react";
-import { Route, Redirect, StaticRouter, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useSelector } from "react-redux";
 import { ingredientsSelector } from '../../services/slice/ingredients';
 import { Iingredients } from '../../utils/Interface'

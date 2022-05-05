@@ -8,7 +8,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ImageUrl } from '../../images/imagesForOrders/images';
 import { getOrders } from '../../services/WebSocet';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Loading } from '../Loading/loading';
 import { Error } from '../Error/error';
 import { Iorder } from '../../utils/Interface';
@@ -18,7 +18,10 @@ export function FeedPage() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getOrders())
+    dispatch(getOrders('connect'))
+    return () => {
+      dispatch(getOrders('disconnect'))
+    }
   }, [])
 
   const location = useLocation()
@@ -55,8 +58,6 @@ export function FeedPage() {
     let ingredientIdArray: Array<string> = []
 
     let ingredient = []
-
-    let length = order.item.ingredients.length
 
     order.item.ingredients.forEach((ingredient: Array<string> | null) => {
       if (ingredient !== null) {

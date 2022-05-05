@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
 import styles from './Registration.module.css';
 import {
-  BurgerIcon,
-  ListIcon,
-  Logo,
-  ProfileIcon,
   Button,
   Input
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from 'react-router-dom';
 import { postRegister } from '../../services/api';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 export function RegistrationPage() {
   const dispatch = useDispatch()
@@ -34,8 +30,7 @@ export function RegistrationPage() {
     setPasswordValue(e.target.value)
   }
 
-  function handleClick(e: React.SyntheticEvent<Element, Event>) {
-    e.preventDefault();
+  function handleClick() {
     let info = {
       name: nameValue,
       mail: mailValue,
@@ -48,7 +43,7 @@ export function RegistrationPage() {
     <div className={styles.wrapper}>
       <h1 className={`${styles.heading} text text_type_main-medium mb-6`}>Регистрация</h1>
       <form className={`${styles.form} mb-20`}
-      //  onSubmit={() => { handleClick() }}
+        onSubmit={() => { handleClick() }}
       >
         <div className={`mb-6`}>
           <Input
@@ -81,11 +76,7 @@ export function RegistrationPage() {
             icon={'ShowIcon'}
           />
         </div>
-        <Button
-          onClick={(e) => handleClick(e)}
-        >
-          Зарегистрироваться
-        </Button>
+        <Button>Зарегистрироваться</Button>
       </form>
       <p className={`${styles.text}`}>Уже зарегистрированы? <Link to='/login' className={styles.link}>Войти</Link></p>
     </div>

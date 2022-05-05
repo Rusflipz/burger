@@ -1,5 +1,4 @@
 import done from '../../images/done.png'
-// import PropTypes from 'prop-types';
 import { Iorder } from '../../utils/Interface'
 
 export const OrderDetails = (props: Iorder) => (
@@ -12,8 +11,3 @@ export const OrderDetails = (props: Iorder) => (
         <p className={`text text_type_main-default text_color_inactive mb-30`}>Дождитесь готовности на орбитальной станции</p>
     </>
 )
-
-// OrderDetails.propTypes = {
-//     orderNumber: PropTypes.number.isRequired,
-//     orderName: PropTypes.string.isRequired,
-// };

@@ -1,26 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import styles from './Profile.module.css';
 import {
-  BurgerIcon,
-  ListIcon,
-  Logo,
-  ProfileIcon,
+
   Button,
   Input
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link, Route, useLocation, Switch, NavLink, useHistory } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 import { postLogOut, getProfileInformation } from '../../services/api';
 import { getCookie } from '../../services/Cookie';
-import { profileSelector, startChangeName, startChangeLogin, startChangePassword, stopChange, postChange } from '../../services/slice/profile';
+import { profileSelector, startChangeName, startChangeLogin, startChangePassword, stopChange } from '../../services/slice/profile';
 import { editProfile } from '../../services/api';
-import { ProfileOrders } from '../ProfileOrders/ProfileOrders';
-import { BrowserRouter as Router } from "react-router-dom";
+
 
 export function Profile() {
-
-  const history = useHistory();
-  const location = useLocation();
 
   const dispatch = useDispatch();
 
@@ -93,7 +86,6 @@ export function Profile() {
                 errorText={'Ошибка'}
                 onChange={e => handleChangeName(e)}
                 onIconClick={() => dispatch(stopChange())}
-                // ref={nameField}
                 name='name'
                 value={nameValue}
                 icon={'EditIcon'}
@@ -122,7 +114,6 @@ export function Profile() {
               <Input
                 onIconClick={() => dispatch(stopChange())}
                 onChange={e => handleChangeMail(e)}
-                // ref={loginField}
                 name='login'
                 value={mailValue}
                 icon={'EditIcon'}
@@ -150,7 +141,6 @@ export function Profile() {
               <Input
                 onChange={e => handleChangePassword(e)}
                 onIconClick={() => dispatch(stopChange())}
-                // ref={passwordField}
                 value={passwordValue}
                 icon={'EditIcon'}
                 placeholder='Пароль'

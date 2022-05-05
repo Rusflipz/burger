@@ -3,12 +3,11 @@ import {
   CurrencyIcon,
   Counter
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector, useDispatch } from "react-redux";
-import { showIngredientСomponents, ingredientsSelector } from "../../services/slice/ingredients";
+import { useSelector } from "react-redux";
+import { ingredientsSelector } from "../../services/slice/ingredients";
 import { useDrag } from 'react-dnd';
 import { Link, useLocation } from 'react-router-dom';
 import { Iingredients } from '../../utils/Interface'
-import { ReactFragment, ReactNode } from "react";
 
 // TypeScipt ругается, при любом другом обохначении даже REACT.FK не могу вызвать это из дркгого места подругому
 
@@ -20,8 +19,6 @@ export const BurgerIngredient: any = ({ item }: { item: Iingredients }) => {
   const bunCount = 1;
 
   const location = useLocation()
-
-  const dispatch = useDispatch();
 
   const [{ isDrag }, dragRef] = useDrag({
     type: 'ingredient',

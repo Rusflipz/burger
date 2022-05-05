@@ -17,15 +17,8 @@ import { RegistrationPage } from '../../pages/Registration/Registration';
 import { Forgotpassword } from '../../pages/Forgot-password/Forgot-password';
 import { Resetpassword } from '../../pages/Reset-password/Reset-password';
 import { Profile } from '../../pages/Profile/Profile';
-import { ProtectedRouteProfile } from '../ProtectedRoute/ProtectedRouteProfile';
 import { IngredientPage } from '../../pages/IngredientPage/IngredientPage';
-import { ProtectedRouteLogin } from '../ProtectedRoute/ProtectedRouteLogin';
-import { ProtectedRouteRegistration } from '../ProtectedRoute/ProtectedRouteRegistration';
-import { ProtectedForgotPassword } from '../ProtectedRoute/ProtectedForgotPassword';
-import { ProtectedResetPassword } from '../ProtectedRoute/ProtectedResetPassword';
-import { ProtectedRouteProfileOrders } from '../ProtectedRoute/ProtectedRouteProfileOrders';
-import { ProtectedUserOrder } from '../ProtectedRoute/ProtectedUserOrder';
-import { getCookie } from '../../services/Cookie';
+import { ProtectedRoute } from '../ProtectedRoute/ProtectedRoute';
 import Modal from '../Modal/Modal';
 import { IngredientDetails } from '../IngredientDetails/IngredientDetails';
 import { FeedPage } from '../../pages/Feed/Feed';
@@ -35,8 +28,8 @@ import { UserOrderPage } from '../../pages/UserOrderPage/UserOrderPage';
 import { ProfileOrders } from '../../pages/ProfileOrders/ProfileOrders'
 
 function App() {
-  const { loading, error, isUserLoaded } = useSelector(ingredientsSelector);
-  const { orders1, userOrders1, orders, userOrders } = useSelector(orderSelector);
+  const { loading, error } = useSelector(ingredientsSelector);
+  const { orders1, userOrders1 } = useSelector(orderSelector);
 
   const dispatch = useDispatch()
 
@@ -83,31 +76,29 @@ function App() {
         <AppHeader />
         <Switch location={background1 || background2 || background3 || location}>
           <Route path="/login" exact={true}>
-            <ProtectedRouteLogin>
+            <ProtectedRoute>
               <LoginPage />
-            </ProtectedRouteLogin>
+            </ProtectedRoute>
           </Route>
           <Route path="/registration" exact={true}>
-            <ProtectedRouteRegistration>
+            <ProtectedRoute>
               <RegistrationPage />
-            </ProtectedRouteRegistration>
+            </ProtectedRoute>
           </Route>
           <Route path="/forgot-password" exact={true}>
-            <ProtectedForgotPassword>
+            <ProtectedRoute>
               <Forgotpassword />
-            </ProtectedForgotPassword>
+            </ProtectedRoute>
           </Route>
           <Route path="/reset-password" exact={true}>
-            <ProtectedResetPassword>
+            <ProtectedRoute>
               <Resetpassword />
-            </ProtectedResetPassword>
+            </ProtectedRoute>
           </Route>
           <Route path="/profile" exact={true}>
-            <ProtectedRouteProfile
-            //  path="/"
-            >
+            <ProtectedRoute>
               <Profile />
-            </ProtectedRouteProfile>
+            </ProtectedRoute>
           </Route>
           <Route path="/ingredients/:id" exact={true}>
             <IngredientPage />
@@ -116,17 +107,15 @@ function App() {
             <OrderPage />
           </Route>
           <Route path="/profile/orders/:id" exact={true}>
-            <ProtectedUserOrder>
-              <UserOrderPage />
-            </ProtectedUserOrder>
+            <UserOrderPage />
           </Route>
           <Route path="/feed" exact={true}>
             <FeedPage />
           </Route>
           <Route path="/profile/orders" exact={true}>
-            <ProtectedRouteProfileOrders>
+            <ProtectedRoute>
               <ProfileOrders />
-            </ProtectedRouteProfileOrders>
+            </ProtectedRoute>
           </Route>
           <Route path="/" exact={true}>
             <main className={styles.main}>

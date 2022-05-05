@@ -12,11 +12,14 @@ export const OrderPage = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getOrders())
+    dispatch(getOrders('connect'))
+    return () => {
+      dispatch(getOrders('disconnect'))
+    }
   }, [])
 
-  const { id }: {id: string} = useParams();
-  const { orders, orders1, dataSuccess, loadingOrder, errorOrder } = useSelector(orderSelector);
+  const { id }: { id: string } = useParams();
+  const { orders1, loadingOrder, errorOrder } = useSelector(orderSelector);
 
 
   const currentOrder = useMemo(

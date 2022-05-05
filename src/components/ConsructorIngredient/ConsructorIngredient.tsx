@@ -54,8 +54,6 @@ export const ConstructorIngredient = ({ item, index }: { item: Iingredients, ind
 
     const dragDropRef = dragRef(dropRef(ref))
 
-    // const opacity = isDragging ? .5 : 1
-
     return (
         <div className={`pl-2 pr-2 mt-4 mb-4`} ref={ref} draggable data-handler-id={handlerId}>
             <DragIcon type="primary" />

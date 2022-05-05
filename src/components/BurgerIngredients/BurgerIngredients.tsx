@@ -11,7 +11,7 @@ import { Iingredients } from '../../utils/Interface'
 function BurgerIngredients() {
 
   const [current, setCurrent] = useState('bun');
-  const { ingredients, ingredientСomponents, ingredientModalOpen } = useSelector(ingredientsSelector);
+  const { ingredients, ingredientModalOpen } = useSelector(ingredientsSelector);
   const dispatch = useDispatch();
 
   const buns = useMemo(() => ingredients.filter((prod: { type: string; }) => prod.type === "bun"), [ingredients])
@@ -119,6 +119,5 @@ function BurgerIngredients() {
     </section>
   );
 }
-
 
 export default BurgerIngredients;

@@ -27,9 +27,9 @@ export const initialState: CounterState = {
     connectionSuccessUserOrder: false,
     userDataSuccess: false,
     orders: null,
-    orders1: [{ _id: '6259088c1a3b2c001bd008a6', ingredients: Array(2), status: 'done', name: 'Краторный бургер', createdAt: '2022-04-15T05:54:20.294Z' }],
+    orders1: [{ _id: '6259088c1a3b2c001bd008a6', ingredients: Array(2), status: 'done', name: 'Краторный бургер', createdAt: '2022-04-15T05:54:20.294Z', number: '123' }],
     userOrders: null,
-    userOrders1: [{ _id: '6259088c1a3b2c001bd008a6', ingredients: Array(2), status: 'done', name: 'Краторный бургер', createdAt: '2022-04-15T05:54:20.294Z' }],
+    userOrders1: [{ _id: '6259088c1a3b2c001bd008a6', ingredients: Array(2), status: 'done', name: 'Краторный бургер', createdAt: '2022-04-15T05:54:20.294Z', number: '123' }],
 }
 
 export const orderSlice = createSlice({
@@ -70,6 +70,12 @@ export const orderSlice = createSlice({
             state.loadingUserOrder = false
             state.connectionSuccessUserOrder = true
         },
+        
+        getUserOrdersfail: (state) => {
+            state.userDataSuccess = false
+            state.loadingUserOrder = false
+            state.connectionSuccessUserOrder = false
+        },
         failConnectingUserOrders: (state) => {
             state.loadingUserOrder = false
             state.connectionSuccessUserOrder = false
@@ -82,7 +88,7 @@ export const orderSlice = createSlice({
 
 export const {
     connectingOrders, connectingOrdersSuccess, getOrdersSuccess, failConnectingOrders,
-    connectingUserOrders, connectingUserOrdersSuccess, getUserOrdersSuccess, failConnectingUserOrders
+    connectingUserOrders, connectingUserOrdersSuccess, getUserOrdersSuccess, getUserOrdersfail, failConnectingUserOrders
 } = orderSlice.actions
 
 export const orderSelector = (state: { order: any; }) => state.order

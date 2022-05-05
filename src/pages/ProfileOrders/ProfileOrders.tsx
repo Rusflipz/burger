@@ -1,15 +1,15 @@
 import styles from './ProfileOrders.module.css';
 import { Link, useLocation, NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
-import Order, { orderSelector } from '../../services/slice/order';
+import { orderSelector } from '../../services/slice/order';
 import { ingredientsSelector } from '../../services/slice/ingredients';
 import { ImageUrl } from '../../images/imagesForOrders/images';
 import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { getCookie } from '../../services/Cookie';
-import React, { useEffect } from 'react';
-import { postLogOut, getProfileInformation } from '../../services/api';
+import { useEffect } from 'react';
+import { postLogOut } from '../../services/api';
 import { getUserOrders } from '../../services/WebSocet';
 import { Loading } from '../Loading/loading';
 import { Error } from '../Error/error';
@@ -20,7 +20,10 @@ export function ProfileOrders() {
   const location = useLocation()
 
   useEffect(() => {
-    dispatch(getUserOrders())
+    dispatch(getUserOrders('connect'))
+    return () => {
+      dispatch(getUserOrders('disconnect'))
+    }
   }, [])
 
   const { ingredients } = useSelector(ingredientsSelector);
@@ -30,7 +33,6 @@ export function ProfileOrders() {
   const dispatch = useDispatch();
 
   let refreshToken = getCookie('refreshToken')
-  let token = getCookie('token')
 
   function Order(order: { item: Iorder }) {
 
@@ -61,8 +63,6 @@ export function ProfileOrders() {
     let ingredientIdArray: Array<string> = []
 
     let ingredient = []
-
-    let length = order.item.ingredients.length
 
     order.item.ingredients.forEach((ingredient: Array<string> | null) => {
       if (ingredient !== null) {
@@ -144,7 +144,7 @@ export function ProfileOrders() {
     userOrders.orders.map((order: any) => {
       arr.push(order)
     })
-    const reversed = arr.reverse();
+
     return <>
       <div className={styles.wrapper}>
         <div className={`${styles.links_box} mr-15`}>

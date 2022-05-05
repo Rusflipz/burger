@@ -1,35 +1,40 @@
 import {
     connectingOrders, connectingOrdersSuccess, getOrdersSuccess, failConnectingOrders,
-    connectingUserOrders, connectingUserOrdersSuccess, getUserOrdersSuccess, failConnectingUserOrders
+    connectingUserOrders, connectingUserOrdersSuccess, getUserOrdersSuccess, getUserOrdersfail, failConnectingUserOrders
 } from './slice/order';
-import { setCookie, deleteCookie, getCookie } from './Cookie'
+import { getCookie } from './Cookie'
 
 
 
-export const getOrders = () => {
-    return async (dispatch: (arg0: any) => void) => {
+export const getOrders = (action: string) => {
+    return async (dispatch: any) => {
         try {
             dispatch(connectingOrders())
             let order = null
             order = new WebSocket("wss://norma.nomoreparties.space/orders/all")
 
-            order.onopen = (event) => {
-                dispatch(connectingOrdersSuccess())
-            }
+            if (action == 'connect') {
+                order.onopen = () => {
+                    dispatch(connectingOrdersSuccess())
+                }
 
-            order.onmessage = (event) => {
-                let ordersData = JSON.parse(event.data)
-                dispatch(getOrdersSuccess(ordersData))
-            }
+                order.onmessage = (event) => {
+                    let ordersData = JSON.parse(event.data)
+                    dispatch(getOrdersSuccess(ordersData))
+                }
 
-            order.onclose = (event) => {
-                dispatch(failConnectingOrders())
-                console.log(`Соеденение закрыто`)
-            }
+                order.onclose = () => {
+                    dispatch(failConnectingOrders())
+                    console.log(`Соеденение закрыто`)
+                }
 
-            order.onerror = (event: any) => {
-                dispatch(failConnectingOrders())
-                console.log(`Ошибка ${event.message}`)
+                order.onerror = (event: any) => {
+                    dispatch(failConnectingOrders())
+                    console.log(`Ошибка ${event.message}`)
+                }
+            } else if (action == 'disconnect') {
+                order.close()
+                console.log(`Соеденение успешно закрыто`)
             }
 
         } catch (err) {
@@ -38,30 +43,41 @@ export const getOrders = () => {
     }
 }
 
-export const getUserOrders = () => {
-    return async (dispatch: (arg0: any) => void) => {
+export const getUserOrders = (action: string) => {
+    return async (dispatch: any) => {
         try {
             dispatch(connectingUserOrders())
             let userOrder = null
             let token = getCookie("token");
             userOrder = new WebSocket(`wss://norma.nomoreparties.space/orders?token=${token}`)
 
-            userOrder.onopen = (event) => {
-                dispatch(connectingUserOrdersSuccess())
-            }
+            if (action == 'connect') {
 
-            userOrder.onmessage = (event) => {
-                let userOrdersData = JSON.parse(event.data)
-                dispatch(getUserOrdersSuccess(userOrdersData))
-            }
+                userOrder.onopen = () => {
+                    dispatch(connectingUserOrdersSuccess())
+                }
 
-            userOrder.onclose = (event) => {
-                dispatch(failConnectingUserOrders())
-            }
+                userOrder.onmessage = (event) => {
+                    let userOrdersData = JSON.parse(event.data)
+                    if (userOrdersData.success == false) {
+                        dispatch(getUserOrdersfail())
 
-            userOrder.onerror = (event: any) => {
-                dispatch(failConnectingUserOrders())
-                console.log(`Ошибка ${event.message}`)
+                    } else {
+                        dispatch(getUserOrdersSuccess(userOrdersData))
+                    }
+                }
+
+                userOrder.onclose = () => {
+                    dispatch(failConnectingUserOrders())
+                }
+
+                userOrder.onerror = (event: any) => {
+                    dispatch(failConnectingUserOrders())
+                    console.log(`Ошибка ${event.message}`)
+                }
+            } else if (action == 'disconnect') {
+                userOrder.close()
+                console.log(`Соеденение успешно закрыто`)
             }
 
         } catch (err) {

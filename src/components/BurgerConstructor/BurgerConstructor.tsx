@@ -2,30 +2,24 @@ import styles from "./BurgerConstructor.module.css";
 import { CurrencyIcon, ConstructorElement, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ConstructorIngredient } from '../ConsructorIngredient/ConsructorIngredient'
 import { useSelector, useDispatch } from "react-redux";
-import { fetchOrderDetails } from '../../services/api';
+import { fetchOrderDetails, getProfileInformation } from '../../services/api';
 import { useDrop } from 'react-dnd';
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { ingredientsSelector, addIngredientInConstructorItem, deleteIngredientFromConstructorItem, closeOrderСomponentsModal } from '../../services/slice/ingredients';
 import Modal from '../Modal/Modal';
 import { OrderDetails } from '../OrderDetails/OrderDetails';
-import { Route, Redirect } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { profileSelector } from '../../services/slice/profile';
-import { getCookie } from '../../services/Cookie';
 import { Iingredients } from '../../utils/Interface'
 
 
 function BurgerConstructor() {
 
-  let isUserLoaded = false;
+  useEffect(() => {
+    dispatch(getProfileInformation())
+  }, [])
 
-  if (getCookie('token') !== undefined) {
-    isUserLoaded = true
-  }
-
-  if (getCookie('token') == '') {
-    isUserLoaded = false
-  }
+  const { isUserLoaded } = useSelector(profileSelector);
 
   const { constructor, orderModalOpen, orderNumber, orderName } = useSelector(ingredientsSelector);
   const dispatch = useDispatch();
@@ -61,6 +55,7 @@ function BurgerConstructor() {
       return sum
     }
   }, [constructorItems])
+
 
   return (
     <section ref={dropTarget} className={`mt-25`}>

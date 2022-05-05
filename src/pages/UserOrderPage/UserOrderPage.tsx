@@ -11,12 +11,16 @@ import { getUserOrders } from '../../services/WebSocet'
 export const UserOrderPage = () => {
 
   const dispatch = useDispatch();
+
   useEffect(() => {
-    dispatch(getUserOrders())
+    dispatch(getUserOrders('connect'))
+    return () => {
+      dispatch(getUserOrders('disconnect'))
+    }
   }, [])
 
-  const { id }: {id: string} = useParams();
-  const { orders, userOrders1, userDataSuccess, loadingUserOrder, errorUserOrder } = useSelector(orderSelector);
+  const { id }: { id: string } = useParams();
+  const { userOrders1, userDataSuccess, loadingUserOrder, errorUserOrder } = useSelector(orderSelector);
 
   const currentOrder = useMemo(
     () => userOrders1.find((el: { number: string; }) => el.number == id),

@@ -14,14 +14,7 @@ import {
     refreshProfile, refreshProfileSuccess, refreshProfileFailed,
     firstTry
 } from './slice/profile'
-import {
-    getOrdersSuccess, getUserOrdersSuccess
-} from './slice/order';
 import { setCookie, deleteCookie, getCookie } from './Cookie'
-import { useContext, useState, createContext } from 'react';
-import { useSelector, useDispatch } from "react-redux";
-import { IfFulfilled } from 'react-async';
-import { Route, Redirect } from 'react-router-dom';
 
 export const editProfile = (token: string | undefined, previus: { name: string, mail: string, password: string }, actual: { name: string, mail: string, password: string }) => {
     let name: string;

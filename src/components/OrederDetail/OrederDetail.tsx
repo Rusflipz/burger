@@ -1,20 +1,13 @@
 import styles from './OrederDetail.module.css';
-// import { dataPropTypes } from '../../utils/types';
-import { useEffect, useState } from "react";
-import { Route, Redirect, StaticRouter, useParams, useLocation } from 'react-router-dom';
-import { useSelector, useDispatch } from "react-redux";
+import { useParams } from 'react-router-dom';
+import { useSelector } from "react-redux";
 import { ingredientsSelector } from '../../services/slice/ingredients';
 import { orderSelector } from '../../services/slice/order';
 import { ImageUrl } from '../../images/imagesForOrders/images'
 import {
     CurrencyIcon,
-    Counter
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { getUserOrders } from '../../services/WebSocet';
-import { getOrders } from '../../services/WebSocet'
 import { Iorder } from '../../utils/Interface'
-
-
 
 function Ingredient(array: { item: { [x: string]: number; }; }) {
     const { ingredients } = useSelector(ingredientsSelector);
@@ -60,12 +53,8 @@ function Time(props: { item: Iorder; massage: string }) {
 export function OrederDetail(props: { item: Array<Iorder> }) {
 
     const { id }: { id: string } = useParams();
-    const location = useLocation();
-    const dispatch = useDispatch();
 
-    const { dataSuccess, userDataSuccess, orders1, userOrders1 } = useSelector(orderSelector);
-    const { ingredients } = useSelector(ingredientsSelector);
-
+    const { dataSuccess, userDataSuccess } = useSelector(orderSelector);
 
     let a = false;
     if (dataSuccess || userDataSuccess) {
@@ -74,8 +63,6 @@ export function OrederDetail(props: { item: Array<Iorder> }) {
 
     let currentOrder = props.item.find((item) => item.number == id);
     if (a && currentOrder) {
-
-        let totalCost = 0;
 
         let status = ''
 
@@ -87,7 +74,6 @@ export function OrederDetail(props: { item: Array<Iorder> }) {
             }
         }
 
-        //Тут ругается на формат Date, а typeof пишет, что это обьект, поэтому тут any, тк тут ничего сломаться не может
         let orderDate: any = new Date(currentOrder.createdAt);
         let orderDateHours = orderDate.getHours()
         let orderDateMinutes = orderDate.getMinutes()
@@ -95,7 +81,6 @@ export function OrederDetail(props: { item: Array<Iorder> }) {
         let diff: number = now - orderDate;
         let result = Math.round(diff / (1000 * 60 * 60 * 24) % 30);
         let day;
-
 
         if (result == 0) {
             day = "Сегодня"
@@ -143,7 +128,6 @@ export function OrederDetail(props: { item: Array<Iorder> }) {
                         </div>
                         <div className={`${styles.bottomInfo} mb-10`}>
                             {a && <Time item={currentOrder} massage={massage} />}
-
                         </div>
                     </div>
                 )
@@ -152,7 +136,3 @@ export function OrederDetail(props: { item: Array<Iorder> }) {
         )
     } else return <></>
 }
-
-// IngredientDetails.propTypes = {
-//     value: dataPropTypes.isRequired
-// };

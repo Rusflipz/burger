@@ -175,6 +175,7 @@ export const profileSlice = createSlice({
             state.error = false
             state.refreshSuccess = true
             state.refreshing = false
+            state.isUserLoaded = true
         },
         getProfileFailed: state => {
             state.loading = false
