@@ -83,7 +83,6 @@ function BurgerConstructor() {
             {mains.map((item: Iingredients, index: number) => {
               return (
                 <ConstructorIngredient
-                  // id={item._id}
                   index={index}
                   item={item}
                   key={item.uniqueID}

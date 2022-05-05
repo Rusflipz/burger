@@ -1,9 +1,8 @@
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { useDispatch } from 'react-redux';
 import { deleteIngredientFromConstructorItem, dragItems } from '../../services/slice/ingredients';
-// import PropTypes from 'prop-types';
 import { Iingredients } from '../../utils/Interface'
 
 export const ConstructorIngredient = ({ item, index }: { item: Iingredients, index: number }) => {
@@ -53,7 +52,7 @@ export const ConstructorIngredient = ({ item, index }: { item: Iingredients, ind
         },
     })
 
-    // const dragDropRef = dragRef(dropRef(ref))
+    const dragDropRef = dragRef(dropRef(ref))
 
     // const opacity = isDragging ? .5 : 1
 
@@ -70,7 +69,3 @@ export const ConstructorIngredient = ({ item, index }: { item: Iingredients, ind
     )
 }
 
-// ConstructorIngredient.propTypes = {
-//     item: PropTypes.object.isRequired,
-//     index: PropTypes.number.isRequired,
-// };
