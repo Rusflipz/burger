@@ -3,7 +3,6 @@ import {
   CurrencyIcon,
   Counter
 } from "@ya.praktikum/react-developer-burger-ui-components";
-// import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from "react-redux";
 import { showIngredientСomponents, ingredientsSelector } from "../../services/slice/ingredients";
 import { useDrag } from 'react-dnd';
@@ -40,7 +39,6 @@ export const BurgerIngredient: any = ({ item }: { item: Iingredients }) => {
     return (
       <Link
         to={{ pathname: `/ingredients/${item._id}`, state: { background1: location } }}
-        // onClick={() => dispatch(showIngredientСomponents(item))}
         className={`${styles.card}`}
         key={`${item._id}`}
         ref={dragRef}
@@ -63,7 +61,6 @@ export const BurgerIngredient: any = ({ item }: { item: Iingredients }) => {
     return (
       <Link
         to={{ pathname: `/ingredients/${item._id}`, state: { background1: location } }}
-        // onClick={() => dispatch(showIngredientСomponents(item))}
         className={`${styles.card} mb-8 pl-2 pr-2`}
         key={`${item._id}`}
         ref={dragRef}
@@ -84,7 +81,3 @@ export const BurgerIngredient: any = ({ item }: { item: Iingredients }) => {
     )
   }
 }
-
-// BurgerIngredient.propTypes = {
-//   item: PropTypes.object.isRequired,
-// }
