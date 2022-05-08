@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import styles from './Profile.module.css';
 import {
-
   Button,
   Input
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { NavLink } from 'react-router-dom';
-import { useSelector, useDispatch } from "react-redux";
+import { useAppSelector, useAppDispatch } from '../../hooks';
 import { postLogOut, getProfileInformation } from '../../services/api';
 import { getCookie } from '../../services/Cookie';
 import { profileSelector, startChangeName, startChangeLogin, startChangePassword, stopChange } from '../../services/slice/profile';
 import { editProfile } from '../../services/api';
 
+//Тут нашел баг, не монимаю почему так происходит, при вводе симаолв инпут фокус теряется.
 
 export function Profile() {
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [nameValue, setNameValue] = useState('');
   const [mailValue, setmailValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
 
-  const { name, mail, password } = useSelector(profileSelector);
-  const { isChange, isChangeName, isChangeLogin, isChangePassword } = useSelector(profileSelector);
+  const { name, mail, password } = useAppSelector(profileSelector);
+  const { isChange, isChangeName, isChangeLogin, isChangePassword } = useAppSelector(profileSelector);
 
   let profile = {
     name: name,
@@ -54,6 +54,7 @@ export function Profile() {
 
   function handleChangeName(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
+    console.log(e)
     setNameValue(e.target.value)
   }
 

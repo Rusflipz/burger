@@ -4,7 +4,7 @@ import {
   Input
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../../hooks';
 import { postLogin } from '../../services/api';
 import { Redirect, useLocation } from 'react-router-dom';
 import { profileSelector } from '../../services/slice/profile';
@@ -13,9 +13,9 @@ import React, { useState } from 'react';
 
 
 export function LoginPage() {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
-  const { isUserLoaded } = useSelector(profileSelector);
+  const { isUserLoaded } = useAppSelector(profileSelector);
 
   const [mailValue, setmailValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');

@@ -1,12 +1,12 @@
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import { useDispatch } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../../hooks'
 import { deleteIngredientFromConstructorItem, dragItems } from '../../services/slice/ingredients';
 import { Iingredients } from '../../utils/Interface'
 
 export const ConstructorIngredient = ({ item, index }: { item: Iingredients, index: number }) => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const ref = useRef<HTMLDivElement>(null)
 
 

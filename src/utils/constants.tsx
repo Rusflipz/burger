@@ -15,6 +15,8 @@ export const defaultValues = {
 
 export const url = 'https://norma.nomoreparties.space/api/';
 
+export const wsUrl = 'wss://norma.nomoreparties.space/orders';
+
 export const checkResponse = (res: Response) => {
   if (res.ok) {
     return res.json();

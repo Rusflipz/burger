@@ -5,11 +5,11 @@ import { Iingredients } from '../../utils/Interface'
 interface CounterState {
     loading: boolean;
     error: boolean;
-    ingredients: Array<any>;
+    ingredients: Array<Iingredients>;
     ingredientСomponents: Array<string>;
     ingredientModalOpen: boolean;
     constructor: {
-        burger: Array<any>;
+        burger: Array<Iingredients>;
     };
     orderModalOpen: boolean;
     orderNumber: number;

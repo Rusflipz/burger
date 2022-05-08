@@ -3,17 +3,15 @@ import {
   CurrencyIcon,
   Counter
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector } from "react-redux";
+import { useAppSelector, useAppDispatch } from '../../hooks'
 import { ingredientsSelector } from "../../services/slice/ingredients";
 import { useDrag } from 'react-dnd';
 import { Link, useLocation } from 'react-router-dom';
 import { Iingredients } from '../../utils/Interface'
 
-// TypeScipt ругается, при любом другом обохначении даже REACT.FK не могу вызвать это из дркгого места подругому
+export function BurgerIngredient({ item }: { item: Iingredients }) {
 
-export const BurgerIngredient: any = ({ item }: { item: Iingredients }) => {
-
-  const { constructor } = useSelector(ingredientsSelector)
+  const { constructor } = useAppSelector(ingredientsSelector)
   const constructorItems = constructor.burger
   const count = constructorItems.filter((element: { _id: string; }) => element._id === item._id).length;
   const bunCount = 1;
@@ -27,10 +25,6 @@ export const BurgerIngredient: any = ({ item }: { item: Iingredients }) => {
       isDrag: monitor.isDragging(),
     })
   });
-
-  if (constructorItems.includes(item.type === 'bun')) {
-    return bunCount
-  }
 
   if (item.type === 'bun') {
     return (

@@ -7,7 +7,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { NavLink } from 'react-router-dom';
 import { useEffect, useRef } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../../hooks'
 import {
   headerLinksSelector,
   constructorLinkActive, feedLinkActive, profileLinkActive,
@@ -16,9 +16,9 @@ import {
 
 function AppHeader() {
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const { constructorLinkValue, feedLinkValue, profileLinkValue } = useSelector(headerLinksSelector);
+  const { constructorLinkValue, feedLinkValue, profileLinkValue } = useAppSelector(headerLinksSelector);
 
   let constructorLink = useRef<HTMLAnchorElement>(null);
   let feedLink = useRef<HTMLAnchorElement>(null);

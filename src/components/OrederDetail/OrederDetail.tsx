@@ -1,8 +1,8 @@
 import styles from './OrederDetail.module.css';
 import { useParams } from 'react-router-dom';
-import { useSelector } from "react-redux";
+import { useAppSelector, useAppDispatch } from '../../hooks'
 import { ingredientsSelector } from '../../services/slice/ingredients';
-import { orderSelector } from '../../services/slice/order';
+import { webSoketSelector } from '../../services/slice/webSoket';
 import { ImageUrl } from '../../images/imagesForOrders/images'
 import {
     CurrencyIcon,
@@ -10,7 +10,9 @@ import {
 import { Iorder } from '../../utils/Interface'
 
 function Ingredient(array: { item: { [x: string]: number; }; }) {
-    const { ingredients } = useSelector(ingredientsSelector);
+
+    const { ingredients } = useAppSelector(ingredientsSelector);
+
     if (array.item) {
         let id = Object.keys(array.item)[0];
         let value = array.item[`${id}`];
@@ -30,7 +32,7 @@ function Ingredient(array: { item: { [x: string]: number; }; }) {
 }
 
 function Time(props: { item: Iorder; massage: string }) {
-    const { ingredients } = useSelector(ingredientsSelector);
+    const { ingredients } = useAppSelector(ingredientsSelector);
     let currentOrder = props.item
     let totalPrice = 0
     if (currentOrder) {
@@ -54,10 +56,10 @@ export function OrederDetail(props: { item: Array<Iorder> }) {
 
     const { id }: { id: string } = useParams();
 
-    const { dataSuccess, userDataSuccess } = useSelector(orderSelector);
+    const { dataSuccess } = useAppSelector(webSoketSelector);
 
     let a = false;
-    if (dataSuccess || userDataSuccess) {
+    if (dataSuccess) {
         a = true;
     }
 

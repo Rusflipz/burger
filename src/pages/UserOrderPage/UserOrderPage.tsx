@@ -1,40 +1,44 @@
 import styles from './UserOrderPage.module.css';
-import { orderSelector, } from '../../services/slice/order';
-import { useSelector, useDispatch } from "react-redux";
+import { webSoketSelector, wsClose, wsOpen, } from '../../services/slice/webSoket';
+import { useAppSelector, useAppDispatch } from '../../hooks';
 import { useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { OrederDetail } from '../../components/OrederDetail/OrederDetail';
 import { Loading } from '../Loading/loading';
 import { Error } from '../Error/error';
-import { getUserOrders } from '../../services/WebSocet'
+import { getCookie } from '../../services/Cookie';
 
 export const UserOrderPage = () => {
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+
+  let token = getCookie('token')
 
   useEffect(() => {
-    dispatch(getUserOrders('connect'))
+    dispatch(wsOpen({ token: token }))
     return () => {
-      dispatch(getUserOrders('disconnect'))
+      dispatch(wsClose())
     }
-  }, [])
-
-  const { id }: { id: string } = useParams();
-  const { userOrders1, userDataSuccess, loadingUserOrder, errorUserOrder } = useSelector(orderSelector);
-
-  const currentOrder = useMemo(
-    () => userOrders1.find((el: { number: string; }) => el.number == id),
-    [userOrders1, id]
+  },
+    []
   );
 
-  if (loadingUserOrder) return <Loading />
-  if (errorUserOrder) return <Error />
+  const { id }: { id: string } = useParams();
+  const { orders, dataSuccess, loadingOrder, errorOrder, orders1 } = useAppSelector(webSoketSelector);
 
-  if (userDataSuccess) {
+  const currentOrder = useMemo(
+    () => orders1.find((el: { number: string; }) => el.number == id),
+    [orders1, id]
+  );
+
+  if (loadingOrder) return <Loading />
+  if (errorOrder) return <Error />
+
+  if (dataSuccess) {
     return (
       <>{currentOrder &&
         <div className={styles.main}>
-          <OrederDetail item={userOrders1} />
+          <OrederDetail item={orders1} />
         </div>}
       </>
     )

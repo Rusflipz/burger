@@ -1,34 +1,36 @@
 import styles from './Feed.module.css';
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../../hooks'
 import { useLocation, Link } from 'react-router-dom';
-import { orderSelector } from '../../services/slice/order';
+import { webSoketSelector } from '../../services/slice/webSoket';
 import { ingredientsSelector } from '../../services/slice/ingredients';
 import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ImageUrl } from '../../images/imagesForOrders/images';
-import { getOrders } from '../../services/WebSocet';
 import { useEffect } from 'react';
 import { Loading } from '../Loading/loading';
 import { Error } from '../Error/error';
 import { Iorder } from '../../utils/Interface';
+import { wsOpen, wsClose } from '../../services/slice/webSoket';
 
 export function FeedPage() {
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getOrders('connect'))
+    dispatch(wsOpen({ token: null }))
     return () => {
-      dispatch(getOrders('disconnect'))
+      dispatch(wsClose())
     }
-  }, [])
+  },
+    []
+  );
 
   const location = useLocation()
 
-  const { ingredients } = useSelector(ingredientsSelector);
+  const { ingredients } = useAppSelector(ingredientsSelector);
 
-  const { orders, dataSuccess, loadingOrder, errorOrder } = useSelector(orderSelector);
+  const { orders, dataSuccess, loadingOrder, errorOrder } = useAppSelector(webSoketSelector);
 
   const Orders = (order: { item: Iorder }) => {
     let orderDate: any = new Date(order.item.createdAt);
@@ -58,7 +60,6 @@ export function FeedPage() {
     let ingredientIdArray: Array<string> = []
 
     let ingredient = []
-
     order.item.ingredients.forEach((ingredient: Array<string> | null) => {
       if (ingredient !== null) {
         let ing = ingredients.find((item: { _id: string[]; }) => item._id == ingredient);
@@ -134,7 +135,7 @@ export function FeedPage() {
   }
   let a;
 
-  if (dataSuccess) { // Максимум 15 заказов в окне
+  if (dataSuccess) {
     a = orders.orders.slice(0, 15)
   }
 
