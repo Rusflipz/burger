@@ -6,10 +6,10 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from 'react-router-dom';
 import { postRegister } from '../../services/api';
-import { useDispatch } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../../hooks';
 
 export function RegistrationPage() {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const [nameValue, setNameValue] = useState('');
   const [mailValue, setmailValue] = useState('');

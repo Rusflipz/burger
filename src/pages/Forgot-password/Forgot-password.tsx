@@ -5,14 +5,15 @@ import {
   Input
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, Redirect } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { profileSelector, postForgot } from '../../services/slice/profile';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import { profileSelector } from '../../services/slice/profile';
 import { postForgotPassword } from '../../services/api';
 
 export function Forgotpassword() {
 
-  const { forgotSuccess, forgotFailed } = useSelector(profileSelector);
-  const dispatch = useDispatch();
+  const { forgotSuccess, forgotFailed } = useAppSelector(profileSelector);
+
+  const dispatch = useAppDispatch();
 
   const [mailValue, setmailValue] = useState('');
 

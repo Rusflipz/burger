@@ -1,7 +1,7 @@
 import styles from "./BurgerConstructor.module.css";
 import { CurrencyIcon, ConstructorElement, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ConstructorIngredient } from '../ConsructorIngredient/ConsructorIngredient'
-import { useSelector, useDispatch } from "react-redux";
+import { useAppSelector, useAppDispatch } from '../../hooks'
 import { fetchOrderDetails, getProfileInformation } from '../../services/api';
 import { useDrop } from 'react-dnd';
 import { useMemo, useEffect } from "react";
@@ -19,10 +19,10 @@ function BurgerConstructor() {
     dispatch(getProfileInformation())
   }, [])
 
-  const { isUserLoaded } = useSelector(profileSelector);
+  const { isUserLoaded } = useAppSelector(profileSelector);
 
-  const { constructor, orderModalOpen, orderNumber, orderName } = useSelector(ingredientsSelector);
-  const dispatch = useDispatch();
+  const { constructor, orderModalOpen, orderNumber, orderName } = useAppSelector(ingredientsSelector);
+  const dispatch = useAppDispatch();
 
   const [{ canDrop, isOver }, dropTarget] = useDrop({
     accept: 'ingredient',

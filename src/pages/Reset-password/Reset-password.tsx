@@ -5,7 +5,7 @@ import {
   Input
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../../hooks';
 import { postResetPassword } from '../../services/api';
 
 export function Resetpassword() {
@@ -13,7 +13,7 @@ export function Resetpassword() {
   const [passwordValue, setPasswordValue] = useState('');
   const [codelValue, setcodeValue] = useState('');
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   function handleChangePassword(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();

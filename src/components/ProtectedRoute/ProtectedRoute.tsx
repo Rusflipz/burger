@@ -1,6 +1,6 @@
 import { Route, Redirect, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useAppSelector, useAppDispatch } from '../../hooks'
+import React, { useEffect } from 'react';
 import { profileSelector } from '../../services/slice/profile';
 import { getProfileInformation } from '../../services/api';
 import { Loading } from '../../pages/Loading/loading';
@@ -8,12 +8,12 @@ import { Loading } from '../../pages/Loading/loading';
 export const ProtectedRoute = ({ children
 }: { children: any }) => {
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         dispatch(getProfileInformation())
     }, [])
-    const { loading, isUserLoaded } = useSelector(profileSelector);
+    const { loading, isUserLoaded } = useAppSelector(profileSelector);
 
     let location = useLocation();
 

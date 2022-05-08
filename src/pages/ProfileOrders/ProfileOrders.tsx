@@ -1,7 +1,7 @@
 import styles from './ProfileOrders.module.css';
 import { Link, useLocation, NavLink } from 'react-router-dom';
-import { useSelector, useDispatch } from "react-redux";
-import { orderSelector } from '../../services/slice/order';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import { webSoketSelector, wsClose, wsOpen } from '../../services/slice/webSoket';
 import { ingredientsSelector } from '../../services/slice/ingredients';
 import { ImageUrl } from '../../images/imagesForOrders/images';
 import {
@@ -10,27 +10,33 @@ import {
 import { getCookie } from '../../services/Cookie';
 import { useEffect } from 'react';
 import { postLogOut } from '../../services/api';
-import { getUserOrders } from '../../services/WebSocet';
 import { Loading } from '../Loading/loading';
 import { Error } from '../Error/error';
 import { Iorder } from '../../utils/Interface';
 
 
 export function ProfileOrders() {
+
   const location = useLocation()
 
+  let token = getCookie('token')
+
   useEffect(() => {
-    dispatch(getUserOrders('connect'))
+    dispatch(wsOpen({ token: token }))
     return () => {
-      dispatch(getUserOrders('disconnect'))
+      dispatch(wsClose())
     }
-  }, [])
+  },
+    []
+  );
 
-  const { ingredients } = useSelector(ingredientsSelector);
+  const { ingredients } = useAppSelector(ingredientsSelector);
 
-  const { userOrders, userDataSuccess, loadingUserOrder, errorUserOrder } = useSelector(orderSelector);
+  const { orders, dataSuccess, loadingOrder, errorOrder } = useAppSelector(webSoketSelector);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+
+
 
   let refreshToken = getCookie('refreshToken')
 
@@ -129,19 +135,19 @@ export function ProfileOrders() {
           </div>
           <p className={`${styles.mainText} text text_type_main-medium mb-6`}>{order.item.name}</p>
           <div className={`${styles.orderInfoConteiner}`}>
-            <div className={`${styles.imageConteiner}`}>{userDataSuccess && ingredient.map((imageId: {}) => <Image item={imageId} key={Object.keys(imageId)[0]} />)}{moreActive && <p className={`${styles.more} text text_type_digits-default`}>{`+${more}`}</p>}</div>
+            <div className={`${styles.imageConteiner}`}>{dataSuccess && ingredient.map((imageId: {}) => <Image item={imageId} key={Object.keys(imageId)[0]} />)}{moreActive && <p className={`${styles.more} text text_type_digits-default`}>{`+${more}`}</p>}</div>
             <div className={`${styles.priceConteiner}`}><p className={`${styles.price} text text_type_digits-default`}>{totalCost}</p><CurrencyIcon type='primary' /></div>
           </div>
         </Link>
       </div>)
   }
 
-  if (loadingUserOrder) return <Loading />
-  if (errorUserOrder) return <Error />
+  if (loadingOrder) return <Loading />
+  if (errorOrder) return <Error />
 
-  if (userDataSuccess) {
-    let arr: Array<any> = []
-    userOrders.orders.map((order: any) => {
+  if (dataSuccess) {
+    let arr: Array<Iorder> = []
+    orders.orders.map((order: Iorder) => {
       arr.push(order)
     })
 
@@ -160,7 +166,7 @@ export function ProfileOrders() {
             изменить свои персональные данные</p>
         </div>
         <div className={`${styles.ordersConteiner}`}>
-          {userDataSuccess && arr.map((order) => <Order item={order} key={order._id} />)}
+          {dataSuccess && arr.map((order) => <Order item={order} key={order._id} />)}
         </div>
       </div>
     </>

@@ -3,9 +3,9 @@ import AppHeader from "../AppHeader/AppHeader";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import { useEffect } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../../hooks'
 import { ingredientsSelector } from '../../services/slice/ingredients';
-import { orderSelector } from '../../services/slice/order';
+import { webSoketSelector } from '../../services/slice/webSoket';
 import { fetchIngredients } from '../../services/api';
 import { Loading } from '../../pages/Loading/loading';
 import { Error } from '../../pages/Error/error';
@@ -28,10 +28,10 @@ import { UserOrderPage } from '../../pages/UserOrderPage/UserOrderPage';
 import { ProfileOrders } from '../../pages/ProfileOrders/ProfileOrders'
 
 function App() {
-  const { loading, error } = useSelector(ingredientsSelector);
-  const { orders1, userOrders1 } = useSelector(orderSelector);
+  const { loading, error } = useAppSelector(ingredientsSelector);
+  const { orders1 } = useAppSelector(webSoketSelector);
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   interface LocationState {
     pathname: string;
@@ -149,7 +149,7 @@ function App() {
         background3 && (<>
           <Route path="/profile/orders/:id" exact={true}>
             <Modal onClose={closeModal}>
-              <OrederDetail item={userOrders1} />
+              <OrederDetail item={orders1} />
             </Modal>
           </Route>
         </>)

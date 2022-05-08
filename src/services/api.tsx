@@ -15,6 +15,8 @@ import {
     firstTry
 } from './slice/profile'
 import { setCookie, deleteCookie, getCookie } from './Cookie'
+import { AppDispatch } from '..';
+import { Iingredients } from '../utils/Interface';
 
 export const editProfile = (token: string | undefined, previus: { name: string, mail: string, password: string }, actual: { name: string, mail: string, password: string }) => {
     let name: string;
@@ -40,7 +42,7 @@ export const editProfile = (token: string | undefined, previus: { name: string, 
     }
 
     if (previus.password !== actual.password) {
-        return async (dispatch: any) => {
+        return async (dispatch: AppDispatch) => {
             dispatch(postChange())
             try {
                 const response = await fetch(`${url}auth/user`, {
@@ -63,7 +65,7 @@ export const editProfile = (token: string | undefined, previus: { name: string, 
             }
         }
     } else {
-        return async (dispatch: any) => {
+        return async (dispatch: AppDispatch) => {
             dispatch(postChange())
             try {
                 const response = await fetch(`${url}auth/user`, {
@@ -92,7 +94,7 @@ export const editProfile = (token: string | undefined, previus: { name: string, 
 
 export const refreshProfileInformation = () => {
     let refreshToken = getCookie('refreshToken')
-    return async (dispatch: any) => {
+    return async (dispatch: AppDispatch) => {
         dispatch(refreshProfile())
         try {
             const response = await fetch(`${url}auth/token`, {
@@ -130,7 +132,7 @@ export const refreshProfileInformation = () => {
 }
 
 export const getProfileInformation = () => {
-    return async (dispatch: any) => {
+    return async (dispatch: AppDispatch) => {
         dispatch(getProfile())
         try {
             let token = getCookie("token");
@@ -157,7 +159,7 @@ export const getProfileInformation = () => {
 }
 
 export const fetchIngredients = () => {
-    return async (dispatch: any) => {
+    return async (dispatch: AppDispatch) => {
         dispatch(getIngredients())
         try {
             const response = await fetch(`${url}ingredients`)
@@ -169,14 +171,16 @@ export const fetchIngredients = () => {
     }
 }
 
-export const fetchOrderDetails = (ingredients: Array<any>) => {
+export const fetchOrderDetails = (ingredients: Array<Iingredients>) => {
     let arr: Array<string> = []
     ingredients.map((i) => {
         arr.push(i._id)
     })
     let img = ingredients.find(item => item.type == 'bun')
+    if(img !== undefined){
     arr.push(img._id)
-    return async (dispatch: any) => {
+    }
+    return async (dispatch: AppDispatch) => {
         dispatch(getOrder())
         try {
             let token = getCookie("token");
@@ -197,7 +201,7 @@ export const fetchOrderDetails = (ingredients: Array<any>) => {
 }
 
 export const postRegister = (information: { name: string; mail: string; password: string; }) => {
-    return async (dispatch: any) => {
+    return async (dispatch: AppDispatch) => {
         dispatch(postRegist())
         try {
             const response = await fetch(`${url}auth/register`, {
@@ -233,7 +237,7 @@ export const postRegister = (information: { name: string; mail: string; password
 }
 
 export const postLogin = (information: { mail: string; password: string; }) => {
-    return async (dispatch: any) => {
+    return async (dispatch: AppDispatch) => {
         dispatch(postLog())
         try {
             const response = await fetch(`${url}auth/login`, {
@@ -268,7 +272,7 @@ export const postLogin = (information: { mail: string; password: string; }) => {
 }
 
 export const postForgotPassword = (information: string) => {
-    return async (dispatch: any) => {
+    return async (dispatch: AppDispatch) => {
         dispatch(postForgot())
         try {
             const response = await fetch(`${url}password-reset`, {
@@ -288,7 +292,7 @@ export const postForgotPassword = (information: string) => {
 }
 
 export const postResetPassword = (password: string, code: string) => {
-    return async (dispatch: any) => {
+    return async (dispatch: AppDispatch) => {
         dispatch(postReset())
         try {
             const response = await fetch(`${url}password-reset/reset`, {
@@ -309,7 +313,7 @@ export const postResetPassword = (password: string, code: string) => {
 }
 
 export const postLogOut = (information: string | undefined) => {
-    return async (dispatch: any) => {
+    return async (dispatch: AppDispatch) => {
         dispatch(logOut())
         try {
             const response = await fetch(`${url}auth/logout`, {

@@ -1,7 +1,7 @@
 import styles from "./BurgerIngredients.module.css";
 import { useMemo, useState, useRef, MutableRefObject, SetStateAction, useEffect, Ref } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppSelector, useAppDispatch } from '../../hooks'
 import { ingredientsSelector, removeIngredientСomponents } from "../../services/slice/ingredients";
 import { BurgerIngredient } from '../BurgerIngredient/BurgerIngredient';
 import Modal from '../Modal/Modal';
@@ -11,8 +11,8 @@ import { Iingredients } from '../../utils/Interface'
 function BurgerIngredients() {
 
   const [current, setCurrent] = useState('bun');
-  const { ingredients, ingredientModalOpen } = useSelector(ingredientsSelector);
-  const dispatch = useDispatch();
+  const { ingredients, ingredientModalOpen } = useAppSelector(ingredientsSelector);
+  const dispatch = useAppDispatch();
 
   const buns = useMemo(() => ingredients.filter((prod: { type: string; }) => prod.type === "bun"), [ingredients])
   const sauces = useMemo(() => ingredients.filter((prod: { type: string; }) => prod.type === "sauce"), [ingredients])

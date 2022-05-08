@@ -3,8 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 interface CounterState {
     loading: boolean;
     error: boolean;
-    profileInformation: Array<any> | null;
-    forgotInformation: Array<any>;
+    profileInformation: null | string;
+    forgotInformation: null | string;
     accessToken: null | string;
     refreshToken: null | string;
     forgotSuccess: boolean;
@@ -25,8 +25,8 @@ interface CounterState {
 export const initialState: CounterState = {
     loading: false,
     error: false,
-    profileInformation: [],
-    forgotInformation: [],
+    profileInformation: null,
+    forgotInformation: null,
     accessToken: null,
     refreshToken: null,
     forgotSuccess: false,
@@ -150,7 +150,7 @@ export const profileSlice = createSlice({
             state.error = true
         },
         logOutSuccess: (state, { payload }) => {
-            state.profileInformation = null
+            // state.profileInformation = null
             state.loading = false
             state.error = false
             state.name = ''

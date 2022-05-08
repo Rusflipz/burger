@@ -10,11 +10,11 @@ export interface Iingredients {
     image_mobile?: string;
     name: string;
     price: number;
-    proteins: number;
+    proteins?: number;
     type: string;
-    __v: number;
+    __v?: number;
     _id: string;
-    id: string;
+    id?: string;
 }
 
 

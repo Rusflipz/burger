@@ -1,25 +1,27 @@
 import styles from './OrderPage.module.css';
-import { orderSelector, } from '../../services/slice/order';
-import { useSelector, useDispatch } from "react-redux";
+import { webSoketSelector, wsClose, wsOpen } from '../../services/slice/webSoket';
+import { useAppSelector, useAppDispatch } from '../../hooks';
 import { useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { OrederDetail } from '../../components/OrederDetail/OrederDetail';
 import { Loading } from '../Loading/loading';
 import { Error } from '../Error/error';
-import { getOrders } from '../../services/WebSocet'
 
 export const OrderPage = () => {
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
-    dispatch(getOrders('connect'))
+    dispatch(wsOpen({ token: null }))
     return () => {
-      dispatch(getOrders('disconnect'))
+      dispatch(wsClose())
     }
-  }, [])
+  },
+    []
+  );
 
   const { id }: { id: string } = useParams();
-  const { orders1, loadingOrder, errorOrder } = useSelector(orderSelector);
+  const { orders1, loadingOrder, errorOrder } = useAppSelector(webSoketSelector);
 
 
   const currentOrder = useMemo(
