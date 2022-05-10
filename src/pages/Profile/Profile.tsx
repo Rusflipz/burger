@@ -15,6 +15,8 @@ import { editProfile } from '../../services/api';
 
 export function Profile() {
 
+  console.log('зашел')
+
   const dispatch = useAppDispatch();
 
   const [nameValue, setNameValue] = useState('');

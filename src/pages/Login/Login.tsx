@@ -20,8 +20,8 @@ export function LoginPage() {
 
   let token = getCookie('token')
 
-  if (token !== '' || token !== undefined){
-   isUserLoaded = true
+  if (token && token !== '') {
+    isUserLoaded = true
   }
 
   const { profileSuccess, error } = useAppSelector(profileSelector);
