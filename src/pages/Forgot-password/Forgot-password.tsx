@@ -8,8 +8,16 @@ import { Link, Redirect } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { profileSelector } from '../../services/slice/profile';
 import { postForgotPassword } from '../../services/api';
+import { getCookie } from '../../services/Cookie';
 
 export function Forgotpassword() {
+  let isUserLoaded = false
+
+  let token = getCookie('token')
+
+  if (token !== '' || token !== undefined){
+   isUserLoaded = true
+  }
 
   const { forgotSuccess, forgotFailed } = useAppSelector(profileSelector);
 
@@ -31,6 +39,11 @@ export function Forgotpassword() {
       {forgotSuccess && (
         <Redirect to={{ pathname: "/reset-password" }} />
       )}
+
+      {isUserLoaded && (
+        <Redirect to={{ pathname: "/" }} />
+      )}
+      
       <div className={styles.wrapper}>
         <h1 className={`${styles.heading} text text_type_main-medium mb-6`}>Восстановление пароля</h1>
         <form className={`${styles.form} mb-20`}

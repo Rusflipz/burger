@@ -25,9 +25,10 @@ export interface Iorder {
     name?: ReactNode;
     status?: string;
     number?: string;
-    orderNumber?: string;
+    orderNumber?: string | number;
     orderName?: string;
     currentOrder?: {
         createdAt?: string;
     }
+    total?: number;
 }

@@ -7,15 +7,17 @@ import { OrederDetail } from '../../components/OrederDetail/OrederDetail';
 import { Loading } from '../Loading/loading';
 import { Error } from '../Error/error';
 import { getCookie } from '../../services/Cookie';
+import { wsUrl } from '../../utils/constants';
 
 export const UserOrderPage = () => {
 
   const dispatch = useAppDispatch();
 
+
   let token = getCookie('token')
 
   useEffect(() => {
-    dispatch(wsOpen({ token: token }))
+    dispatch(wsOpen({ url: `${wsUrl}?token=${token}` }))
     return () => {
       dispatch(wsClose())
     }
@@ -23,11 +25,12 @@ export const UserOrderPage = () => {
     []
   );
 
+
   const { id }: { id: string } = useParams();
   const { orders, dataSuccess, loadingOrder, errorOrder, orders1 } = useAppSelector(webSoketSelector);
 
   const currentOrder = useMemo(
-    () => orders1.find((el: { number: string; }) => el.number == id),
+    () => orders1.find((el) => el.number == id),
     [orders1, id]
   );
 

@@ -13,6 +13,7 @@ import { postLogOut } from '../../services/api';
 import { Loading } from '../Loading/loading';
 import { Error } from '../Error/error';
 import { Iorder } from '../../utils/Interface';
+import { wsUrl } from '../../utils/constants'
 
 
 export function ProfileOrders() {
@@ -22,7 +23,7 @@ export function ProfileOrders() {
   let token = getCookie('token')
 
   useEffect(() => {
-    dispatch(wsOpen({ token: token }))
+    dispatch(wsOpen({ url: `${wsUrl}?token=${token}` }))
     return () => {
       dispatch(wsClose())
     }
@@ -72,10 +73,11 @@ export function ProfileOrders() {
 
     order.item.ingredients.forEach((ingredient: Array<string> | null) => {
       if (ingredient !== null) {
-        let ing = ingredients.find((item: { _id: string[]; }) => item._id == ingredient);
-        let i = 0;
+        let ing = ingredients.find((item: { _id: string[] | string }) => item._id == ingredient);
+        if (ing){
         ingredientIdArray.unshift(ing._id);
         totalCost = totalCost + ing.price;
+        }
       }
     })
 
@@ -145,9 +147,9 @@ export function ProfileOrders() {
   if (loadingOrder) return <Loading />
   if (errorOrder) return <Error />
 
-  if (dataSuccess) {
+  if (dataSuccess && orders) {
     let arr: Array<Iorder> = []
-    orders.orders.map((order: Iorder) => {
+    orders.map((order: Iorder) => {
       arr.push(order)
     })
 

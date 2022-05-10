@@ -12,13 +12,14 @@ import { Loading } from '../Loading/loading';
 import { Error } from '../Error/error';
 import { Iorder } from '../../utils/Interface';
 import { wsOpen, wsClose } from '../../services/slice/webSoket';
+import { wsUrl } from '../../utils/constants'
 
 export function FeedPage() {
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(wsOpen({ token: null }))
+    dispatch(wsOpen({ url: `${wsUrl}/all` }))
     return () => {
       dispatch(wsClose())
     }
@@ -30,7 +31,7 @@ export function FeedPage() {
 
   const { ingredients } = useAppSelector(ingredientsSelector);
 
-  const { orders, dataSuccess, loadingOrder, errorOrder } = useAppSelector(webSoketSelector);
+  const { orders, dataSuccess, loadingOrder, errorOrder,total, totalToday } = useAppSelector(webSoketSelector);
 
   const Orders = (order: { item: Iorder }) => {
     let orderDate: any = new Date(order.item.createdAt);
@@ -62,10 +63,12 @@ export function FeedPage() {
     let ingredient = []
     order.item.ingredients.forEach((ingredient: Array<string> | null) => {
       if (ingredient !== null) {
-        let ing = ingredients.find((item: { _id: string[]; }) => item._id == ingredient);
+        let ing = ingredients.find((item: { _id: string | string[] ; }) => item._id == ingredient);
         let i = 0;
-        ingredientIdArray.unshift(ing._id);
-        totalCost = totalCost + ing.price;
+        if (ing) {
+          ingredientIdArray.unshift(ing._id);
+          totalCost = totalCost + ing.price;
+        }
       }
     })
 
@@ -135,8 +138,8 @@ export function FeedPage() {
   }
   let a;
 
-  if (dataSuccess) {
-    a = orders.orders.slice(0, 15)
+  if (dataSuccess && orders) {
+    a = orders.slice(0, 15)
   }
 
   function OrdersNumberDone(order: { item: Iorder }) {
@@ -158,13 +161,13 @@ export function FeedPage() {
   if (loadingOrder) return <Loading />
   if (errorOrder) return <Error />
 
-
+if(orders && a){
   return (
     <>
       <p className={`${styles.title} text text_type_main-large`}>Лента заказов</p>
       <div className={`${styles.mainConteiner}`}>
         <div className={`${styles.feedLent} mr-15`}>
-          {dataSuccess && orders.orders.map((order: Iorder) =>
+          {dataSuccess && orders.map((order: Iorder) =>
             <Orders item={order} key={order._id} />)}
         </div>
         <div className={`${styles.infoLent}`}>
@@ -172,28 +175,28 @@ export function FeedPage() {
             <div className={`${styles.ordersDone}`}>
               <p className={`text text_type_main-medium mb-6`}>Готовы:</p>
               <div className={`${styles.ordersDoneNumbers}`}>
-                {dataSuccess && a.map((order: { _id: string; }) =>
+                {dataSuccess && a.map((order) =>
                   <OrdersNumberDone item={order} key={order._id} />)}
               </div>
             </div>
             <div className={`${styles.ordersProcess}`}>
               <p className={`text text_type_main-medium mb-6`}>В работе:</p>
               <div className={`${styles.ordersDoneNumbers}`}>
-                {dataSuccess && a.map((order: { _id: string; }) =>
+                {dataSuccess && a.map((order) =>
                   <OrdersNumberProcess item={order} key={order._id} />)}
               </div>
             </div>
           </div>
           <div className={`${styles.allOrdersDone} mb-15`}>
             <p className={`${styles.ordersDoneInfo} text text_type_main-medium`}>Выполнено за все время:</p>
-            {dataSuccess ? <p className={`${styles.ordersDoneValue} text text_type_digits-large`}>{orders.total}</p> : <p className={``}>{ }</p>}
+            {dataSuccess ? <p className={`${styles.ordersDoneValue} text text_type_digits-large`}>{total}</p> : <p className={``}>{ }</p>}
           </div>
           <div className={`${styles.todayOrdersDone}`}>
             <p className={`${styles.ordersDoneInfo} text text_type_main-medium`}>Выполнено за сегодня:</p>
-            {dataSuccess ? <p className={`${styles.ordersDoneValue} text text_type_digits-large`}>{orders.totalToday}</p> : <p className={``}>{ }</p>}
+            {dataSuccess ? <p className={`${styles.ordersDoneValue} text text_type_digits-large`}>{totalToday}</p> : <p className={``}>{ }</p>}
           </div>
         </div>
       </div>
     </>
-  );
+  );} else return <></>
 } 
