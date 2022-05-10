@@ -1,6 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const initialState = {
+interface CounterState {
+    constructorLinkValue: string,
+    feedLinkValue: string,
+    profileLinkValue: string,
+}
+
+export const initialState: CounterState = {
     constructorLinkValue: 'secondary',
     feedLinkValue: 'secondary',
     profileLinkValue: 'secondary',
@@ -38,6 +44,6 @@ export const {
 
 } = headerLinksSlice.actions
 
-export const headerLinksSelector = (state: { headerLinks: any }) => state.headerLinks
+export const headerLinksSelector = (state: { headerLinks: CounterState }) => state.headerLinks
 
 export default headerLinksSlice.reducer

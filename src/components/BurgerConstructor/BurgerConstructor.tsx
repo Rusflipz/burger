@@ -41,13 +41,15 @@ function BurgerConstructor() {
   });
 
   const isActiveForDnD = canDrop && isOver;
-  const constructorItems = constructor.burger
+  //выдает в одном из условий ошибку, странный момент, не знаю как вылечить
+  // возможно потому-что булки сразу может и не быть, но не знаю как это вылечить
+  const constructorItems: Array<Iingredients> | any = constructor.burger
   const bun = constructorItems.find((item: { type: string; }) => item.type === 'bun');
   const mains = constructorItems.filter((item: { type: string; }) => item.type !== 'bun');
 
   let total = useMemo(() => {
     let sum
-    if (constructorItems.length > 0) {
+    if (constructorItems.length > 0 && constructorItems) {
       sum = constructorItems.filter((ingredient: { type: string; }) => ingredient.type !== 'bun').reduce((prev: any, ingredient: { price: Number; }) => prev + ingredient.price, 0) + (constructorItems.some((ingredient: { type: string; }) => ingredient.type === 'bun') ? (constructorItems.find((ingredient: { type: string; }) => ingredient.type === 'bun').price * 2) : 0)
       return sum
     } else {

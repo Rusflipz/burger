@@ -4,11 +4,19 @@ import {
   Button,
   Input
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { postResetPassword } from '../../services/api';
+import { getCookie } from '../../services/Cookie';
 
 export function Resetpassword() {
+  let isUserLoaded = false
+
+  let token = getCookie('token')
+
+  if (token !== '' || token !== undefined) {
+    isUserLoaded = true
+  }
 
   const [passwordValue, setPasswordValue] = useState('');
   const [codelValue, setcodeValue] = useState('');
@@ -30,6 +38,9 @@ export function Resetpassword() {
   }
   return (
     <>
+      {isUserLoaded && (
+        <Redirect to={{ pathname: "/" }} />
+      )}
       <div className={styles.wrapper}>
         <h1 className={`${styles.heading} text text_type_main-medium mb-6`}>Восстановление пароля</h1>
         <form className={`${styles.form} mb-20`}

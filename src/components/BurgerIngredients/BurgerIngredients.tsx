@@ -58,7 +58,8 @@ function BurgerIngredients() {
     }
   }
 
-  return ingredients.length && (
+  return (<>
+  {ingredients.length && (
     <section className={`${styles.BurgerConstructor}`}>
       <p className={`${styles.title} mb-5 mt-10 text text_type_main-large`}>
         Соберите бургер
@@ -116,8 +117,10 @@ function BurgerIngredients() {
           <IngredientDetails />
         </Modal>
       </>}
-    </section>
+    </section>)}
+    </>
   );
+
 }
 
 export default BurgerIngredients;

@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 interface CounterState {
+    profileSuccess: boolean,
     loading: boolean;
     error: boolean;
     profileInformation: null | string;
@@ -23,6 +24,7 @@ interface CounterState {
 }
 
 export const initialState: CounterState = {
+    profileSuccess: false,
     loading: false,
     error: false,
     profileInformation: null,
@@ -169,6 +171,7 @@ export const profileSlice = createSlice({
             state.refreshing = true
         },
         getProfileSuccess: (state, { payload }) => {
+            state.profileSuccess = true
             state.name = payload.user.name
             state.mail = payload.user.email
             state.loading = false
@@ -178,6 +181,7 @@ export const profileSlice = createSlice({
             state.isUserLoaded = true
         },
         getProfileFailed: state => {
+            state.profileSuccess = false
             state.loading = false
             state.error = true
             state.refreshSuccess = false
@@ -223,6 +227,6 @@ export const {
     tokenNotFound, firstTry
 } = profileSlice.actions
 
-export const profileSelector = (state: { profile: any; }) => state.profile
+export const profileSelector = (state: { profile: CounterState }) => state.profile
 
 export default profileSlice.reducer

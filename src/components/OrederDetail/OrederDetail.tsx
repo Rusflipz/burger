@@ -8,6 +8,7 @@ import {
     CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Iorder } from '../../utils/Interface'
+import { info } from 'console';
 
 function Ingredient(array: { item: { [x: string]: number; }; }) {
 
@@ -18,7 +19,7 @@ function Ingredient(array: { item: { [x: string]: number; }; }) {
         let value = array.item[`${id}`];
         let img = ImageUrl.find(item => item.id == id);
         let info = ingredients.find((item: { _id: string; }) => item._id == id);
-        if (img) {
+        if (img && info) {
             return <div className={`${styles.ingredientConteiner} mr-6 mb-4`}>
                 <img className={`${styles.image} mr-4`} src={img.url}></img>
                 <p className={`${styles.ingredienrName} text text_type_main-default`}>{info.name}</p>
@@ -39,7 +40,9 @@ function Time(props: { item: Iorder; massage: string }) {
         currentOrder.ingredients.map((id: string | null) => {
             if (id !== null) {
                 let info = ingredients.find((item: { _id: string; }) => item._id == id)
-                totalPrice = totalPrice + info.price
+                if (info) {
+                    totalPrice = totalPrice + info.price
+                }
             }
         })
     }

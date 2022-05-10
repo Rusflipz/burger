@@ -8,13 +8,12 @@ import { rootReducer } from './services/reducers/rootReducer'
 import { configureStore } from '@reduxjs/toolkit';
 import { BrowserRouter as Router } from "react-router-dom";
 import socketMiddleware from './services/middleWare/socketMiddleware';
-import { wsUrl } from './utils/constants';
+import { webSocketActions } from "./services/slice/webSoket";
 
-// export const store = configureStore({ reducer: rootReducer });
 const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(socketMiddleware(wsUrl))
+    getDefaultMiddleware().concat(socketMiddleware(webSocketActions))
 });
 
 export type RootState = ReturnType<typeof store.getState>

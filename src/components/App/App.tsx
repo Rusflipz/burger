@@ -76,24 +76,16 @@ function App() {
         <AppHeader />
         <Switch location={background1 || background2 || background3 || location}>
           <Route path="/login" exact={true}>
-            <ProtectedRoute>
-              <LoginPage />
-            </ProtectedRoute>
+            <LoginPage />
           </Route>
           <Route path="/registration" exact={true}>
-            <ProtectedRoute>
-              <RegistrationPage />
-            </ProtectedRoute>
+            <RegistrationPage />
           </Route>
           <Route path="/forgot-password" exact={true}>
-            <ProtectedRoute>
-              <Forgotpassword />
-            </ProtectedRoute>
+            <Forgotpassword />
           </Route>
           <Route path="/reset-password" exact={true}>
-            <ProtectedRoute>
-              <Resetpassword />
-            </ProtectedRoute>
+            <Resetpassword />
           </Route>
           <Route path="/profile" exact={true}>
             <ProtectedRoute>
@@ -107,7 +99,9 @@ function App() {
             <OrderPage />
           </Route>
           <Route path="/profile/orders/:id" exact={true}>
-            <UserOrderPage />
+            <ProtectedRoute>
+              <UserOrderPage />
+            </ProtectedRoute>
           </Route>
           <Route path="/feed" exact={true}>
             <FeedPage />

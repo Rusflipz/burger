@@ -9,18 +9,28 @@ import { postLogin } from '../../services/api';
 import { Redirect, useLocation } from 'react-router-dom';
 import { profileSelector } from '../../services/slice/profile';
 import React, { useState } from 'react';
-
-
+import { getCookie } from '../../services/Cookie';
 
 export function LoginPage() {
   const dispatch = useAppDispatch()
 
-  const { isUserLoaded } = useAppSelector(profileSelector);
+  //ЕСЛИ БРАТЬ ИЗ ХРАНИЛИЩА isUserLoaded, ТО НУЖНО ОТПРАВЛЯТЬ ЗАПРОС НА ПОЛУЧЕНИЕ ДАННЫХ, ПОЭТОМУ ПРОЩЕ СРАВНИТЬ УЖЕ С ИМЕЕЮЩИМЕСЯ ДАННЫМИ ИЛИ ДЕЛАТЬ ЗАПРОС НА ПОЛУЧЕНИЯ ДАННЫХ В КАЖДОМ ФАЙЛЕ ИЛИ ПРИ ЗАКГРЫЗКЕ ПРИЛОЖЕНИЯ.
+
+  let isUserLoaded = false
+
+  let token = getCookie('token')
+
+  if (token !== '' || token !== undefined){
+   isUserLoaded = true
+  }
+
+  const { profileSuccess, error } = useAppSelector(profileSelector);
 
   const [mailValue, setmailValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
 
-  function handleClick() {
+  function handleClick(evt: React.FormEvent<HTMLFormElement>) {
+    evt.preventDefault();
     let info = {
       mail: mailValue,
       password: passwordValue,
@@ -51,20 +61,13 @@ export function LoginPage() {
     setPasswordValue(e.target.value)
   }
 
-  if (isUserLoaded) {
-    return (
-      <Redirect
-        to={location.state?.from || '/'}
-      />
-    );
-  }
-
   return (
     <>
-      {!isUserLoaded ? <div className={styles.wrapper}>
+      {isUserLoaded && <Redirect to={location?.state?.from || "/"} />}
+      <div className={styles.wrapper}>
         <h1 className={`${styles.heading} text text_type_main-medium mb-6`}>Вход</h1>
         <form className={`${styles.form} mb-20`}
-          onSubmit={() => handleClick()}
+          onSubmit={(evt) => handleClick(evt)}
         >
           <div className={`mb-6`}>
             <Input
@@ -89,7 +92,7 @@ export function LoginPage() {
         </form>
         <p className={`${styles.text} mb-4`}>Вы — новый пользователь? <Link to='/registration' className={styles.link}>Зарегистрироваться</Link></p>
         <p className={styles.text}>Забыли пароль? <Link to='/forgot-password' className={styles.link}>Восстановить пароль</Link></p>
-      </div> : <Redirect to='/' />}
+      </div>
 
     </>
   );

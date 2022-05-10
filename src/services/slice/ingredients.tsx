@@ -110,6 +110,6 @@ export const {
     deleteIngredientFromConstructorItem,
     getOrder, getOrderFailed, getOrderSuccess, closeOrderСomponentsModal, dragItems } = ingredientsSlice.actions
 
-export const ingredientsSelector = (state: { ingredients: any; }) => state.ingredients
+export const ingredientsSelector = (state: { ingredients: CounterState }) => state.ingredients
 
 export default ingredientsSlice.reducer

@@ -11,7 +11,7 @@ import { getCookie } from '../../services/Cookie';
 import { profileSelector, startChangeName, startChangeLogin, startChangePassword, stopChange } from '../../services/slice/profile';
 import { editProfile } from '../../services/api';
 
-//Тут нашел баг, не монимаю почему так происходит, при вводе симаолв инпут фокус теряется.
+//Тут нашел баг, не понимаю почему так происходит, при вводе симаолв инпут фокус теряется.
 
 export function Profile() {
 
@@ -54,7 +54,6 @@ export function Profile() {
 
   function handleChangeName(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
-    console.log(e)
     setNameValue(e.target.value)
   }
 
