@@ -4,4 +4,4 @@
 Также реализована авторизация, личный кабинет, список заказов
 
 # технологии
-typescrypt, React, React drag&drop, css module, redux, REST API, GIT
+typescrypt, React, React drag&drop, css module, redux, REST API, GIT, webcosket
